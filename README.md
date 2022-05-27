@@ -1,29 +1,29 @@
-# Spring JPA OneToMany
+# Spring Mascotas Perdidas Backend v1.0
 
-Proyecto con implementación de la relacion One To Many para dos tablas ("Carritos" e "Items").
+Proyecto backend para el Sistema Mascotas Perdidas
 
 ## Descripción
 
-Para la realización de esta relación se debe usar la anotación @OneToMany y @ManyToOne propia de Spring JPA.
+Para la realización de este proyecto se usó Spring Boot v2.6.4.
 
 ## Inicio
 
 ### Dependencias
 
-* Spring v2.5.6, Spring JPA, MySQL driver, Java 8 (puede ser cualquier versión).
-* Cualquier Sistema Operativo
+* Spring v2.5.6, Spring JPA, MySQL driver, Java 8 (deseable).
+* Sistema Operativo Idependiente
 
 ### Instalación
 
 * Clonar el repositorio
 ```
-git clone https://github.com/Capdoo/spring-jpa-onetomany.git
+git clone https://github.com/Capdoo/spring-mascotas-backend.git
 
 ```
 
 * Crear la Base de Datos usando MySQL
 ```
-CREATE DATABASE compras CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE mascotasBD CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 ```
 
@@ -34,7 +34,7 @@ CREATE DATABASE compras CHARACTER SET utf8 COLLATE utf8_general_ci;
 * Se debe indicar el nombre de usuario y contraseña de la Base de Datos
 
 ```
-spring.datasource.url=jdbc:mysql://localhost:3306/compras
+spring.datasource.url=jdbc:mysql://localhost:3306/mascotasBD
 spring.datasource.username=[Su username]
 spring.datasource.password=[Su contraseña]
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
@@ -43,31 +43,16 @@ spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 
 ## Ejecución
 
-Solo falta iniciar el proyecto a través de Spring Tools o Eclipse IDE 
+Iniciar el proyecto a través de Spring Tools, Eclipse IDE o IntelliJ IDEA
 ```
 Click derecho en el proyecto
 Run As
 Spring Boot App
 ```
 
-## Anotaciones
 
-* One To Many Annotation (@OneToMany)
-Identificamos el modelo origen y usamos la notación
-```
-@ManyToOne
-@JoinColumn(name="carrito_id",referencedColumnName = "id_carrito", nullable=false)
-private CarritoModel carrito;
-```
-* Many To One (@ManyToOne)y Mapped By Parameter (mappedBy)
-Identificamos el modelo destino y usamos el parametro indicando el campo en el modelo origen
-```
-@OneToMany(mappedBy="carrito")
-private Set<ItemModel> items;
-
-```
-## Relación
-![plot](./src/main/resources/static/relacion.jpeg)
+## Base de Datos
+![plot](./src/main/resources/static/BaseDatos.jpg)
 
 ## Authors
 
