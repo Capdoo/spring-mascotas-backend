@@ -18,13 +18,11 @@ Para la realización de este proyecto se usó Spring Boot v2.6.2.
 * Clonar el repositorio
 ```
 git clone https://github.com/Capdoo/spring-mascotas-backend.git
-
 ```
 
 * Crear la Base de Datos usando MySQL
 ```
 CREATE DATABASE mascotasBD CHARACTER SET utf8 COLLATE utf8_general_ci;
-
 ```
 
 
@@ -38,7 +36,6 @@ spring.datasource.url=jdbc:mysql://<host>:<port>/mascotasBD
 spring.datasource.username=<username>
 spring.datasource.password=<password>
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
-
 ```
 
 ## Ejecución
