@@ -4,14 +4,14 @@ Proyecto backend para el Sistema Mascotas Perdidas
 
 ## Descripción
 
-Para la realización de este proyecto se usó Spring Boot v2.6.4.
+Para la realización de este proyecto se usó Spring Boot v2.6.2.
 
 ## Inicio
 
 ### Dependencias
 
 * Spring v2.5.6, Spring JPA, MySQL driver, Java 8 (deseable).
-* Sistema Operativo Idependiente
+* Sistema Operativo Independiente
 
 ### Instalación
 
@@ -34,20 +34,20 @@ CREATE DATABASE mascotasBD CHARACTER SET utf8 COLLATE utf8_general_ci;
 * Se debe indicar el nombre de usuario y contraseña de la Base de Datos
 
 ```
-spring.datasource.url=jdbc:mysql://localhost:3306/mascotasBD
-spring.datasource.username=[Su username]
-spring.datasource.password=[Su contraseña]
+spring.datasource.url=jdbc:mysql://<host>:<port>/mascotasBD
+spring.datasource.username=<username>
+spring.datasource.password=<password>
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 
 ```
 
 ## Ejecución
 
-Iniciar el proyecto a través de Spring Tools, Eclipse IDE o IntelliJ IDEA
+Iniciar el proyecto a través de cualquier IDE.
 ```
-Click derecho en el proyecto
-Run As
-Spring Boot App
+Actualizar las dependencias (pom.xml)
+Cambiar la configuración en propiedades
+Hacer build
 ```
 
 
@@ -63,9 +63,9 @@ Contribuidores y enlaces
 
 ## License
 
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
+This project is licensed under the terms of the MIT license.
 
 ## Acknowledgments
 
-El fundamento de Spring JPA.
+Spring Data e Hibernate
 * [Spring One To Many - Baeldung](https://www.baeldung.com/hibernate-one-to-many)

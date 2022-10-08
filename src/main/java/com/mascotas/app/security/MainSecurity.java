@@ -71,6 +71,15 @@ public class MainSecurity extends WebSecurityConfigurerAdapter{
 			.antMatchers("/refugios/**").permitAll()
 			.antMatchers("/adopciones/**").permitAll()
 			.antMatchers("/files/**").permitAll()
+			//SwaggerDoc
+			.antMatchers(
+					"/auth/**",
+					"/v2/api-docs/**",
+					"/swagger-ui/**",
+					"/swagger-resources/**",
+					"/configuration/**"
+			).permitAll()
+
 			.anyRequest().authenticated()
 			.and()
 			.exceptionHandling().authenticationEntryPoint(jwtEntryPoint)

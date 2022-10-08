@@ -9,8 +9,8 @@ import com.mascotas.app.security.models.RolModel;
 import com.mascotas.app.security.services.RolService;
 
 
-@Component
-public class CreateRoles /*implements CommandLineRunner*/{
+//@Component
+public class CreateRoles implements CommandLineRunner{
 
 	
 	@Autowired
