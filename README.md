@@ -10,7 +10,7 @@ Para la realización de este proyecto se usó Spring Boot v2.6.2.
 
 ### Dependencias
 
-* Spring v2.5.6, Spring JPA, MySQL driver, Java 8 (deseable).
+* Spring v2.6.2, Spring JPA, MySQL driver, Java 8 u 11.
 * Sistema Operativo Independiente
 
 ### Instalación
