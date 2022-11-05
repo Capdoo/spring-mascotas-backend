@@ -1,10 +1,10 @@
 package com.mascotas.app.security.controllers;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.mascotas.app.security.models.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,19 +26,18 @@ import com.mascotas.app.files.FileUploadService;
 import com.mascotas.app.security.dto.JwtDTO;
 import com.mascotas.app.security.dto.LoginUsuarioDTO;
 import com.mascotas.app.security.dto.NuevoUsuarioDTO;
-import com.mascotas.app.security.enums.RolNombre;
+import com.mascotas.app.security.enums.RoleName;
 import com.mascotas.app.security.jwt.JwtProvider;
-import com.mascotas.app.security.models.RolModel;
-import com.mascotas.app.security.models.UsuarioModel;
-import com.mascotas.app.security.services.RolService;
-import com.mascotas.app.security.services.UsuarioService;
+import com.mascotas.app.security.models.RoleModel;
+
+import com.mascotas.app.security.services.RoleService;
+import com.mascotas.app.security.services.UserService;
 
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin
 public class AuthController {
 
-	
 	@Autowired
 	PasswordEncoder passwordEncoder;
 	
@@ -46,10 +45,10 @@ public class AuthController {
 	AuthenticationManager authenticationManager;
 	
 	@Autowired
-	UsuarioService usuarioService;
+	UserService userService;
 	
 	@Autowired
-	RolService rolService;
+	RoleService roleService;
 	
 	@Autowired
 	JwtProvider jwtProvider;
@@ -57,74 +56,63 @@ public class AuthController {
 	@Autowired
 	FileUploadService fileUploadService;
 	
-	@PostMapping("/nuevo")
+	@PostMapping("/register")
 	public ResponseEntity<Object> nuevo(@RequestBody NuevoUsuarioDTO nuevoUsuarioDTO, BindingResult bindingResult) throws IOException{
 		if (bindingResult.hasErrors()) {
-			return new ResponseEntity(new MensajeDTO("Campos mal colocados"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity(new MensajeDTO("Wrong fields"), HttpStatus.BAD_REQUEST);
 		}
 		
-		if (usuarioService.existsByNombreUsuario(nuevoUsuarioDTO.getNombreUsuario())) {
-			return new ResponseEntity(new MensajeDTO("El nombre de usuario ya existe"), HttpStatus.BAD_REQUEST);
+		if (userService.existsByNombreUsuario(nuevoUsuarioDTO.getNombreUsuario())) {
+			return new ResponseEntity(new MensajeDTO("Username already in use"), HttpStatus.BAD_REQUEST);
 	
 		}
-		if (usuarioService.existsByEmail(nuevoUsuarioDTO.getEmail())) {
-			return new ResponseEntity(new MensajeDTO("El email ya existe"), HttpStatus.BAD_REQUEST);
+		if (userService.existsByEmail(nuevoUsuarioDTO.getEmail())) {
+			return new ResponseEntity(new MensajeDTO("Email already in use"), HttpStatus.BAD_REQUEST);
 	
 		}
-		
-		
-		/*
-		UsuarioModel usuarioModel = new UsuarioModel(
-										nuevoUsuarioDTO.getNombre(),
-										nuevoUsuarioDTO.getNombreUsuario(),
-										nuevoUsuarioDTO.getEmail(),
-										passwordEncoder.encode(nuevoUsuarioDTO.getPassword())
-									);
-		*/
-		UsuarioModel usuarioModel = new UsuarioModel();
-			usuarioModel.setApellidoPaterno(nuevoUsuarioDTO.getApellidoPaterno());
-			usuarioModel.setApellidoMaterno(nuevoUsuarioDTO.getApellidoMaterno());
-			usuarioModel.setNombre(nuevoUsuarioDTO.getNombre());
-			usuarioModel.setDireccion(nuevoUsuarioDTO.getDireccion());
+
+		UserModel usuarioModel = new UserModel();
+			usuarioModel.setLastName(nuevoUsuarioDTO.getApellidoPaterno());
+			usuarioModel.setSurName(nuevoUsuarioDTO.getApellidoMaterno());
+			usuarioModel.setFirstName(nuevoUsuarioDTO.getNombre());
+			usuarioModel.setAddress(nuevoUsuarioDTO.getDireccion());
 			usuarioModel.setDni(nuevoUsuarioDTO.getDni());
 			usuarioModel.setEmail(nuevoUsuarioDTO.getEmail());
-			usuarioModel.setNombreUsuario(nuevoUsuarioDTO.getNombreUsuario());
+			usuarioModel.setUsername(nuevoUsuarioDTO.getNombreUsuario());
 			usuarioModel.setPassword(passwordEncoder.encode(nuevoUsuarioDTO.getPassword()));
-			usuarioModel.setTelefono(nuevoUsuarioDTO.getTelefono());
-		
-				String encoded = fileUploadService.obtenerEncoded(nuevoUsuarioDTO.getEncoded());
-				byte[] imagen = fileUploadService.convertStringToBytes(encoded);
-				String url = fileUploadService.fileUpload(imagen);
-			
-				usuarioModel.setLinkImg(url);
-			
-		
-		
-		Set<RolModel> roles = new HashSet<>();
-		roles.add(rolService.getByRolNombre(RolNombre.ROLE_USER).get());
+			usuarioModel.setPhone(nuevoUsuarioDTO.getTelefono());
+
+		Set<RoleModel> roles = new HashSet<>();
+		roles.add(roleService.getByRoleName(RoleName.ROLE_USER).get());
 		if (nuevoUsuarioDTO.getRoles().contains("admin")) {
-			roles.add(rolService.getByRolNombre(RolNombre.ROLE_ADMIN).get());
+			roles.add(roleService.getByRoleName(RoleName.ROLE_ADMIN).get());
 		}
 		
 		if (nuevoUsuarioDTO.getRoles().contains("rept")) {
-			roles.add(rolService.getByRolNombre(RolNombre.ROLE_REPT).get());
+			roles.add(roleService.getByRoleName(RoleName.ROLE_REPT).get());
 		}
-		
+
+		String encoded = fileUploadService.obtenerEncoded(nuevoUsuarioDTO.getEncoded());
+		byte[] imagen = fileUploadService.convertStringToBytes(encoded);
+		String url = fileUploadService.fileUpload(imagen);
+
+		usuarioModel.setLinkImg(url);
+
 		usuarioModel.setRoles(roles);
-		usuarioService.save(usuarioModel);
+		userService.save(usuarioModel);
 		
-		return new ResponseEntity(new MensajeDTO("Usuario guardado"), HttpStatus.CREATED);
+		return new ResponseEntity(new MensajeDTO("User registered successfully"), HttpStatus.CREATED);
 		
 	}
 	
 	@PostMapping("/login")
 	public ResponseEntity<Object> login(@RequestBody LoginUsuarioDTO loginUsuarioDTO, BindingResult bindingResult){
 		if (bindingResult.hasErrors()) {
-			return new ResponseEntity(new MensajeDTO("Campos mal colocados"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity(new MensajeDTO("Wrong fields"), HttpStatus.BAD_REQUEST);
 		}
 		
-		if(!(usuarioService.existsByNombreUsuario(loginUsuarioDTO.getNombreUsuario()))) {
-			return new ResponseEntity(new MensajeDTO("Campos mal colocados"), HttpStatus.BAD_REQUEST);
+		if(!(userService.existsByNombreUsuario(loginUsuarioDTO.getNombreUsuario()))) {
+			return new ResponseEntity(new MensajeDTO("Wrong fields"), HttpStatus.BAD_REQUEST);
 		}
 		
         return Autenticacion(loginUsuarioDTO.getNombreUsuario(), loginUsuarioDTO.getPassword());
@@ -142,7 +130,7 @@ public class AuthController {
 	        return new ResponseEntity(jwtDto, HttpStatus.OK);
 			
 		} catch (Exception e) {
-			return new ResponseEntity(new MensajeDTO("Campos mal colocados"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity(new MensajeDTO("Wrong fields"), HttpStatus.BAD_REQUEST);
 		}
 
 	}

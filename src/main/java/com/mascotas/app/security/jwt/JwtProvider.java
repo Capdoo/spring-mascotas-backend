@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import com.mascotas.app.security.models.UsuarioPrincipalModel;
-import com.mascotas.app.security.services.UsuarioService;
+import com.mascotas.app.security.services.UserService;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -33,12 +33,12 @@ public class JwtProvider {
 	private int expiration;
 	
 	@Autowired
-	UsuarioService usuarioService;
+    UserService userService;
 	
 	public String generateToken(Authentication authentication) {
 		UsuarioPrincipalModel usuarioPrincipal = (UsuarioPrincipalModel) authentication.getPrincipal();
 		
-		int id = usuarioService.obtenerIdPorUsername(usuarioPrincipal.getUsername());
+		long id = userService.obtenerIdPorUsername(usuarioPrincipal.getUsername());
 		
 		return Jwts.builder().setSubject(usuarioPrincipal.getUsername())
 				.setIssuedAt(new Date())

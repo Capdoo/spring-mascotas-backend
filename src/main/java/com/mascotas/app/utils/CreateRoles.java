@@ -2,11 +2,11 @@ package com.mascotas.app.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
 
-import com.mascotas.app.security.enums.RolNombre;
-import com.mascotas.app.security.models.RolModel;
-import com.mascotas.app.security.services.RolService;
+import com.mascotas.app.security.enums.RoleName;
+import com.mascotas.app.security.models.RoleModel;
+import com.mascotas.app.security.services.RoleService;
+import org.springframework.stereotype.Component;
 
 
 //@Component
@@ -14,22 +14,19 @@ public class CreateRoles implements CommandLineRunner{
 
 	
 	@Autowired
-	RolService rolService;
+	RoleService roleService;
 	
 	//@Override
 	public void run(String... args) throws Exception {
 		
-		RolModel rolAdmin = new RolModel(RolNombre.ROLE_ADMIN);
-		
-		RolModel rolUser = new RolModel(RolNombre.ROLE_USER);
-		
-		rolService.save(rolAdmin);
-		rolService.save(rolUser);
+		RoleModel rolAdmin = new RoleModel(RoleName.ROLE_ADMIN);
+		RoleModel rolUser = new RoleModel(RoleName.ROLE_USER);
+		RoleModel rolRept = new RoleModel(RoleName.ROLE_REPT);
+
+		roleService.save(rolAdmin);
+		roleService.save(rolUser);
+		roleService.save(rolRept);
 
 	}
-	 
-	
-	
-	
-	
+
 }
