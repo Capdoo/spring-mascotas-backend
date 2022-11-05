@@ -54,7 +54,7 @@ Hacer build
 
 
 ## Base de Datos
-![plot](./src/main/resources/static/BaseDatos.jpg)
+![plot](./src/main/resources/static/BaseDatos.png)
 
 ## Authors
 
