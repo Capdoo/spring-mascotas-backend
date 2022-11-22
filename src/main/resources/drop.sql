@@ -1,13 +1,14 @@
-DROP TABLE usuario_roles;
+USE mascotasBD;
+DROP TABLE user_roles;
 DROP TABLE roles;
 
-DROP TABLE adopciones;
-DROP TABLE busquedas;
-DROP TABLE mascotas;
+DROP TABLE adoptions;
+DROP TABLE searchs;
+DROP TABLE pets;
 
-DROP TABLE dueños;
-DROP TABLE refugios;
-DROP TABLE usuarios;
-DROP TABLE detalles;
+DROP TABLE owners;
+DROP TABLE shelters;
+DROP TABLE users;
+DROP TABLE details;
 
 

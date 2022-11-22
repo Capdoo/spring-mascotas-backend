@@ -12,11 +12,10 @@ import org.springframework.stereotype.Component;
 //@Component
 public class CreateRoles implements CommandLineRunner{
 
-	
 	@Autowired
 	RoleService roleService;
 	
-	//@Override
+	@Override
 	public void run(String... args) throws Exception {
 		
 		RoleModel rolAdmin = new RoleModel(RoleName.ROLE_ADMIN);

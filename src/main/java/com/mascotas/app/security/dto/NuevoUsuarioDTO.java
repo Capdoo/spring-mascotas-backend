@@ -10,8 +10,7 @@ public class NuevoUsuarioDTO {
 	private String dni;
 	private String direccion;
 	private String telefono;
-	
-	
+
 	private String nombre;
 	private String nombreUsuario;
 	private String email;

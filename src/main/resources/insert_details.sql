@@ -1,4 +1,3 @@
-
 INSERT INTO details (species, breed) VALUES 
 ('GATO','SIAMES'),
 ('GATO','PERSA'),
@@ -6,3 +5,4 @@ INSERT INTO details (species, breed) VALUES
 ('PERRO','DOBERMAN'),
 ('PERRO','PASTOR ALEMAN'),
 ('PERRO','LABRADOR');
+COMMIT;
