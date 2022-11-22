@@ -19,13 +19,10 @@ import com.mascotas.app.security.dto.UserDTO;
 //Para implementar rollbacks y evitar incoherencia : Concurrencia
 @Transactional
 public class UserService {
-
 	@Autowired
 	UserRepository userRepository;
-	
 	@Autowired
     OwnerRepository ownerRepository;
-
 	@Autowired
 	ModelDTOService modelDTOService;
 	
@@ -47,10 +44,8 @@ public class UserService {
 				usuarioSingle.setFirstName(p.getFirstName());
 				usuarioSingle.setUsername(p.getUsername());
 				usuarioSingle.setPhone(p.getPhone());
-				
-				
+
 				usuarioSingle.setUrlLink(p.getLinkImg());
-				
 			listaEnviar.add(usuarioSingle);
 		}
 
@@ -67,11 +62,21 @@ public class UserService {
 	public Optional<UserModel> getByNombreUsuario(String nombreUsuario){
 		return userRepository.findByUsername(nombreUsuario);
 	}
-	
-	public boolean existsByNombreUsuario(String nombreUsuario) {
-		return userRepository.existsByUsername(nombreUsuario);
+
+	public Optional<UserModel> getByUsernameOrEmail(String usernameOrEmail){
+		return userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
 	}
 	
+	public boolean existsByUsername(String nombreUsuario) {
+		return userRepository.existsByUsername(nombreUsuario);
+	}
+
+	public boolean existsByUsernameOrEmail(String usernameOrEmail) {
+
+		return userRepository.existsByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
+	}
+
+
 	public boolean existsByEmail(String email) {
 		return userRepository.existsByEmail(email);
 	}

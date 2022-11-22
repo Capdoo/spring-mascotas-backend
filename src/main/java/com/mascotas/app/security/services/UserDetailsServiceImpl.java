@@ -9,9 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.mascotas.app.security.models.UsuarioPrincipalModel;
 
-
-
-
 //Convierte la clase Usuario en Usuario Principal.
 //Media entre la clase Usuario y Usuario Principal.
 //Es la clase de SpringSecurity especifica
@@ -22,16 +19,11 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 
 	@Autowired
 	UserService userService;
-	
-	
+
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
-		UserModel userModel = userService.getByNombreUsuario(username).get();
-		
+		UserModel userModel = userService.getByUsernameOrEmail(usernameOrEmail).get();
 		return UsuarioPrincipalModel.build(userModel);
 	}
-
-	
-	
 }

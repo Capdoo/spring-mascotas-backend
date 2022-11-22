@@ -1,9 +1,14 @@
 package com.mascotas.app.security.jwt;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.mascotas.app.security.dto.JwtDTO;
+import com.nimbusds.jwt.JWT;
+import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.JWTParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +45,6 @@ public class JwtProvider {
 	
 	public String generateToken(Authentication authentication) {
 		UsuarioPrincipalModel usuarioPrincipal = (UsuarioPrincipalModel) authentication.getPrincipal();
-		
-		long id = userService.obtenerIdPorUsername(usuarioPrincipal.getUsername());
 		List<String> roles = usuarioPrincipal.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(
 				Collectors.toList()
 		);
@@ -50,7 +53,7 @@ public class JwtProvider {
 				.setSubject(usuarioPrincipal.getUsername())
 				.claim("roles", roles)
 				.setIssuedAt(new Date())
-				.setExpiration(new Date(new Date().getTime() + expiration*1000))
+				.setExpiration(new Date(new Date().getTime() + expiration))
 				.signWith(SignatureAlgorithm.HS512, secret.getBytes())
 				.compact();
 	}
@@ -59,8 +62,7 @@ public class JwtProvider {
 	public String getNombreUsuarioFromToken(String token) {
 		return Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token).getBody().getSubject();
 	}
-	
-	
+
 	public boolean validateToken(String token) {
 		try {
 			
@@ -85,8 +87,21 @@ public class JwtProvider {
 		}
 		return false;
 	}
-	
-	
+
+	public String refreshToken(JwtDTO jwtDTO) throws ParseException {
+		JWT jwt = JWTParser.parse(jwtDTO.getToken());
+		JWTClaimsSet claims = jwt.getJWTClaimsSet();
+		String nombreUsuario = claims.getSubject();
+		List<String> roles = (List<String>) claims.getClaim("roles");
+
+		return Jwts.builder()
+				.setSubject(nombreUsuario)
+				.claim("roles", roles)
+				.setIssuedAt(new Date())
+				.setExpiration(new Date(new Date().getTime() + expiration))
+				.signWith(SignatureAlgorithm.HS512, secret.getBytes())
+				.compact();
+	}
 }
 
 

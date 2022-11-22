@@ -1,9 +1,5 @@
 package com.mascotas.app.security.dto;
 
-import java.util.Collection;
-
-import org.springframework.security.core.GrantedAuthority;
-
 public class JwtDTO {
 
 	private String token;

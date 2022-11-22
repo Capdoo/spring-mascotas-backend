@@ -1,6 +1,7 @@
 package com.mascotas.app.security.controllers;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,7 +38,6 @@ import com.mascotas.app.security.services.UserService;
 @RequestMapping("/auth")
 @CrossOrigin
 public class AuthController {
-
 	@Autowired
 	PasswordEncoder passwordEncoder;
 	@Autowired
@@ -57,7 +57,7 @@ public class AuthController {
 			return new ResponseEntity(new MensajeDTO("Wrong fields"), HttpStatus.BAD_REQUEST);
 		}
 		
-		if (userService.existsByNombreUsuario(nuevoUsuarioDTO.getNombreUsuario())) {
+		if (userService.existsByUsername(nuevoUsuarioDTO.getNombreUsuario())) {
 			return new ResponseEntity(new MensajeDTO("Username already in use"), HttpStatus.BAD_REQUEST);
 	
 		}
@@ -105,13 +105,10 @@ public class AuthController {
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity(new MensajeDTO("Wrong fields"), HttpStatus.BAD_REQUEST);
 		}
-		
-		if(!(userService.existsByNombreUsuario(loginUsuarioDTO.getNombreUsuario()))) {
+		if(!(userService.existsByUsernameOrEmail(loginUsuarioDTO.getNombreUsuario()))) {
 			return new ResponseEntity(new MensajeDTO("Wrong fields"), HttpStatus.BAD_REQUEST);
 		}
-		
         return Autenticacion(loginUsuarioDTO.getNombreUsuario(), loginUsuarioDTO.getPassword());
-		
 	}
 	
 	public ResponseEntity<Object> Autenticacion(String username, String password) {
@@ -126,7 +123,18 @@ public class AuthController {
 		} catch (Exception e) {
 			return new ResponseEntity(new MensajeDTO("Wrong fields"), HttpStatus.BAD_REQUEST);
 		}
+	}
 
+	@PostMapping("/refresh")
+	public ResponseEntity<Object> refreshToken(@RequestBody JwtDTO jwtDTO) throws ParseException {
+		try {
+			String token = jwtProvider.refreshToken(jwtDTO);
+			JwtDTO jwt = new JwtDTO(token);
+			return new ResponseEntity<Object>(jwt, HttpStatus.OK);
+
+		}catch (Exception e){
+			return new ResponseEntity<Object>(new MensajeDTO(e.getMessage()), HttpStatus.OK);
+		}
 	}
 	
 }
