@@ -28,11 +28,9 @@ public class OwnerModel {
 	private long id;
 	private Timestamp registerDate;
 	private int numberOfPets;
-	
 	//Secundarios
 	private int rate;
 	private long historial_id;
-
 	//Idx user (OneToOne)
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "OWNER_FK_USER"))

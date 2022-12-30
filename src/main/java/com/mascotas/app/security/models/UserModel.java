@@ -45,10 +45,10 @@ public class UserModel {
 	@Column(name="token_password")
 	private String tokenPassword;
 	//Referenced owner
-	@OneToOne(cascade =  CascadeType.ALL,mappedBy = "user")
+	@OneToOne(cascade =  CascadeType.ALL, mappedBy = "user")
 	private OwnerModel owner;
-	//Refugio
-	@OneToOne(cascade =  CascadeType.ALL,mappedBy = "user")
+	//Shelter
+	@OneToOne(cascade =  CascadeType.ALL, mappedBy = "user")
 	private ShelterModel shelter;
 	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(name="user_roles", joinColumns = @JoinColumn(name = "id_user"), inverseJoinColumns = @JoinColumn(name = "id_role"))

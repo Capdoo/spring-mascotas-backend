@@ -13,6 +13,5 @@ import com.mascotas.app.security.models.RoleModel;
 public interface RoleRepository extends JpaRepository<RoleModel, Integer>{
 	
 	Optional<RoleModel> findByRoleName(RoleName roleName);
-	
-	
+	boolean existsByRoleName(RoleName roleName);
 }

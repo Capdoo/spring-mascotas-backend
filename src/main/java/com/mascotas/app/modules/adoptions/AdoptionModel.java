@@ -2,13 +2,7 @@ package com.mascotas.app.modules.adoptions;
 
 import java.sql.Timestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.mascotas.app.modules.pets.PetModel;
 
@@ -19,21 +13,17 @@ public class AdoptionModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
 	private String message;
 	//In case the pet is sick
 	private String observation;
-	
 	private String phoneA;
 	private String phoneB;
-	
 	private String address;
 	private String district;
-	
 	private Timestamp registerDate;
 	
 	@ManyToOne
-	@JoinColumn(name="pet_id", referencedColumnName = "id", nullable=false)
+	@JoinColumn(name="pet_id", referencedColumnName = "id", nullable=false, foreignKey = @ForeignKey(name = "ADOPTION_FK_PET"))
 	private PetModel pet;
 
 	public AdoptionModel() {

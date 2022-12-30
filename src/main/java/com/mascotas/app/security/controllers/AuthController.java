@@ -92,7 +92,6 @@ public class AuthController {
 		String url = fileUploadService.fileUpload(imagen);
 
 		usuarioModel.setLinkImg(url);
-
 		usuarioModel.setRoles(roles);
 		userService.save(usuarioModel);
 		

@@ -1,4 +1,4 @@
-use mascotasBD;
+use mascotasdb;
 
 SELECT * FROM roles;
 SELECT * FROM users;

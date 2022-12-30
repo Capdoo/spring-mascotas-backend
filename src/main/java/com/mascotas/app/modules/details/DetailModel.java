@@ -1,14 +1,10 @@
 package com.mascotas.app.modules.details;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.mascotas.app.modules.pets.PetModel;
+
+import java.util.Set;
 
 
 @Entity
@@ -18,22 +14,18 @@ public class DetailModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
 	private String species;
 	private String breed;
-
-	@OneToOne(cascade =  CascadeType.ALL, mappedBy = "detail")
-	private PetModel pet;
+	@OneToMany(cascade =  CascadeType.ALL, mappedBy = "detail")
+	private Set<PetModel> pets;
 
 	public DetailModel() {
 		super();
 	}
 
-	public DetailModel(long id, String species, String breed, PetModel pet) {
-		this.id = id;
+	public DetailModel(String species, String breed) {
 		this.species = species;
 		this.breed = breed;
-		this.pet = pet;
 	}
 
 	public long getId() {
@@ -60,11 +52,11 @@ public class DetailModel {
 		this.breed = breed;
 	}
 
-	public PetModel getPet() {
-		return pet;
+	public Set<PetModel> getPets() {
+		return pets;
 	}
 
-	public void setPet(PetModel pet) {
-		this.pet = pet;
+	public void setPets(Set<PetModel> pets) {
+		this.pets = pets;
 	}
 }

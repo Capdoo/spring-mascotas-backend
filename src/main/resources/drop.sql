@@ -1,4 +1,4 @@
-USE mascotasBD;
+USE mascotasdb;
 DROP TABLE user_roles;
 DROP TABLE roles;
 
