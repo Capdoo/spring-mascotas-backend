@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mascotas.app.dto.MensajeDTO;
+import com.mascotas.app.dto.MessageDTO;
 
 
 @RestController
@@ -25,11 +25,11 @@ public class PetController {
 		
 		try {
 			petService.savePet(petDTO);
-			return new ResponseEntity<Object>(new MensajeDTO("Pet registered successfully"), HttpStatus.OK);
+			return new ResponseEntity<Object>(new MessageDTO("Pet registered successfully"), HttpStatus.OK);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<Object>(new MensajeDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(new MessageDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
 		}
 		
 	}
@@ -42,7 +42,7 @@ public class PetController {
 			return new ResponseEntity<Object>(listPets, HttpStatus.OK);
 
 		} catch (Exception e) {
-			return new ResponseEntity<Object>(new MensajeDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(new MessageDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
 		}
 		
 	}

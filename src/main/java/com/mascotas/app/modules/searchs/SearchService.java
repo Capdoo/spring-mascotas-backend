@@ -8,7 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mascotas.app.files.FileUploadService;
+import com.mascotas.app.files.FileService;
 import com.mascotas.app.modules.pets.PetModel;
 import com.mascotas.app.modules.pets.PetRepository;
 import com.mascotas.app.utils.FechaUtil;
@@ -24,7 +24,7 @@ public class SearchService {
 	PetRepository petRepository;
 	
 	@Autowired
-	FileUploadService fileUploadService;
+    FileService fileService;
 
 	public void saveSearch(SearchDTO searchDTO) throws IOException {
 		
@@ -46,9 +46,9 @@ public class SearchService {
 
 			newSearch.setMessage(searchDTO.getMessage());
 			
-				String encoded = fileUploadService.obtenerEncoded(searchDTO.getEncoded());
-				byte[] imagen = fileUploadService.convertStringToBytes(encoded);
-				String url = fileUploadService.fileUpload(imagen);
+				String encoded = fileService.obtenerEncoded(searchDTO.getEncoded());
+				byte[] imagen = fileService.convertEncodedToBytes(encoded);
+				String url = fileService.fileUpload(imagen);
 
 		newSearch.setLinkImg(url);
 			

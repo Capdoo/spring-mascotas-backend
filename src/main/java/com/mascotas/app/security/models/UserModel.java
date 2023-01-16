@@ -3,21 +3,12 @@ package com.mascotas.app.security.models;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.mascotas.app.modules.owners.OwnerModel;
+import com.mascotas.app.modules.partners.PartnerModel;
 import com.mascotas.app.modules.shelters.ShelterModel;
+import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name="users")
@@ -41,15 +32,18 @@ public class UserModel {
 	private String address;
 	private String email;
 	private String password;
-	private String linkImg;
+	@Lob
+	@Column(length = 16777215)
+	@Type(type = "org.hibernate.type.BinaryType")
+	private byte[] image;
 	@Column(name="token_password")
 	private String tokenPassword;
 	//Referenced owner
 	@OneToOne(cascade =  CascadeType.ALL, mappedBy = "user")
 	private OwnerModel owner;
-	//Shelter
+	//Referenced partner
 	@OneToOne(cascade =  CascadeType.ALL, mappedBy = "user")
-	private ShelterModel shelter;
+	private PartnerModel partnerModel;
 	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(name="user_roles", joinColumns = @JoinColumn(name = "id_user"), inverseJoinColumns = @JoinColumn(name = "id_role"))
 	private Set<RoleModel> roles = new HashSet<>();
@@ -66,7 +60,7 @@ public class UserModel {
 		this.password = password;
 	}
 
-	public UserModel(long id, String username, String dni, String firstName, String lastName, String surName, String phone, String address, String email, String password, String linkImg, OwnerModel owner, ShelterModel shelter, Set<RoleModel> roles) {
+	public UserModel(long id, String username, String dni, String firstName, String lastName, String surName, String phone, String address, String email, String password, byte[] image, OwnerModel owner, PartnerModel partnerModel, Set<RoleModel> roles) {
 		this.id = id;
 		this.username = username;
 		this.dni = dni;
@@ -77,9 +71,9 @@ public class UserModel {
 		this.address = address;
 		this.email = email;
 		this.password = password;
-		this.linkImg = linkImg;
+		this.image = image;
 		this.owner = owner;
-		this.shelter = shelter;
+		this.partnerModel = partnerModel;
 		this.roles = roles;
 	}
 
@@ -163,12 +157,12 @@ public class UserModel {
 		this.password = password;
 	}
 
-	public String getLinkImg() {
-		return linkImg;
+	public byte[] getImage() {
+		return image;
 	}
 
-	public void setLinkImg(String linkImg) {
-		this.linkImg = linkImg;
+	public void setImage(byte[] image) {
+		this.image = image;
 	}
 
 	public OwnerModel getOwner() {
@@ -179,12 +173,12 @@ public class UserModel {
 		this.owner = owner;
 	}
 
-	public ShelterModel getShelter() {
-		return shelter;
+	public PartnerModel getPartnerModel() {
+		return partnerModel;
 	}
 
-	public void setShelter(ShelterModel shelter) {
-		this.shelter = shelter;
+	public void setPartnerModel(PartnerModel partnerModel) {
+		this.partnerModel = partnerModel;
 	}
 
 	public Set<RoleModel> getRoles() {

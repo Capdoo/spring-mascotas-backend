@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.mascotas.app.modules.partners.PartnerModel;
 import com.mascotas.app.modules.pets.PetModel;
 import com.mascotas.app.security.models.UserModel;
 
@@ -34,21 +35,23 @@ public class ShelterModel {
 	//link de imagen
 	private String linkImg;
 
-	//Idx from the main partner (OneToOne)
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "SHELTER_FK_USER"))
-	private UserModel user;
-	
+	//Rel to set of partners
+	@OneToMany(cascade =  CascadeType.ALL, mappedBy = "shelter")
+	private Set<PartnerModel> partners;
+
+
 	//For pets
 	@OneToMany(mappedBy="shelter")
 	private Set<PetModel> pets;
+
+
 	
 	public ShelterModel() {
 		super();
 	}
 
 
-	public ShelterModel(long id, String name, long numberOfPartners, Timestamp registerDate, String contactNumber, String address, String district, String linkImg, UserModel user, Set<PetModel> pets) {
+	public ShelterModel(long id, String name, long numberOfPartners, Timestamp registerDate, String contactNumber, String address, String district, String linkImg, Set<PartnerModel> partners, Set<PetModel> pets) {
 		this.id = id;
 		this.name = name;
 		this.numberOfPartners = numberOfPartners;
@@ -57,7 +60,7 @@ public class ShelterModel {
 		this.address = address;
 		this.district = district;
 		this.linkImg = linkImg;
-		this.user = user;
+		this.partners = partners;
 		this.pets = pets;
 	}
 
@@ -126,12 +129,12 @@ public class ShelterModel {
 		this.linkImg = linkImg;
 	}
 
-	public UserModel getUser() {
-		return user;
+	public Set<PartnerModel> getPartners() {
+		return partners;
 	}
 
-	public void setUser(UserModel user) {
-		this.user = user;
+	public void setPartners(Set<PartnerModel> partners) {
+		this.partners = partners;
 	}
 
 	public Set<PetModel> getPets() {

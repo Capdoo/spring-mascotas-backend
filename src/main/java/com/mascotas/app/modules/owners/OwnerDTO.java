@@ -12,6 +12,11 @@ public class OwnerDTO {
 		super();
 	}
 
+	public OwnerDTO(long user_id) {
+		super();
+		this.user_id = user_id;
+	}
+
 
 	public long getId() {
 		return id;

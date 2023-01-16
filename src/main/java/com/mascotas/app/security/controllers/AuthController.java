@@ -5,6 +5,9 @@ import java.text.ParseException;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.mascotas.app.modules.owners.OwnerDTO;
+import com.mascotas.app.modules.owners.OwnerModel;
+import com.mascotas.app.modules.owners.OwnerService;
 import com.mascotas.app.security.models.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +16,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,11 +24,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mascotas.app.dto.MensajeDTO;
-import com.mascotas.app.files.FileUploadService;
+import com.mascotas.app.dto.MessageDTO;
+import com.mascotas.app.files.FileService;
 import com.mascotas.app.security.dto.JwtDTO;
-import com.mascotas.app.security.dto.LoginUsuarioDTO;
-import com.mascotas.app.security.dto.NuevoUsuarioDTO;
+import com.mascotas.app.security.dto.LoginUserDTO;
+import com.mascotas.app.security.dto.NewUserDTO;
 import com.mascotas.app.security.enums.RoleName;
 import com.mascotas.app.security.jwt.JwtProvider;
 import com.mascotas.app.security.models.RoleModel;
@@ -49,69 +51,83 @@ public class AuthController {
 	@Autowired
 	JwtProvider jwtProvider;
 	@Autowired
-	FileUploadService fileUploadService;
+	FileService fileService;
+	@Autowired
+	OwnerService ownerService;
 	
 	@PostMapping("/register")
-	public ResponseEntity<Object> nuevo(@RequestBody NuevoUsuarioDTO nuevoUsuarioDTO, BindingResult bindingResult) throws IOException{
+	public ResponseEntity<Object> register(@RequestBody NewUserDTO newUserDTO, BindingResult bindingResult) throws IOException{
 		if (bindingResult.hasErrors()) {
-			return new ResponseEntity(new MensajeDTO("Wrong fields"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity(new MessageDTO("Wrong fields"), HttpStatus.BAD_REQUEST);
 		}
 		
-		if (userService.existsByUsername(nuevoUsuarioDTO.getNombreUsuario())) {
-			return new ResponseEntity(new MensajeDTO("Username already in use"), HttpStatus.BAD_REQUEST);
+		if (userService.existsByUsername(newUserDTO.getUsername())) {
+			return new ResponseEntity(new MessageDTO("Username already in use"), HttpStatus.BAD_REQUEST);
 	
 		}
-		if (userService.existsByEmail(nuevoUsuarioDTO.getEmail())) {
-			return new ResponseEntity(new MensajeDTO("Email already in use"), HttpStatus.BAD_REQUEST);
+		if (userService.existsByEmail(newUserDTO.getEmail())) {
+			return new ResponseEntity(new MessageDTO("Email already in use"), HttpStatus.BAD_REQUEST);
 	
 		}
 
-		UserModel usuarioModel = new UserModel();
-			usuarioModel.setLastName(nuevoUsuarioDTO.getApellidoPaterno());
-			usuarioModel.setSurName(nuevoUsuarioDTO.getApellidoMaterno());
-			usuarioModel.setFirstName(nuevoUsuarioDTO.getNombre());
-			usuarioModel.setAddress(nuevoUsuarioDTO.getDireccion());
-			usuarioModel.setDni(nuevoUsuarioDTO.getDni());
-			usuarioModel.setEmail(nuevoUsuarioDTO.getEmail());
-			usuarioModel.setUsername(nuevoUsuarioDTO.getNombreUsuario());
-			usuarioModel.setPassword(passwordEncoder.encode(nuevoUsuarioDTO.getPassword()));
-			usuarioModel.setPhone(nuevoUsuarioDTO.getTelefono());
+		UserModel userModel = new UserModel();
+			userModel.setUsername(newUserDTO.getUsername());
+			userModel.setDni(newUserDTO.getDni());
+			userModel.setFirstName(newUserDTO.getFirstName());
+			userModel.setLastName(newUserDTO.getLastName());
+			userModel.setSurName(newUserDTO.getSurName());
+			userModel.setPhone(newUserDTO.getPhone());
+			userModel.setAddress(newUserDTO.getAddress());
+			userModel.setEmail(newUserDTO.getEmail());
+			userModel.setPassword(passwordEncoder.encode(newUserDTO.getPassword()));
 
-		Set<RoleModel> roles = new HashSet<>();
-		roles.add(roleService.getByRoleName(RoleName.ROLE_USER).get());
-		if (nuevoUsuarioDTO.getRoles().contains("admin")) {
-			roles.add(roleService.getByRoleName(RoleName.ROLE_ADMIN).get());
-		}
-		
-		if (nuevoUsuarioDTO.getRoles().contains("rept")) {
-			roles.add(roleService.getByRoleName(RoleName.ROLE_REPT).get());
-		}
+			Set<RoleModel> roles = new HashSet<>();
+			roles.add(roleService.getByRoleName(RoleName.ROLE_USER).get());
+			if (newUserDTO.getRoles().contains("admin")) {
+				roles.add(roleService.getByRoleName(RoleName.ROLE_ADMIN).get());
+			}
+			if (newUserDTO.getRoles().contains("rept")) {
+				roles.add(roleService.getByRoleName(RoleName.ROLE_REPT).get());
+			}
 
-		String encoded = fileUploadService.obtenerEncoded(nuevoUsuarioDTO.getEncoded());
-		byte[] imagen = fileUploadService.convertStringToBytes(encoded);
-		String url = fileUploadService.fileUpload(imagen);
+			String encoded = "";
+			if(newUserDTO.getEncoded() == null){
+				encoded = fileService.getEncodedDefault();
+			}else{
+				encoded = fileService.obtenerEncoded(newUserDTO.getEncoded());
+			}
+			byte[] image = fileService.convertEncodedToBytes(encoded);
 
-		usuarioModel.setLinkImg(url);
-		usuarioModel.setRoles(roles);
-		userService.save(usuarioModel);
-		
-		return new ResponseEntity(new MensajeDTO("User registered successfully"), HttpStatus.CREATED);
+			userModel.setImage(image);
+			userModel.setRoles(roles);
+
+		UserModel userRegistered = userService.save(userModel);
+		OwnerModel ownerModel = new OwnerModel(
+				userRegistered
+		);
+
+		ownerService.saveOwner(
+				new OwnerDTO(
+						userRegistered.getId()
+				)
+		);
+
+		return new ResponseEntity(userRegistered, HttpStatus.CREATED);
 		
 	}
 	
 	@PostMapping("/login")
-	public ResponseEntity<Object> login(@RequestBody LoginUsuarioDTO loginUsuarioDTO, BindingResult bindingResult){
+	public ResponseEntity<Object> login(@RequestBody LoginUserDTO loginUserDTO, BindingResult bindingResult){
 		if (bindingResult.hasErrors()) {
-			return new ResponseEntity(new MensajeDTO("Wrong fields"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity(new MessageDTO("Wrong fields1"), HttpStatus.BAD_REQUEST);
 		}
-		if(!(userService.existsByUsernameOrEmail(loginUsuarioDTO.getNombreUsuario()))) {
-			return new ResponseEntity(new MensajeDTO("Wrong fields"), HttpStatus.BAD_REQUEST);
+		if(!(userService.existsByUsernameOrEmail(loginUserDTO.getUsername()))) {
+			return new ResponseEntity(new MessageDTO("Wrong fields2"), HttpStatus.BAD_REQUEST);
 		}
-        return Autenticacion(loginUsuarioDTO.getNombreUsuario(), loginUsuarioDTO.getPassword());
+        return Autenticacion(loginUserDTO.getUsername(), loginUserDTO.getPassword());
 	}
 	
 	public ResponseEntity<Object> Autenticacion(String username, String password) {
-		
 		try {
 			Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 	        SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -120,7 +136,7 @@ public class AuthController {
 	        return new ResponseEntity(jwtDto, HttpStatus.OK);
 			
 		} catch (Exception e) {
-			return new ResponseEntity(new MensajeDTO("Wrong fields"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity(new MessageDTO("Wrong fields"), HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -132,10 +148,9 @@ public class AuthController {
 			return new ResponseEntity<Object>(jwt, HttpStatus.OK);
 
 		}catch (Exception e){
-			return new ResponseEntity<Object>(new MensajeDTO(e.getMessage()), HttpStatus.OK);
+			return new ResponseEntity<Object>(new MessageDTO(e.getMessage()), HttpStatus.OK);
 		}
 	}
-	
 }
 
 

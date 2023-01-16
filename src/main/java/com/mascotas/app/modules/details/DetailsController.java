@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mascotas.app.dto.MensajeDTO;
+import com.mascotas.app.dto.MessageDTO;
 import com.mascotas.app.dto.StringDTO;
 
 
@@ -29,7 +29,7 @@ public class DetailsController {
 			return new ResponseEntity<Object>(listDetails, HttpStatus.OK);
 
 		} catch (Exception e) {
-			return new ResponseEntity<Object>(new MensajeDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(new MessageDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
 		}
 		
 	}
@@ -43,7 +43,7 @@ public class DetailsController {
 			return new ResponseEntity<Object>(listaEspecies, HttpStatus.OK);
 
 		} catch (Exception e) {
-			return new ResponseEntity<Object>(new MensajeDTO("Hubo un problema"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(new MessageDTO("Hubo un problema"), HttpStatus.BAD_REQUEST);
 		}
 		
 	}
@@ -56,7 +56,7 @@ public class DetailsController {
 			return new ResponseEntity<Object>(listaRazas, HttpStatus.OK);
 
 		} catch (Exception e) {
-			return new ResponseEntity<Object>(new MensajeDTO("Hubo un problema"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(new MessageDTO("Hubo un problema"), HttpStatus.BAD_REQUEST);
 		}
 		
 	}

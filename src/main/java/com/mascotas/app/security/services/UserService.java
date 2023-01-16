@@ -6,9 +6,9 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.mascotas.app.files.FileService;
 import com.mascotas.app.security.models.UserModel;
 import com.mascotas.app.security.repositories.UserRepository;
-import com.mascotas.app.utils.ModelDTOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,45 +24,35 @@ public class UserService {
 	@Autowired
     OwnerRepository ownerRepository;
 	@Autowired
-	ModelDTOService modelDTOService;
+	FileService fileService;
 	
 	//Obtener
 	public List<UserDTO> listar(){
-		List<UserDTO> listaEnviar = new ArrayList<>();
+		List<UserDTO> listSend = new ArrayList<>();
 
-		List<UserModel> listaModels = userRepository.findAll();
+		List<UserModel> listModels = userRepository.findAll();
 		
-		for(UserModel p: listaModels) {
-			UserDTO usuarioSingle = new UserDTO();
+		for(UserModel p: listModels) {
+			UserDTO userSingle = new UserDTO();
 
-				usuarioSingle.setId(p.getId());
-				usuarioSingle.setLastName(p.getLastName());
-				usuarioSingle.setSurName(p.getSurName());
-				usuarioSingle.setAddress(p.getAddress());
-				usuarioSingle.setDni(p.getDni());
-				usuarioSingle.setEmail(p.getEmail());
-				usuarioSingle.setFirstName(p.getFirstName());
-				usuarioSingle.setUsername(p.getUsername());
-				usuarioSingle.setPhone(p.getPhone());
+				userSingle.setId(p.getId());
+				userSingle.setLastName(p.getLastName());
+				userSingle.setSurName(p.getSurName());
+				userSingle.setAddress(p.getAddress());
+				userSingle.setDni(p.getDni());
+				userSingle.setEmail(p.getEmail());
+				userSingle.setFirstName(p.getFirstName());
+				userSingle.setUsername(p.getUsername());
+				userSingle.setPhone(p.getPhone());
+				userSingle.setEncoded(fileService.convertBytesToEncoded(p.getImage()));
 
-				usuarioSingle.setUrlLink(p.getLinkImg());
-			listaEnviar.add(usuarioSingle);
+			listSend.add(userSingle);
 		}
 
-		return listaEnviar;
-	}
-	
-	//Para el JWT
-	public long obtenerIdPorUsername(String nombreUsuario) {
-		UserModel usuarioModel =  userRepository.findByUsername(nombreUsuario).get();
-		return usuarioModel.getId();
-	}
-	
-	//Seguridad
-	public Optional<UserModel> getByNombreUsuario(String nombreUsuario){
-		return userRepository.findByUsername(nombreUsuario);
+		return listSend;
 	}
 
+	//Security
 	public Optional<UserModel> getByUsernameOrEmail(String usernameOrEmail){
 		return userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
 	}
@@ -91,16 +81,29 @@ public class UserService {
 
 	public boolean existsByDni(String dni){ return userRepository.existsByDni(dni);}
 
-	public void save(UserModel usuarioModel) {
-		userRepository.save(usuarioModel);
+	public UserModel save(UserModel usuarioModel) {
+		return userRepository.save(usuarioModel);
 	}
 
 	public UserDTO getById(long id){
-		UserModel usuarioModel = userRepository.findById(id).get();
-		return modelDTOService.getUserDTOfromModel(usuarioModel);
+		UserModel p = userRepository.findById(id).get();
+		UserDTO userSingle = new UserDTO();
+
+		userSingle.setId(p.getId());
+		userSingle.setLastName(p.getLastName());
+		userSingle.setSurName(p.getSurName());
+		userSingle.setFirstName(p.getFirstName());
+
+		userSingle.setAddress(p.getAddress());
+		userSingle.setDni(p.getDni());
+		userSingle.setEmail(p.getEmail());
+		userSingle.setUsername(p.getUsername());
+		userSingle.setPhone(p.getPhone());
+		userSingle.setEncoded(fileService.convertBytesToEncoded(p.getImage()));
+		return userSingle;
 	}
 
-	public void updateUser(int id, UserDTO userDTO){
+	public void updateUser(long id, UserDTO userDTO){
 
 		UserModel userModel = userRepository.findById(id).get();
 

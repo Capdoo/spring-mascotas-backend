@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.mascotas.app.dto.MensajeDTO;
+import com.mascotas.app.dto.MessageDTO;
 
 
 @RestController
@@ -23,10 +23,10 @@ public class SearchsController {
 		
 		try {
 			searchService.saveSearch(searchDTO);
-			return new ResponseEntity<Object>(new MensajeDTO("Search registered successfully"), HttpStatus.OK);
+			return new ResponseEntity<Object>(new MessageDTO("Search registered successfully"), HttpStatus.OK);
 
 		} catch (Exception e) {
-			return new ResponseEntity<Object>(new MensajeDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(new MessageDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
 		}
 		
 	}
@@ -39,7 +39,7 @@ public class SearchsController {
 			return new ResponseEntity<Object>(listaBusquedas, HttpStatus.OK);
 
 		} catch (Exception e) {
-			return new ResponseEntity<Object>(new MensajeDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(new MessageDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
 		}
 		
 	}
@@ -52,7 +52,7 @@ public class SearchsController {
 			return new ResponseEntity<Object>(busqueda, HttpStatus.OK);
 
 		} catch (Exception e) {
-			return new ResponseEntity<Object>(new MensajeDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(new MessageDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
 		}
 
 	}
@@ -65,7 +65,7 @@ public class SearchsController {
 			return new ResponseEntity<Object>(listaBusquedas, HttpStatus.OK);
 
 		} catch (Exception e) {
-			return new ResponseEntity<Object>(new MensajeDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(new MessageDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
 		}
 		
 	}

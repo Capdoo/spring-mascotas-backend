@@ -1,7 +1,7 @@
 package com.mascotas.app.security.controllers;
 
 
-import com.mascotas.app.dto.MensajeDTO;
+import com.mascotas.app.dto.MessageDTO;
 import com.mascotas.app.security.dto.UserDTO;
 
 import com.mascotas.app.security.services.UserService;
@@ -34,7 +34,7 @@ public class UsersController {
     public ResponseEntity<Object> getUserById(@RequestParam long id){
 
         if(!userService.existsPorId(id)){
-            return new ResponseEntity<Object>(new MensajeDTO("User not found"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Object>(new MessageDTO("User not found"), HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<Object>(userService.getById(id), HttpStatus.OK);
@@ -45,11 +45,11 @@ public class UsersController {
     public ResponseEntity<Object> updateUser(@RequestParam int id, @RequestBody UserDTO userDTO){
 
         if(!userService.existsPorId(id)){
-            return new ResponseEntity<Object>(new MensajeDTO("User not found"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Object>(new MessageDTO("User not found"), HttpStatus.BAD_REQUEST);
         }
 
         userService.updateUser(id, userDTO);
-        return new ResponseEntity<Object>(new MensajeDTO("User updated successfully"), HttpStatus.OK);
+        return new ResponseEntity<Object>(new MessageDTO("User updated successfully"), HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
@@ -57,11 +57,11 @@ public class UsersController {
     public ResponseEntity<Object> deleteUser(@RequestParam int id){
 
         if(!userService.existsPorId(id)){
-            return new ResponseEntity<Object>(new MensajeDTO("User not found"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Object>(new MessageDTO("User not found"), HttpStatus.BAD_REQUEST);
         }
 
         userService.deleteUser(id);
-        return new ResponseEntity<Object>(new MensajeDTO("User deleted successfully"), HttpStatus.OK);
+        return new ResponseEntity<Object>(new MessageDTO("User deleted successfully"), HttpStatus.OK);
     }
 
 }

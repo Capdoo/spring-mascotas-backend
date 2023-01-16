@@ -54,11 +54,11 @@ public class PetModel {
 	private ShelterModel shelter;
 
 	//For searchs
-	@OneToMany(mappedBy="pet")
+	@OneToMany(cascade =  CascadeType.ALL, mappedBy="pet")
 	private Set<SearchModel> searchs;
 
 	//For pets
-	@OneToMany(mappedBy="pet")
+	@OneToMany(cascade =  CascadeType.ALL, mappedBy="pet")
 	private Set<AdoptionModel> adoptions;
 
 	public PetModel() {

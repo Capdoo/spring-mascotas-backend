@@ -11,7 +11,7 @@ import com.mascotas.app.security.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mascotas.app.files.FileUploadService;
+import com.mascotas.app.files.FileService;
 
 import com.mascotas.app.utils.FechaUtil;
 
@@ -26,7 +26,7 @@ public class ShelterService {
 	UserRepository userRepository;
 
 	@Autowired
-	FileUploadService fileUploadService;
+    FileService fileService;
 
 	@Autowired
 	UserService userService;
@@ -44,12 +44,13 @@ public class ShelterService {
 			refugioNuevo.setName(shelterDTO.getName());
 			refugioNuevo.setNumberOfPartners(shelterDTO.getNumberOfPartners());
 			refugioNuevo.setContactNumber(shelterDTO.getContactNumber());
-			refugioNuevo.setUser(usuarioRepresentante);
+			//change
+			refugioNuevo.setPartners(null);
 
 			try {
-				String encoded = fileUploadService.obtenerEncoded(shelterDTO.getEncoded());
-				byte[] imagen = fileUploadService.convertStringToBytes(encoded);
-				String url = fileUploadService.fileUpload(imagen);
+				String encoded = fileService.obtenerEncoded(shelterDTO.getEncoded());
+				byte[] imagen = fileService.convertEncodedToBytes(encoded);
+				String url = fileService.fileUpload(imagen);
 				refugioNuevo.setLinkImg(url);
 			}catch (Exception e){
 				e.printStackTrace();
@@ -81,7 +82,9 @@ public class ShelterService {
 				refugioSingle.setName(p.getName());
 				refugioSingle.setNumberOfPartners(p.getNumberOfPartners());
 				refugioSingle.setContactNumber(p.getContactNumber());
-				refugioSingle.setDniMainPartner(p.getUser().getDni());
+
+				//refugioSingle.setDniMainPartner(p.getUser().getDni());
+				refugioSingle.setDniMainPartner(null);
 
 				refugioSingle.setUrlLink(p.getLinkImg());
 				
@@ -90,7 +93,8 @@ public class ShelterService {
 		}
 		return listaEnviar;
 	}
-	
+
+	/*
 	//Obtener por dni user
 	public List<ShelterDTO> getByDniUser(String dniUser){
 		List<ShelterDTO> listSend = new ArrayList<>();
@@ -113,7 +117,9 @@ public class ShelterService {
 				refugioSingle.setName(p.getName());
 				refugioSingle.setNumberOfPartners(p.getNumberOfPartners());
 				refugioSingle.setContactNumber(p.getContactNumber());
-				refugioSingle.setDniMainPartner(p.getUser().getDni());
+
+				//refugioSingle.setDniMainPartner(p.getUser().getDni());
+				refugioSingle.setDniMainPartner(null);
 
 				refugioSingle.setUrlLink(p.getLinkImg());
 
@@ -121,7 +127,7 @@ public class ShelterService {
 			
 		}
 		return listSend;
-	}
+	}*/
 	
 	//Obtener por id
 	public ShelterDTO getById(long id){
@@ -142,7 +148,9 @@ public class ShelterService {
 			refugioSingle.setName(p.getName());
 			refugioSingle.setNumberOfPartners(p.getNumberOfPartners());
 			refugioSingle.setContactNumber(p.getContactNumber());
-			refugioSingle.setDniMainPartner(p.getUser().getDni());
+
+		//refugioSingle.setDniMainPartner(p.getUser().getDni());
+		refugioSingle.setDniMainPartner(null);
 
 			refugioSingle.setUrlLink(p.getLinkImg());
 
@@ -150,6 +158,7 @@ public class ShelterService {
 	}
 
 	//Util
+	/*
 	public boolean existsRefugioByUserId(long idUsuario){
 		boolean res = false;
 
@@ -163,5 +172,5 @@ public class ShelterService {
 			}
 		}
 		return res;
-	}
+	}*/
 }

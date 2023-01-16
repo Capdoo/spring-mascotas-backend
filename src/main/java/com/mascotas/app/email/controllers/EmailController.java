@@ -1,6 +1,6 @@
 package com.mascotas.app.email.controllers;
 
-import com.mascotas.app.dto.MensajeDTO;
+import com.mascotas.app.dto.MessageDTO;
 import com.mascotas.app.email.dto.ChangePasswordDTO;
 import com.mascotas.app.email.dto.EmailValuesDTO;
 import com.mascotas.app.email.services.EmailService;
@@ -38,7 +38,7 @@ public class EmailController {
 
         Optional<UserModel> usuarioModelOptional = userService.getByUsernameOrEmail(emailValuesDTO.getMailTo());
         if(!usuarioModelOptional.isPresent()){
-            return new ResponseEntity<Object>(new MensajeDTO("No user found with these credentials"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Object>(new MessageDTO("No user found with these credentials"), HttpStatus.NOT_FOUND);
         }
         UserModel usuarioModel = usuarioModelOptional.get();
 
@@ -54,20 +54,20 @@ public class EmailController {
         userService.save(usuarioModel);
 
         emailService.sendEmailTemplate(emailValuesDTO);
-        return new ResponseEntity<Object>(new MensajeDTO("Email sent successfully"), HttpStatus.OK);
+        return new ResponseEntity<Object>(new MessageDTO("Email sent successfully"), HttpStatus.OK);
     }
 
     @PostMapping("/change-password")
     public ResponseEntity<Object> changePassword(@Valid @RequestBody ChangePasswordDTO changePasswordDTO, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            return new ResponseEntity<Object>(new MensajeDTO("Wrong fields"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Object>(new MessageDTO("Wrong fields"), HttpStatus.BAD_REQUEST);
         }
         if(!changePasswordDTO.getPassword().equals(changePasswordDTO.getConfirmPassword())){
-            return new ResponseEntity<Object>(new MensajeDTO("Passwords do not match"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Object>(new MessageDTO("Passwords do not match"), HttpStatus.BAD_REQUEST);
         }
         Optional<UserModel> usuarioModelOptional = userService.getByTokenPassword(changePasswordDTO.getTokenPassword());
         if(!usuarioModelOptional.isPresent()){
-            return new ResponseEntity<Object>(new MensajeDTO("User not found"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Object>(new MessageDTO("User not found"), HttpStatus.NOT_FOUND);
         }
         UserModel usuarioModel = usuarioModelOptional.get();
         String newPassword = passwordEncoder.encode(changePasswordDTO.getPassword());
@@ -75,6 +75,6 @@ public class EmailController {
         usuarioModel.setTokenPassword(null);
         userService.save(usuarioModel);
 
-        return new ResponseEntity<Object>(new MensajeDTO("Password updated"), HttpStatus.OK);
+        return new ResponseEntity<Object>(new MessageDTO("Password updated"), HttpStatus.OK);
     }
 }

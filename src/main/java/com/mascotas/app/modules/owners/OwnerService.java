@@ -18,10 +18,8 @@ public class OwnerService {
 
 	@Autowired
 	UserRepository usuarioRepository;
-	
 	@Autowired
 	OwnerRepository ownerRepository;
-	
 	@Autowired
     UserService userService;
 	
@@ -29,16 +27,16 @@ public class OwnerService {
 		
 		//Obteniendo al Usuario
 		int user_id = (int) ownerDTO.getUser_id();
-		UserModel usuarioObtenido = usuarioRepository.findById(user_id).get();
+		UserModel userModel = usuarioRepository.findById(user_id).get();
 		
-		OwnerModel dueñoModel = new OwnerModel();
-			dueñoModel.setRegisterDate(new Timestamp(System.currentTimeMillis()));
-			dueñoModel.setHistorial_id(ownerDTO.getHistorial_id());
-			dueñoModel.setNumberOfPets(ownerDTO.getNumberOfPets());
-			dueñoModel.setRate(ownerDTO.getRate());
-			dueñoModel.setUser(usuarioObtenido);
+		OwnerModel ownerModel = new OwnerModel();
+			ownerModel.setRegisterDate(new Timestamp(System.currentTimeMillis()));
+			ownerModel.setHistorial_id(ownerDTO.getHistorial_id());
+			ownerModel.setNumberOfPets(ownerDTO.getNumberOfPets());
+			ownerModel.setRate(ownerDTO.getRate());
+			ownerModel.setUser(userModel);
 			
-		ownerRepository.save(dueñoModel);
+		ownerRepository.save(ownerModel);
 	}
 	
 	public List<OwnerDTO> listAll(){

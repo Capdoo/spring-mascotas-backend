@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.mascotas.app.dto.MensajeDTO;
+import com.mascotas.app.dto.MessageDTO;
 
 
 @RestController
@@ -22,10 +22,10 @@ public class AdoptionsController {
 		
 		try {
 			adopcionService.saveAdoption(adoptionDTO);
-			return new ResponseEntity<Object>(new MensajeDTO("Adoption created successfully"), HttpStatus.OK);
+			return new ResponseEntity<Object>(new MessageDTO("Adoption created successfully"), HttpStatus.OK);
 
 		} catch (Exception e) {
-			return new ResponseEntity<Object>(new MensajeDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(new MessageDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
 		}
 		
 	}
@@ -38,7 +38,7 @@ public class AdoptionsController {
 			return new ResponseEntity<Object>(listaAdopciones, HttpStatus.OK);
 
 		} catch (Exception e) {
-			return new ResponseEntity<Object>(new MensajeDTO("Hubo un problema"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(new MessageDTO("Hubo un problema"), HttpStatus.BAD_REQUEST);
 		}
 		
 	}
@@ -51,7 +51,7 @@ public class AdoptionsController {
 			return new ResponseEntity<Object>(listaAdopciones, HttpStatus.OK);
 
 		} catch (Exception e) {
-			return new ResponseEntity<Object>(new MensajeDTO("Hubo un problema"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(new MessageDTO("Hubo un problema"), HttpStatus.BAD_REQUEST);
 		}
 	}
 	
@@ -63,7 +63,7 @@ public class AdoptionsController {
 			return new ResponseEntity<Object>(adopcion, HttpStatus.OK);
 
 		} catch (Exception e) {
-			return new ResponseEntity<Object>(new MensajeDTO("Hubo un problema"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(new MessageDTO("Hubo un problema"), HttpStatus.BAD_REQUEST);
 		}
 		
 	}

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mascotas.app.dto.MensajeDTO;
+import com.mascotas.app.dto.MessageDTO;
 import com.mascotas.app.security.services.UserService;
 
 @RestController
@@ -30,21 +30,21 @@ public class OwnerControllers {
 		try {
 			if(!(userService.existsPorId((int) ownerDTO.getUser_id()))){
 				int b = 11;
-				return new ResponseEntity<Object>(new MensajeDTO("The user does not exists"), HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<Object>(new MessageDTO("The user does not exists"), HttpStatus.BAD_REQUEST);
 			}
 
  			if(ownerService.existsOwnerByUserId((int) ownerDTO.getUser_id())){
 				int a = 10;
-				return new ResponseEntity<Object>(new MensajeDTO("This user is already related to an owner"), HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<Object>(new MessageDTO("This user is already related to an owner"), HttpStatus.BAD_REQUEST);
 			}
 
 			int c = 12;
 			
 			ownerService.saveOwner(ownerDTO);
-			return new ResponseEntity<Object>(new MensajeDTO("Registered successfully"), HttpStatus.OK);
+			return new ResponseEntity<Object>(new MessageDTO("Registered successfully"), HttpStatus.OK);
 
 		} catch (Exception e) {
-			return new ResponseEntity<Object>(new MensajeDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(new MessageDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
 		}
 		
 	}
@@ -57,7 +57,7 @@ public class OwnerControllers {
 			return new ResponseEntity<Object>(listaDuenos, HttpStatus.OK);
 
 		} catch (Exception e) {
-			return new ResponseEntity<Object>(new MensajeDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(new MessageDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
 		}
 		
 	}

@@ -35,8 +35,6 @@ public class OwnerModel {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "OWNER_FK_USER"))
 	private UserModel user;
-	
-	
 	//Para mascotas
 	@OneToMany(mappedBy="owner")
 	private Set<PetModel> pets;
@@ -44,6 +42,11 @@ public class OwnerModel {
 	
 	public OwnerModel() {
 		super();
+	}
+
+	public OwnerModel(UserModel user) {
+		super();
+		this.user = user;
 	}
 
 	public OwnerModel(long id, Timestamp registerDate, int numberOfPets, int rate, long historial_id, UserModel user, Set<PetModel> pets) {

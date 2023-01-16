@@ -8,7 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mascotas.app.files.FileUploadService;
+import com.mascotas.app.files.FileService;
 import com.mascotas.app.modules.details.DetailModel;
 import com.mascotas.app.modules.details.DetailRepository;
 import com.mascotas.app.modules.owners.OwnerModel;
@@ -31,7 +31,7 @@ public class PetService {
 	DetailRepository detailRepository;
 	
 	@Autowired
-	FileUploadService fileUploadService;
+    FileService fileService;
 	
 	public void savePet(PetDTO petDTO) throws IOException {
 
@@ -64,9 +64,9 @@ public class PetService {
 
 		newPet.setShelter(null);
 		
-				String encoded = fileUploadService.obtenerEncoded(petDTO.getEncoded());
-				byte[] imagen = fileUploadService.convertStringToBytes(encoded);
-				String url = fileUploadService.fileUpload(imagen);
+				String encoded = fileService.obtenerEncoded(petDTO.getEncoded());
+				byte[] imagen = fileService.convertEncodedToBytes(encoded);
+				String url = fileService.fileUpload(imagen);
 
 		newPet.setLinkImg(url);
 			

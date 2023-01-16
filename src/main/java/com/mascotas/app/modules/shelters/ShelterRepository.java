@@ -9,7 +9,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ShelterRepository extends JpaRepository<ShelterModel, Long>{
 
 	public List<ShelterModel> findAll();
-	public List<ShelterModel> findAllByUser(UserModel userModel);
+	//
+	// public List<ShelterModel> findAllByPar(UserModel userModel);
 
 	//public boolean existsByUsuario();
 }
