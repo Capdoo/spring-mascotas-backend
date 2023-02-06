@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 import javax.persistence.*;
 
-import com.mascotas.app.modules.pets.PetModel;
+import com.mascotas.app.modules.pets.PetEntity;
 
 @Entity
 @Table(name="adoptions")
@@ -24,14 +24,14 @@ public class AdoptionModel {
 	
 	@ManyToOne
 	@JoinColumn(name="pet_id", referencedColumnName = "id", nullable=false, foreignKey = @ForeignKey(name = "ADOPTION_FK_PET"))
-	private PetModel pet;
+	private PetEntity pet;
 
 	public AdoptionModel() {
 		super();
 	}
 		
 	public AdoptionModel(long id, String message, String observation, String phoneA, String phoneB,
-			String address, String district, Timestamp registerDate, PetModel pet) {
+			String address, String district, Timestamp registerDate, PetEntity pet) {
 		super();
 		this.id = id;
 		this.message = message;
@@ -110,11 +110,11 @@ public class AdoptionModel {
 		this.registerDate = registerDate;
 	}
 
-	public PetModel getPet() {
+	public PetEntity getPet() {
 		return pet;
 	}
 
-	public void setPet(PetModel pet) {
+	public void setPet(PetEntity pet) {
 		this.pet = pet;
 	}
 }

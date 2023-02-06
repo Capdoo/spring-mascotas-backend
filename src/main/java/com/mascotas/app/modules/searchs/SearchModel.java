@@ -10,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.mascotas.app.modules.pets.PetModel;
+import com.mascotas.app.modules.pets.PetEntity;
 
 @Entity
 @Table(name="searchs")
@@ -32,12 +32,12 @@ public class SearchModel {
 	
 	@ManyToOne
 	@JoinColumn(name="pet_id",referencedColumnName = "id", nullable=false)
-	private PetModel pet;
+	private PetEntity pet;
 
 	public SearchModel() {
 	}
 
-	public SearchModel(long id, String address, String district, Timestamp registerDate, Timestamp lostDate, String phoneA, String phoneB, String message, String linkImg, PetModel pet) {
+	public SearchModel(long id, String address, String district, Timestamp registerDate, Timestamp lostDate, String phoneA, String phoneB, String message, String linkImg, PetEntity pet) {
 		this.id = id;
 		this.address = address;
 		this.district = district;
@@ -122,11 +122,11 @@ public class SearchModel {
 		this.linkImg = linkImg;
 	}
 
-	public PetModel getPet() {
+	public PetEntity getPet() {
 		return pet;
 	}
 
-	public void setPet(PetModel pet) {
+	public void setPet(PetEntity pet) {
 		this.pet = pet;
 	}
 }

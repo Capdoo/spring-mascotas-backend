@@ -48,7 +48,7 @@ public class OwnerService {
 		for(OwnerModel p : listaModelsBD) {
 			FechaUtil fechaUtil = new FechaUtil();
 			OwnerDTO duenoSingle = new OwnerDTO();
-			String fechaRegistro = fechaUtil.convertirFecha(p.getRegisterDate());
+			String fechaRegistro = fechaUtil.getStrindDateFromTimestamp(p.getRegisterDate());
 			
 				duenoSingle.setId(p.getId());
 				duenoSingle.setRegisterDate(fechaRegistro);

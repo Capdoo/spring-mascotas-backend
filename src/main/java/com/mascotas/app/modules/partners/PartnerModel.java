@@ -1,12 +1,10 @@
 package com.mascotas.app.modules.partners;
 
-import com.mascotas.app.modules.pets.PetModel;
 import com.mascotas.app.modules.shelters.ShelterModel;
 import com.mascotas.app.security.models.UserModel;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Set;
 
 @Entity
 @Table(name="partners")

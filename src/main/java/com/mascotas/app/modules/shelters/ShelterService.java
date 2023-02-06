@@ -11,7 +11,7 @@ import com.mascotas.app.security.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mascotas.app.files.FileService;
+import com.mascotas.app.files.FileUploadService;
 
 import com.mascotas.app.utils.FechaUtil;
 
@@ -26,7 +26,7 @@ public class ShelterService {
 	UserRepository userRepository;
 
 	@Autowired
-    FileService fileService;
+    FileUploadService fileUploadService;
 
 	@Autowired
 	UserService userService;
@@ -48,9 +48,9 @@ public class ShelterService {
 			refugioNuevo.setPartners(null);
 
 			try {
-				String encoded = fileService.obtenerEncoded(shelterDTO.getEncoded());
-				byte[] imagen = fileService.convertEncodedToBytes(encoded);
-				String url = fileService.fileUpload(imagen);
+				String encoded = fileUploadService.obtenerEncoded(shelterDTO.getEncoded());
+				byte[] imagen = fileUploadService.convertEncodedToBytes(encoded);
+				String url = fileUploadService.fileUpload(imagen);
 				refugioNuevo.setLinkImg(url);
 			}catch (Exception e){
 				e.printStackTrace();
@@ -74,7 +74,7 @@ public class ShelterService {
 				refugioSingle.setAddress(p.getAddress());
 				refugioSingle.setDistrict(p.getDistrict());
 
-					String fechaRegistro = fechaUtil.convertirFecha(p.getRegisterDate());
+					String fechaRegistro = fechaUtil.getStrindDateFromTimestamp(p.getRegisterDate());
 					refugioSingle.setRegisterDate(fechaRegistro);
 				
 					//Nuevo
@@ -141,7 +141,7 @@ public class ShelterService {
 			refugioSingle.setAddress(p.getAddress());
 			refugioSingle.setDistrict(p.getDistrict());
 
-				String fechaRegistro = fechaUtil.convertirFecha(p.getRegisterDate());
+				String fechaRegistro = fechaUtil.getStrindDateFromTimestamp(p.getRegisterDate());
 				refugioSingle.setRegisterDate(fechaRegistro);
 			
 			//refugioSingle.setIdRepresentante(p.getUsuario().getId());

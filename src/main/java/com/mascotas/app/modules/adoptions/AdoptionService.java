@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mascotas.app.modules.searchs.SearchRepository;
-import com.mascotas.app.modules.pets.PetModel;
+import com.mascotas.app.modules.pets.PetEntity;
 import com.mascotas.app.modules.pets.PetRepository;
 import com.mascotas.app.utils.FechaUtil;
 
@@ -27,7 +27,7 @@ public class AdoptionService {
 	public void saveAdoption(AdoptionDTO adoptionDTO) {
 		
 		FechaUtil fechaUtil = new FechaUtil();
-		PetModel selectedPet = petRepository.findById(adoptionDTO.getPet_id()).get();
+		PetEntity selectedPet = petRepository.findById(adoptionDTO.getPet_id()).get();
 		
 		AdoptionModel newAdoption = new AdoptionModel();
 			newAdoption.setAddress(adoptionDTO.getAddress());
@@ -63,7 +63,7 @@ public class AdoptionService {
 				singleAdoption.setDistrict(p.getDistrict());
 
 
-				String registerDate = fechaUtil.convertirFecha(p.getRegisterDate());
+				String registerDate = fechaUtil.getStrindDateFromTimestamp(p.getRegisterDate());
 				singleAdoption.setRegisterDate(registerDate);
 				singleAdoption.setPet_id(p.getPet().getId());
 
@@ -82,7 +82,7 @@ public class AdoptionService {
 	//Obtener por mascota_id
 	public List<AdoptionDTO> getByPetId(long mascotaId){
 		List<AdoptionDTO> sendList = new ArrayList<>();
-		PetModel mascotaSeleccionada = petRepository.findById(mascotaId).get();
+		PetEntity mascotaSeleccionada = petRepository.findById(mascotaId).get();
 		
 		List<AdoptionModel> listaBD = adoptionRepository.findAllByPet(mascotaSeleccionada);
 		
@@ -96,7 +96,7 @@ public class AdoptionService {
 				adopcionSingle.setDistrict(p.getDistrict());
 
 					
-					String registerDate = fechaUtil.convertirFecha(p.getRegisterDate());
+					String registerDate = fechaUtil.getStrindDateFromTimestamp(p.getRegisterDate());
 					adopcionSingle.setRegisterDate(registerDate);
 					
 				adopcionSingle.setPet_id(p.getPet().getId());
@@ -126,7 +126,7 @@ public class AdoptionService {
 			adopcionSingle.setDistrict(p.getDistrict());
 
 				
-				String fechaRegistro = fechaUtil.convertirFecha(p.getRegisterDate());
+				String fechaRegistro = fechaUtil.getStrindDateFromTimestamp(p.getRegisterDate());
 				adopcionSingle.setRegisterDate(fechaRegistro);
 				
 			adopcionSingle.setPet_id(p.getPet().getId());
@@ -140,9 +140,9 @@ public class AdoptionService {
 		return adopcionSingle;
 	}
 
-	public boolean existsAdoptionByPet(PetModel petModel){
+	public boolean existsAdoptionByPet(PetEntity petEntity){
 
-		return adoptionRepository.existsByPet(petModel);
+		return adoptionRepository.existsByPet(petEntity);
 
 	}
 

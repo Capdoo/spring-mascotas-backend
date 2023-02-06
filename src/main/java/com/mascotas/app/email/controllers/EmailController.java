@@ -54,7 +54,8 @@ public class EmailController {
         userService.save(usuarioModel);
 
         emailService.sendEmailTemplate(emailValuesDTO);
-        return new ResponseEntity<Object>(new MessageDTO("Email sent successfully"), HttpStatus.OK);
+
+        return ResponseEntity.ok(new MessageDTO("Email sent successfully"));
     }
 
     @PostMapping("/change-password")

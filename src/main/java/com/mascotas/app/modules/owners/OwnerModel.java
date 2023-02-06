@@ -13,7 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.mascotas.app.modules.pets.PetModel;
+import com.mascotas.app.modules.pets.PetEntity;
 import com.mascotas.app.security.models.UserModel;
 
 import javax.persistence.ForeignKey;
@@ -37,7 +37,7 @@ public class OwnerModel {
 	private UserModel user;
 	//Para mascotas
 	@OneToMany(mappedBy="owner")
-	private Set<PetModel> pets;
+	private Set<PetEntity> pets;
 	
 	
 	public OwnerModel() {
@@ -49,7 +49,7 @@ public class OwnerModel {
 		this.user = user;
 	}
 
-	public OwnerModel(long id, Timestamp registerDate, int numberOfPets, int rate, long historial_id, UserModel user, Set<PetModel> pets) {
+	public OwnerModel(long id, Timestamp registerDate, int numberOfPets, int rate, long historial_id, UserModel user, Set<PetEntity> pets) {
 		this.id = id;
 		this.registerDate = registerDate;
 		this.numberOfPets = numberOfPets;
@@ -108,11 +108,11 @@ public class OwnerModel {
 		this.user = user;
 	}
 
-	public Set<PetModel> getPets() {
+	public Set<PetEntity> getPets() {
 		return pets;
 	}
 
-	public void setPets(Set<PetModel> pets) {
+	public void setPets(Set<PetEntity> pets) {
 		this.pets = pets;
 	}
 }

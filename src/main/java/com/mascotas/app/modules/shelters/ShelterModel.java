@@ -5,18 +5,14 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.mascotas.app.modules.partners.PartnerModel;
-import com.mascotas.app.modules.pets.PetModel;
-import com.mascotas.app.security.models.UserModel;
+import com.mascotas.app.modules.pets.PetEntity;
 
 @Entity
 @Table(name="shelters")
@@ -42,7 +38,7 @@ public class ShelterModel {
 
 	//For pets
 	@OneToMany(mappedBy="shelter")
-	private Set<PetModel> pets;
+	private Set<PetEntity> pets;
 
 
 	
@@ -51,7 +47,7 @@ public class ShelterModel {
 	}
 
 
-	public ShelterModel(long id, String name, long numberOfPartners, Timestamp registerDate, String contactNumber, String address, String district, String linkImg, Set<PartnerModel> partners, Set<PetModel> pets) {
+	public ShelterModel(long id, String name, long numberOfPartners, Timestamp registerDate, String contactNumber, String address, String district, String linkImg, Set<PartnerModel> partners, Set<PetEntity> pets) {
 		this.id = id;
 		this.name = name;
 		this.numberOfPartners = numberOfPartners;
@@ -137,11 +133,11 @@ public class ShelterModel {
 		this.partners = partners;
 	}
 
-	public Set<PetModel> getPets() {
+	public Set<PetEntity> getPets() {
 		return pets;
 	}
 
-	public void setPets(Set<PetModel> pets) {
+	public void setPets(Set<PetEntity> pets) {
 		this.pets = pets;
 	}
 }

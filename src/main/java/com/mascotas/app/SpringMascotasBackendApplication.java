@@ -5,9 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class SpringMascotasBackendApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(SpringMascotasBackendApplication.class, args);
 	}
-
 }

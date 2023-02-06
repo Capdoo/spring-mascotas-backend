@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import com.mascotas.app.files.FileService;
+import com.mascotas.app.files.FileUploadService;
 import com.mascotas.app.security.models.UserModel;
 import com.mascotas.app.security.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class UserService {
 	@Autowired
     OwnerRepository ownerRepository;
 	@Autowired
-	FileService fileService;
+    FileUploadService fileUploadService;
 	
 	//Obtener
 	public List<UserDTO> listar(){
@@ -44,7 +44,7 @@ public class UserService {
 				userSingle.setFirstName(p.getFirstName());
 				userSingle.setUsername(p.getUsername());
 				userSingle.setPhone(p.getPhone());
-				userSingle.setEncoded(fileService.convertBytesToEncoded(p.getImage()));
+				userSingle.setEncoded(fileUploadService.convertBytesToEncoded(p.getImage()));
 
 			listSend.add(userSingle);
 		}
@@ -99,7 +99,7 @@ public class UserService {
 		userSingle.setEmail(p.getEmail());
 		userSingle.setUsername(p.getUsername());
 		userSingle.setPhone(p.getPhone());
-		userSingle.setEncoded(fileService.convertBytesToEncoded(p.getImage()));
+		userSingle.setEncoded(fileUploadService.convertBytesToEncoded(p.getImage()));
 		return userSingle;
 	}
 

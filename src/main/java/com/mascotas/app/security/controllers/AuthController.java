@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mascotas.app.dto.MessageDTO;
-import com.mascotas.app.files.FileService;
+import com.mascotas.app.files.FileUploadService;
 import com.mascotas.app.security.dto.JwtDTO;
 import com.mascotas.app.security.dto.LoginUserDTO;
 import com.mascotas.app.security.dto.NewUserDTO;
@@ -51,7 +51,7 @@ public class AuthController {
 	@Autowired
 	JwtProvider jwtProvider;
 	@Autowired
-	FileService fileService;
+    FileUploadService fileUploadService;
 	@Autowired
 	OwnerService ownerService;
 	
@@ -92,11 +92,11 @@ public class AuthController {
 
 			String encoded = "";
 			if(newUserDTO.getEncoded() == null){
-				encoded = fileService.getEncodedDefault();
+				encoded = fileUploadService.getEncodedDefault();
 			}else{
-				encoded = fileService.obtenerEncoded(newUserDTO.getEncoded());
+				encoded = fileUploadService.obtenerEncoded(newUserDTO.getEncoded());
 			}
-			byte[] image = fileService.convertEncodedToBytes(encoded);
+			byte[] image = fileUploadService.convertEncodedToBytes(encoded);
 
 			userModel.setImage(image);
 			userModel.setRoles(roles);

@@ -3,22 +3,10 @@ package com.mascotas.app.utils;
 public class StringUtil {
 	
 	private String data;
-	
-	
+
 	public StringUtil() {
 		super();
 	}
-
-	public void dividirCadenaToken() {
-		String[] datos = "hola mundo como estas".split(" ");
-
-		for(String item : datos)
-		{
-		  System.out.println(item);
-		}
-		
-	}
-	
 	
 	//ParaMascotas
 	public String obtenerEspecieToken(String concatenado) {
@@ -30,5 +18,4 @@ public class StringUtil {
 		String[] datos = concatenado.split("#");
 		return datos[1];
 	}
-
 }

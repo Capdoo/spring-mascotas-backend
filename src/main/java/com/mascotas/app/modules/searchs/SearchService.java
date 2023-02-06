@@ -8,8 +8,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mascotas.app.files.FileService;
-import com.mascotas.app.modules.pets.PetModel;
+import com.mascotas.app.files.FileUploadService;
+import com.mascotas.app.modules.pets.PetEntity;
 import com.mascotas.app.modules.pets.PetRepository;
 import com.mascotas.app.utils.FechaUtil;
 import com.mascotas.app.utils.StringUtil;
@@ -24,18 +24,18 @@ public class SearchService {
 	PetRepository petRepository;
 	
 	@Autowired
-    FileService fileService;
+    FileUploadService fileUploadService;
 
 	public void saveSearch(SearchDTO searchDTO) throws IOException {
 		
 		FechaUtil fechaUtil = new FechaUtil();
-		PetModel selectedPet = petRepository.findById(searchDTO.getPetId()).get();
+		PetEntity selectedPet = petRepository.findById(searchDTO.getPetId()).get();
 		
 		SearchModel newSearch = new SearchModel();
 			newSearch.setAddress(searchDTO.getAddress());
 			newSearch.setDistrict(searchDTO.getDistrict());
 		
-				Timestamp fechaPerdida = fechaUtil.obtenerTimeStampDeFecha(searchDTO.getLostDate());
+				Timestamp fechaPerdida = fechaUtil.getTimestampFromStringDate(searchDTO.getLostDate());
 			newSearch.setLostDate(fechaPerdida);
 
 			newSearch.setRegisterDate(new Timestamp(System.currentTimeMillis()));
@@ -46,9 +46,9 @@ public class SearchService {
 
 			newSearch.setMessage(searchDTO.getMessage());
 			
-				String encoded = fileService.obtenerEncoded(searchDTO.getEncoded());
-				byte[] imagen = fileService.convertEncodedToBytes(encoded);
-				String url = fileService.fileUpload(imagen);
+				String encoded = fileUploadService.obtenerEncoded(searchDTO.getEncoded());
+				byte[] imagen = fileUploadService.convertEncodedToBytes(encoded);
+				String url = fileUploadService.fileUpload(imagen);
 
 		newSearch.setLinkImg(url);
 			
@@ -71,10 +71,10 @@ public class SearchService {
 				busquedaSingle.setAddress(p.getAddress());
 				busquedaSingle.setDistrict(p.getDistrict());
 				
-					String fechaPerdida = fechaUtil.convertirFecha(p.getLostDate());
+					String fechaPerdida = fechaUtil.getStrindDateFromTimestamp(p.getLostDate());
 					busquedaSingle.setLostDate(fechaPerdida);
 					
-					String fechaRegistro = fechaUtil.convertirFecha(p.getRegisterDate());
+					String fechaRegistro = fechaUtil.getStrindDateFromTimestamp(p.getRegisterDate());
 					busquedaSingle.setRegisterDate(fechaRegistro);
 				
 				busquedaSingle.setPetId(p.getPet().getId());
@@ -103,7 +103,7 @@ public class SearchService {
 	//Obtener por mascota_id
 	public List<SearchDTO> getSearchByPetId(long petId){
 		List<SearchDTO> sendList = new ArrayList<>();
-		PetModel selectedPet = petRepository.findById(petId).get();
+		PetEntity selectedPet = petRepository.findById(petId).get();
 		
 		List<SearchModel> listDB = searchRepository.findAllByPet(selectedPet);
 		
@@ -114,10 +114,10 @@ public class SearchService {
 				singleSearch.setId(p.getId());
 				singleSearch.setAddress(p.getAddress());
 				singleSearch.setDistrict(p.getDistrict());
-						String fechaPerdida = fechaUtil.convertirFecha(p.getLostDate());
+						String fechaPerdida = fechaUtil.getStrindDateFromTimestamp(p.getLostDate());
 				singleSearch.setLostDate(fechaPerdida);
 					
-					String fechaRegistro = fechaUtil.convertirFecha(p.getRegisterDate());
+					String fechaRegistro = fechaUtil.getStrindDateFromTimestamp(p.getRegisterDate());
 				singleSearch.setRegisterDate(fechaRegistro);
 
 				singleSearch.setPetId(p.getPet().getId());
@@ -145,10 +145,10 @@ public class SearchService {
 			
 			busquedaSingle.setAddress(p.getAddress());
 			busquedaSingle.setDistrict(p.getDistrict());
-				String fechaPerdida = fechaUtil.convertirFecha(p.getLostDate());
+				String fechaPerdida = fechaUtil.getStrindDateFromTimestamp(p.getLostDate());
 				busquedaSingle.setLostDate(fechaPerdida);
 				
-				String fechaRegistro = fechaUtil.convertirFecha(p.getRegisterDate());
+				String fechaRegistro = fechaUtil.getStrindDateFromTimestamp(p.getRegisterDate());
 				busquedaSingle.setRegisterDate(fechaRegistro);
 			busquedaSingle.setPetId(p.getPet().getId());
 			busquedaSingle.setPhoneA(p.getPhoneA());

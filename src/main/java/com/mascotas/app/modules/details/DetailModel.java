@@ -2,7 +2,7 @@ package com.mascotas.app.modules.details;
 
 import javax.persistence.*;
 
-import com.mascotas.app.modules.pets.PetModel;
+import com.mascotas.app.modules.pets.PetEntity;
 
 import java.util.Set;
 
@@ -17,7 +17,7 @@ public class DetailModel {
 	private String species;
 	private String breed;
 	@OneToMany(cascade =  CascadeType.ALL, mappedBy = "detail")
-	private Set<PetModel> pets;
+	private Set<PetEntity> pets;
 
 	public DetailModel() {
 		super();
@@ -52,11 +52,11 @@ public class DetailModel {
 		this.breed = breed;
 	}
 
-	public Set<PetModel> getPets() {
+	public Set<PetEntity> getPets() {
 		return pets;
 	}
 
-	public void setPets(Set<PetModel> pets) {
+	public void setPets(Set<PetEntity> pets) {
 		this.pets = pets;
 	}
 }

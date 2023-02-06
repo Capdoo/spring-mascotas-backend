@@ -12,9 +12,9 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
 @Service
-public class FileService {
+public class FileUploadService {
 
-	public FileService() {
+	public FileUploadService() {
 		super();
 	}
 	
