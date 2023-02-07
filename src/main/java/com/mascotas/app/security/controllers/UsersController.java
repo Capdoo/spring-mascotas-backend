@@ -1,11 +1,10 @@
 package com.mascotas.app.security.controllers;
 
-import com.mascotas.app.dto.MessageDTO;
 import com.mascotas.app.files.FileUploadService;
 import com.mascotas.app.security.dto.UserDTO;
 
 import com.mascotas.app.security.models.UserEntity;
-import com.mascotas.app.security.services.UserServiceImp;
+import com.mascotas.app.security.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,15 +20,16 @@ import java.util.stream.Collectors;
 public class UsersController {
 
     @Autowired
-    UserServiceImp userServiceImp;
+    UserService userService;
     @Autowired
     FileUploadService fileUploadService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
     public ResponseEntity<Object> listUsers(){
 
-        List<UserEntity> usersDB = userServiceImp.findAllUsers();
+        List<UserEntity> usersDB = userService.findAllUsers();
         List<UserDTO> listUsers = usersDB.stream().map(
                 this::convertUserEntityToDTO
         ).collect(Collectors.toList());
@@ -37,39 +37,42 @@ public class UsersController {
 
     }
 
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<Object> getUser(@PathVariable(value = "id") Long id){
 
-        if(!userServiceImp.existsById(id)){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User Not Found");
+        if(!userService.existsById(id)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found");
         }
-        UserEntity userRead = userServiceImp.getUser(id);
+        UserEntity userRead = userService.readUser(id);
         return ResponseEntity.status(HttpStatus.OK).body(this.convertUserEntityToDTO(userRead));
     }
 
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @PreAuthorize("hasRole('ROLE_USER')")
-    @PutMapping("/update")
-    public ResponseEntity<Object> updateUser(@RequestParam int id, @RequestBody UserDTO userDTO){
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Object> updateUser(@PathVariable(value = "id") Long id, @RequestBody UserDTO userDTO){
 
-        if(!userServiceImp.existsById(id)){
-            return new ResponseEntity<Object>(new MessageDTO("User not found"), HttpStatus.BAD_REQUEST);
+        if(!userService.existsById(id)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found");
         }
-
-        userServiceImp.updateUser(id, userDTO);
-        return new ResponseEntity<Object>(new MessageDTO("User updated successfully"), HttpStatus.OK);
+        userDTO.setId(id);
+        UserEntity userEntity = userService.updateUser(userDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(this.convertUserEntityToDTO(userEntity));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-    @DeleteMapping("/delete")
-    public ResponseEntity<Object> deleteUser(@RequestParam int id){
-
-        if(!userServiceImp.existsById(id)){
-            return new ResponseEntity<Object>(new MessageDTO("User not found"), HttpStatus.BAD_REQUEST);
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Object> deleteUser(@PathVariable(value = "id") Long id){
+        if(!userService.existsById(id)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found");
         }
-
-        userServiceImp.deleteUser(id);
-        return new ResponseEntity<Object>(new MessageDTO("User deleted successfully"), HttpStatus.OK);
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(id);
+        UserEntity userEntity = userService.deleteUser(userDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(this.convertUserEntityToDTO(userEntity));
     }
 
     private UserDTO convertUserEntityToDTO(UserEntity userEntity){
@@ -83,7 +86,8 @@ public class UsersController {
                 .email(userEntity.getEmail())
                 .phone(userEntity.getPhone())
                 .username(userEntity.getUsername())
-                .encoded(fileUploadService.convertBytesToEncoded(userEntity.getImage())).build();
+                .encoded(fileUploadService.convertBytesToEncoded(userEntity.getImage()))
+                .state(userEntity.getState()).build();
     }
 
 }

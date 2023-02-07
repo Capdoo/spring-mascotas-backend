@@ -13,8 +13,10 @@ public interface UserService {
     //crud
     public UserEntity createUser(NewUserDTO newUserDTO);
 
-    public UserEntity getUser(Long id);
+    public UserEntity readUser(Long id);
     public UserEntity updateUser(UserDTO userDTO);
     public UserEntity deleteUser(UserDTO userDTO);
+
+    public boolean existsById(Long id);
 
 }

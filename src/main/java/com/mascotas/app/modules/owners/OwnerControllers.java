@@ -2,6 +2,7 @@ package com.mascotas.app.modules.owners;
 
 import java.util.List;
 
+import com.mascotas.app.security.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,15 +23,17 @@ public class OwnerControllers {
     OwnerService ownerService;
 	
 	@Autowired
-    UserServiceImp userServiceImp;
+	UserService userService;
 	
 	@PostMapping("/create")
 	public ResponseEntity<Object> createOwner(@RequestBody OwnerDTO ownerDTO){
 		
 		try {
-			if(!(userServiceImp.existsById((int) ownerDTO.getUser_id()))){
-				int b = 11;
-				return new ResponseEntity<Object>(new MessageDTO("The user does not exists"), HttpStatus.BAD_REQUEST);
+			//if(!(userServiceImp.existsById((int) ownerDTO.getUser_id()))){
+			if(!userService.existsById(ownerDTO.getId())){
+					int b = 11;
+					return new ResponseEntity<Object>(new MessageDTO("The user does not exists"), HttpStatus.BAD_REQUEST);
+
 			}
 
  			if(ownerService.existsOwnerByUserId((int) ownerDTO.getUser_id())){

@@ -12,7 +12,7 @@ public interface PetService {
     public PetEntity createPet(PetDTO petDTO, String username);
     public PetEntity readPet(Long id);
     public PetEntity updatePet(PetDTO petDTO);
-    public PetEntity deletePet(Long id);
+    public PetEntity deletePet(PetDTO petDTO);
 
     //Find by Owner
     public List<PetEntity> readByOwner(OwnerModel ownerModel);

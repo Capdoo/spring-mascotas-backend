@@ -53,11 +53,7 @@ public class AuthController {
 	@Autowired
 	UserServiceImp userServiceImp;
 	@Autowired
-	RoleService roleService;
-	@Autowired
 	JwtProvider jwtProvider;
-	@Autowired
-    FileUploadService fileUploadService;
 	@Autowired
 	OwnerService ownerService;
 	
@@ -84,10 +80,10 @@ public class AuthController {
 	@PostMapping("/login")
 	public ResponseEntity<Object> login(@RequestBody LoginUserDTO loginUserDTO, BindingResult bindingResult){
 		if (bindingResult.hasErrors()) {
-			return new ResponseEntity(new MessageDTO("Wrong fields1"), HttpStatus.BAD_REQUEST);
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong fields");
 		}
 		if(!(userServiceImp.existsByUsernameOrEmail(loginUserDTO.getUsername()))) {
-			return new ResponseEntity(new MessageDTO("Wrong fields2"), HttpStatus.BAD_REQUEST);
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
 		}
         return Autenticacion(loginUserDTO.getUsername(), loginUserDTO.getPassword());
 	}

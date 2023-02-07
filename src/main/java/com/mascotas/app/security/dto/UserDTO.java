@@ -22,5 +22,6 @@ public class UserDTO {
 	private String username;
 	//Para imagen
 	private String encoded;
+	private String state;
 
 }

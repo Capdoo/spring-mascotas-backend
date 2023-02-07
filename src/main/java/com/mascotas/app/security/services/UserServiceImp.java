@@ -11,7 +11,6 @@ import com.mascotas.app.security.models.RoleEntity;
 import com.mascotas.app.security.models.UserEntity;
 import com.mascotas.app.security.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.mascotas.app.security.dto.UserDTO;
@@ -65,37 +64,44 @@ public class UserServiceImp implements UserService{
 				.email(newUserDTO.getEmail())
 				.password(newUserDTO.getPassword())
 				.image(image)
-				.roles(roles).build();
+				.roles(roles)
+				.state("CREATED").build();
 		return userRepository.save(createUserEntity);
 	}
 
 	@Override
-	public UserEntity getUser(Long id) {
-		return null;
+	public UserEntity readUser(Long id) {
+		return userRepository.findById(id).orElse(null);
 	}
 
 	@Override
 	public UserEntity updateUser(UserDTO userDTO) {
-		return null;
+
+		UserEntity userEntity = readUser(userDTO.getId());
+		userEntity.setLastName(userDTO.getLastName());
+		userEntity.setSurName(userDTO.getSurName());
+		userEntity.setFirstName(userDTO.getFirstName());
+		userEntity.setDni(userDTO.getDni());
+		userEntity.setEmail(userDTO.getEmail());
+		userEntity.setAddress(userDTO.getAddress());
+		userEntity.setUsername(userDTO.getUsername());
+		userEntity.setPhone(userDTO.getPhone());
+		userEntity.setImage(fileUploadService.convertEncodedToBytes(userDTO.getEncoded()));
+
+		return userRepository.save(userEntity);
 	}
 
 	@Override
 	public UserEntity deleteUser(UserDTO userDTO) {
-		return null;
+		UserEntity userDB = readUser(userDTO.getId());
+		userDB.setState("DELETED");
+		return userRepository.save(userDB);
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
+	@Override
+	public boolean existsById(Long id) {
+		return userRepository.existsById(id);
+	}
 
 
 	//Security
@@ -119,31 +125,8 @@ public class UserServiceImp implements UserService{
 	public boolean existsByEmail(String email) {
 		return userRepository.existsByEmail(email);
 	}
-	
-	public boolean existsById(long id) {
-		return userRepository.existsById(id);
-	}
 
 
-
-	public void updateUser(long id, UserDTO userDTO){
-
-		UserEntity userEntity = userRepository.findById(id).get();
-
-			userEntity.setLastName(userDTO.getLastName());
-			userEntity.setSurName(userDTO.getSurName());
-			userEntity.setFirstName(userDTO.getFirstName());
-
-			userEntity.setDni(userDTO.getDni());
-			userEntity.setEmail(userDTO.getEmail());
-			userEntity.setAddress(userDTO.getAddress());
-
-			userEntity.setUsername(userDTO.getUsername());
-			userEntity.setPhone(userDTO.getPhone());
-
-		userRepository.save(userEntity);
-
-	}
 
 	public void deleteUser(long id){
 	}

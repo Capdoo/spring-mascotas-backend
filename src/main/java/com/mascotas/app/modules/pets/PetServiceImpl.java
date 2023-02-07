@@ -36,7 +36,6 @@ public class PetServiceImpl implements PetService{
 	@Autowired
 	FechaUtil fechaUtil;
 
-	//Lista general
 	public List<PetEntity> listAllPets(){
 		List<PetEntity> listPets = new ArrayList<>();
 		List<OwnerModel> listOwnerDb = ownerRepository.findAll();
@@ -48,15 +47,6 @@ public class PetServiceImpl implements PetService{
 			}
 		}
 		return petRepository.findAllById(listIdPetsByOwner);
-
-//		for(PetEntity p : petEntityDb) {
-//			FechaUtil fechaUtil = new FechaUtil();
-//			StringUtil stringUtil = new StringUtil();
-//			PetDTO petSingle = this.convertPetEntityToDTO(p);
-//			listPets.add(petSingle);
-//		}
-
-		//return listPets;
 	}
 
 	@Override
@@ -86,22 +76,17 @@ public class PetServiceImpl implements PetService{
 		newPet.setImage(image);
 		newPet.setState("CREATED");
 
-		//PetEntity petEntity = petRepository.save(newPet);
-
 		return petRepository.save(newPet);
 	}
 
-
 	@Override
 	public PetEntity readPet(Long id) {
-		//PetEntity petDB = petRepository.findById(id).orElse(null);
-		//assert petDB != null;
 		return petRepository.findById(id).orElse(null);
 	}
 
 	@Override
 	public PetEntity updatePet(PetDTO petDTO) {
-		PetEntity petDB = petRepository.findById(petDTO.getId()).orElse(null);
+		PetEntity petDB = readPet(petDTO.getId());
 		assert petDB != null;
 		petDB.setName(petDTO.getName());
 		petDB.setGender(petDTO.getGender());
@@ -118,49 +103,20 @@ public class PetServiceImpl implements PetService{
 		String encoded = fileUploadService.obtenerEncoded(petDTO.getEncoded());
 		petDB.setImage(fileUploadService.convertEncodedToBytes(encoded));
 
-		PetEntity petEntityUpdate = petRepository.save(petDB);
-		return petEntityUpdate;
+		return petRepository.save(petDB);
 	}
 
 	@Override
-	public PetEntity deletePet(Long id) {
-		PetEntity petDB = petRepository.findById(id).orElse(null);
+	public PetEntity deletePet(PetDTO petDTO) {
+		PetEntity petDB = readPet(petDTO.getId());
 		assert petDB != null;
 		petDB.setState("DELETED");
-		PetEntity petDeleted = petRepository.save(petDB);
-
-		return petDeleted;
+		return petRepository.save(petDB);
 	}
 
 	@Override
 	public List<PetEntity> readByOwner(OwnerModel ownerModel) {
-		List<PetEntity> petEntityList = petRepository.findAllByOwner(ownerModel);
-//		List<PetDTO> returnList = petEntityList.stream().map(
-//				this::convertPetEntityToDTO
-//		).collect(Collectors.toList());
-		return petEntityList;
+		return petRepository.findAllByOwner(ownerModel);
 	}
 
-	//From Entity to DTO
-//	private PetDTO convertPetEntityToDTO(PetEntity petEntity){
-//		log.info(petEntity.getRegisterDate()+"");
-//		System.out.println(petEntity.getRegisterDate());
-//		return new PetDTO(
-//			petEntity.getId(),
-//			petEntity.getName(),
-//			petEntity.getGender(),
-//			fechaUtil.getStrindDateFromTimestamp(petEntity.getBirthDate()),
-//			fechaUtil.getStrindDateFromTimestamp(petEntity.getRegisterDate()),
-//			petEntity.getColour(),
-//			petEntity.getSpecificBreed(),
-//			petEntity.getCharacteristic(),
-//			petEntity.getSize(),
-//			petEntity.getDetail().getSpecies(),
-//			petEntity.getDetail().getBreed(),
-//			petEntity.getOwner().getId(),
-//			petEntity.getDetail().getId(),
-//			fileUploadService.convertBytesToEncoded(petEntity.getImage()),
-//			petEntity.getState()
-//		);
-//	}
 }

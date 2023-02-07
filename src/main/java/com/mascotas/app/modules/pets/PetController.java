@@ -86,7 +86,9 @@ public class PetController {
 		if (!petRepository.existsById(id)){
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pet Not Found");
 		}
-		PetEntity petDelete = petServiceImpl.deletePet(id);
+		PetDTO petDTO = new PetDTO();
+		petDTO.setId(id);
+		PetEntity petDelete = petServiceImpl.deletePet(petDTO);
 		return ResponseEntity.status(HttpStatus.OK).body(this.convertPetEntityToDTO(petDelete));
 	}
 

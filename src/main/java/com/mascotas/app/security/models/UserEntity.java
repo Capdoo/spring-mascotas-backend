@@ -82,6 +82,8 @@ public class UserEntity {
 	@JoinTable(name="user_roles", joinColumns = @JoinColumn(name = "id_user"), inverseJoinColumns = @JoinColumn(name = "id_role"))
 	private Set<RoleEntity> roles = new HashSet<>();
 
+	private String state;
+
 }
 
 
