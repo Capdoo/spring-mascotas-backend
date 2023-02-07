@@ -17,8 +17,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import com.mascotas.app.security.models.UsuarioPrincipalModel;
-import com.mascotas.app.security.services.UserService;
+import com.mascotas.app.security.models.MainUserEntity;
+import com.mascotas.app.security.services.UserServiceImp;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -37,10 +37,10 @@ public class JwtProvider {
 	@Value("${jwt.expiration}")
 	private int expiration;
 	@Autowired
-    UserService userService;
+	UserServiceImp userServiceImp;
 	
 	public String generateToken(Authentication authentication) {
-		UsuarioPrincipalModel usuarioPrincipal = (UsuarioPrincipalModel) authentication.getPrincipal();
+		MainUserEntity usuarioPrincipal = (MainUserEntity) authentication.getPrincipal();
 		List<String> roles = usuarioPrincipal.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(
 				Collectors.toList()
 		);

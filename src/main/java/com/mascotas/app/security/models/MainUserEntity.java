@@ -9,7 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class UsuarioPrincipalModel implements UserDetails{
+public class MainUserEntity implements UserDetails{
 		
 	private String firstName;
 	private String username;
@@ -57,8 +57,6 @@ public class UsuarioPrincipalModel implements UserDetails{
 	}
 
 	//Personalizado : Agregado
-
-
 	public String getFirstName() {
 		return firstName;
 	}
@@ -71,8 +69,6 @@ public class UsuarioPrincipalModel implements UserDetails{
 		this.username = username;
 	}
 
-
-
 	public String getEmail() {
 		return email;
 	}
@@ -82,9 +78,8 @@ public class UsuarioPrincipalModel implements UserDetails{
 	}
 
 	//Se generan los constructores
-	
-	public UsuarioPrincipalModel(String firstName, String username, String email, String password,
-			Collection<? extends GrantedAuthority> authorities) {
+	public MainUserEntity(String firstName, String username, String email, String password,
+						  Collection<? extends GrantedAuthority> authorities) {
 		super();
 		this.firstName = firstName;
 		this.username = username;
@@ -94,24 +89,22 @@ public class UsuarioPrincipalModel implements UserDetails{
 	}
 
 	//Se genera el método Build : Obtener usuario
-	public static UsuarioPrincipalModel build(UserModel userModel) {
+	public static MainUserEntity build(UserEntity userEntity) {
 		//1. Obtener los roles
 		//2. Convertirlos a authorities
 		//(Se convierte la clase rol a la clase GrantedAuthority)
-		Set<RoleModel> rolesUsuario = userModel.getRoles();
+		Set<RoleEntity> rolesUsuario = userEntity.getRoles();
 		List<GrantedAuthority> authorities = rolesUsuario.stream().map(rol->new SimpleGrantedAuthority(rol.getRoleName().name())).collect(Collectors.toList());
-		
-		
+
 		//FormaSimplificada:
 		//List<GrantedAuthority> authorities = usuarioModel.getRoles()stream().map(rol->new SimpleGrantedAuthority(rol.getRolNombre().name())).collect(Collectors.toList());;
 		
-		return new UsuarioPrincipalModel(userModel.getFirstName(),
-				userModel.getUsername(),
-				userModel.getEmail(),
-				userModel.getPassword(),
+		return new MainUserEntity(userEntity.getFirstName(),
+				userEntity.getUsername(),
+				userEntity.getEmail(),
+				userEntity.getPassword(),
 				authorities);
 	}
-	
 
 }
 

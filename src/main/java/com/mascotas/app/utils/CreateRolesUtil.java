@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 
 import com.mascotas.app.security.enums.RoleName;
-import com.mascotas.app.security.models.RoleModel;
+import com.mascotas.app.security.models.RoleEntity;
 import com.mascotas.app.security.services.RoleService;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +16,7 @@ import java.util.List;
 
 
 @Component
-public class CreateRoles implements CommandLineRunner{
+public class CreateRolesUtil implements CommandLineRunner{
 
 	@Autowired
 	RoleService roleService;
@@ -28,8 +28,8 @@ public class CreateRoles implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 		
-		RoleModel rolAdmin = new RoleModel(RoleName.ROLE_ADMIN);
-		RoleModel rolUser = new RoleModel(RoleName.ROLE_USER);
+		RoleEntity rolAdmin = new RoleEntity(RoleName.ROLE_ADMIN);
+		RoleEntity rolUser = new RoleEntity(RoleName.ROLE_USER);
 
 		if(!roleRepository.existsByRoleName(RoleName.ROLE_USER)){
 			roleService.save(rolUser);

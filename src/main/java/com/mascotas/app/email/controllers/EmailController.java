@@ -4,8 +4,9 @@ import com.mascotas.app.dto.MessageDTO;
 import com.mascotas.app.email.dto.ChangePasswordDTO;
 import com.mascotas.app.email.dto.EmailValuesDTO;
 import com.mascotas.app.email.services.EmailService;
-import com.mascotas.app.security.models.UserModel;
-import com.mascotas.app.security.services.UserService;
+import com.mascotas.app.security.models.UserEntity;
+import com.mascotas.app.security.repositories.UserRepository;
+import com.mascotas.app.security.services.UserServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -28,19 +29,23 @@ public class EmailController {
     @Value("${spring.mail.username}")
     private String emailFrom;
     @Autowired
-    UserService userService;
+    UserServiceImp userServiceImp;
     @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    UserRepository userRepository;
+
+
     private static final String emailSubject = "Change password";
 
     @PostMapping("/send-email")
     public ResponseEntity<Object> sendEmailTemplate(@RequestBody EmailValuesDTO emailValuesDTO){
 
-        Optional<UserModel> usuarioModelOptional = userService.getByUsernameOrEmail(emailValuesDTO.getMailTo());
-        if(!usuarioModelOptional.isPresent()){
+        Optional<UserEntity> usuarioModelOptional = userServiceImp.getByUsernameOrEmail(emailValuesDTO.getMailTo());
+        if(usuarioModelOptional.isEmpty()){
             return new ResponseEntity<Object>(new MessageDTO("No user found with these credentials"), HttpStatus.NOT_FOUND);
         }
-        UserModel usuarioModel = usuarioModelOptional.get();
+        UserEntity usuarioModel = usuarioModelOptional.get();
 
         emailValuesDTO.setMailFrom(emailFrom);
         emailValuesDTO.setSubject(emailSubject);
@@ -51,7 +56,10 @@ public class EmailController {
         String tokenPassword = uuid.toString();
         emailValuesDTO.setToken(tokenPassword);
         usuarioModel.setTokenPassword(tokenPassword);
-        userService.save(usuarioModel);
+
+        //TO DO
+        //userServiceImp.save(usuarioModel);
+        //userRepository.save(usuarioModel);
 
         emailService.sendEmailTemplate(emailValuesDTO);
 
@@ -66,15 +74,16 @@ public class EmailController {
         if(!changePasswordDTO.getPassword().equals(changePasswordDTO.getConfirmPassword())){
             return new ResponseEntity<Object>(new MessageDTO("Passwords do not match"), HttpStatus.BAD_REQUEST);
         }
-        Optional<UserModel> usuarioModelOptional = userService.getByTokenPassword(changePasswordDTO.getTokenPassword());
-        if(!usuarioModelOptional.isPresent()){
+        Optional<UserEntity> usuarioModelOptional = userServiceImp.getByTokenPassword(changePasswordDTO.getTokenPassword());
+        if(usuarioModelOptional.isEmpty()){
             return new ResponseEntity<Object>(new MessageDTO("User not found"), HttpStatus.NOT_FOUND);
         }
-        UserModel usuarioModel = usuarioModelOptional.get();
+        UserEntity usuarioModel = usuarioModelOptional.get();
         String newPassword = passwordEncoder.encode(changePasswordDTO.getPassword());
         usuarioModel.setPassword(newPassword);
         usuarioModel.setTokenPassword(null);
-        userService.save(usuarioModel);
+        //TO DO
+        //userRepository.save(usuarioModel);
 
         return new ResponseEntity<Object>(new MessageDTO("Password updated"), HttpStatus.OK);
     }

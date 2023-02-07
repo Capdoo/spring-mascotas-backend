@@ -9,42 +9,27 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.mascotas.app.security.enums.RoleName;
-
+import lombok.Data;
 
 @Entity
 @Table(name="roles")
-public class RoleModel {
+@Data
+public class RoleEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	
 	@Enumerated(EnumType.STRING)
 	private RoleName roleName;
 
-	public RoleModel() {
+	public RoleEntity() {
 		super();
 	}
 
-	public RoleModel(RoleName roleName) {
+	public RoleEntity(RoleName roleName) {
 		super();
 		this.roleName = roleName;
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-
-	public RoleName getRoleName() {
-		return roleName;
-	}
-
-	public void setRoleName(RoleName roleName) {
-		this.roleName = roleName;
-	}
 }

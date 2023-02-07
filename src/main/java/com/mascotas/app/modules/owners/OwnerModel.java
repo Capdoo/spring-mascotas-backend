@@ -14,7 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.mascotas.app.modules.pets.PetEntity;
-import com.mascotas.app.security.models.UserModel;
+import com.mascotas.app.security.models.UserEntity;
 
 import javax.persistence.ForeignKey;
 
@@ -34,7 +34,7 @@ public class OwnerModel {
 	//Idx user (OneToOne)
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "OWNER_FK_USER"))
-	private UserModel user;
+	private UserEntity user;
 	//Para mascotas
 	@OneToMany(mappedBy="owner")
 	private Set<PetEntity> pets;
@@ -44,12 +44,12 @@ public class OwnerModel {
 		super();
 	}
 
-	public OwnerModel(UserModel user) {
+	public OwnerModel(UserEntity user) {
 		super();
 		this.user = user;
 	}
 
-	public OwnerModel(long id, Timestamp registerDate, int numberOfPets, int rate, long historial_id, UserModel user, Set<PetEntity> pets) {
+	public OwnerModel(long id, Timestamp registerDate, int numberOfPets, int rate, long historial_id, UserEntity user, Set<PetEntity> pets) {
 		this.id = id;
 		this.registerDate = registerDate;
 		this.numberOfPets = numberOfPets;
@@ -100,11 +100,11 @@ public class OwnerModel {
 		this.historial_id = historial_id;
 	}
 
-	public UserModel getUser() {
+	public UserEntity getUser() {
 		return user;
 	}
 
-	public void setUser(UserModel user) {
+	public void setUser(UserEntity user) {
 		this.user = user;
 	}
 

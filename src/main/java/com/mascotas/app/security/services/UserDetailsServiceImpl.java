@@ -1,13 +1,13 @@
 package com.mascotas.app.security.services;
 
-import com.mascotas.app.security.models.UserModel;
+import com.mascotas.app.security.models.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.mascotas.app.security.models.UsuarioPrincipalModel;
+import com.mascotas.app.security.models.MainUserEntity;
 
 //Convierte la clase Usuario en Usuario Principal.
 //Media entre la clase Usuario y Usuario Principal.
@@ -18,12 +18,12 @@ import com.mascotas.app.security.models.UsuarioPrincipalModel;
 public class UserDetailsServiceImpl implements UserDetailsService{
 
 	@Autowired
-	UserService userService;
+    UserServiceImp userServiceImp;
 
 	@Override
 	public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
-		UserModel userModel = userService.getByUsernameOrEmail(usernameOrEmail).get();
-		return UsuarioPrincipalModel.build(userModel);
+		UserEntity userEntity = userServiceImp.getByUsernameOrEmail(usernameOrEmail).get();
+		return MainUserEntity.build(userEntity);
 	}
 }

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.mascotas.app.security.models.UserModel;
+import com.mascotas.app.security.models.UserEntity;
 import com.mascotas.app.security.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +37,8 @@ public class PetServiceImpl implements PetService{
 	FechaUtil fechaUtil;
 
 	//Lista general
-	public List<PetDTO> listAllPets(){
-		List<PetDTO> listPets = new ArrayList<>();
+	public List<PetEntity> listAllPets(){
+		List<PetEntity> listPets = new ArrayList<>();
 		List<OwnerModel> listOwnerDb = ownerRepository.findAll();
 		List<Long> listIdPetsByOwner = new ArrayList<>();
 
@@ -47,20 +47,20 @@ public class PetServiceImpl implements PetService{
 				listIdPetsByOwner.add(q.getId());
 			}
 		}
-		List<PetEntity> petEntityDb = petRepository.findAllById(listIdPetsByOwner);
+		return petRepository.findAllById(listIdPetsByOwner);
 
-		for(PetEntity p : petEntityDb) {
-			FechaUtil fechaUtil = new FechaUtil();
-			StringUtil stringUtil = new StringUtil();
-			PetDTO petSingle = this.convertPetEntityToDTO(p);
-			listPets.add(petSingle);
-		}
+//		for(PetEntity p : petEntityDb) {
+//			FechaUtil fechaUtil = new FechaUtil();
+//			StringUtil stringUtil = new StringUtil();
+//			PetDTO petSingle = this.convertPetEntityToDTO(p);
+//			listPets.add(petSingle);
+//		}
 
-		return listPets;
+		//return listPets;
 	}
 
 	@Override
-	public PetDTO createPet(PetDTO petDTO, String username) {
+	public PetEntity createPet(PetDTO petDTO, String username) {
 
 		PetEntity newPet = new PetEntity();
 		newPet.setName(petDTO.getName());
@@ -71,8 +71,8 @@ public class PetServiceImpl implements PetService{
 		newPet.setCharacteristic(petDTO.getCharacteristic());
 		newPet.setSize(petDTO.getSize());
 
-		UserModel userModel = userRepository.findByUsername(username).get();
-		OwnerModel ownerPet = ownerRepository.findByUser(userModel).get();
+		UserEntity userEntity = userRepository.findByUsername(username).get();
+		OwnerModel ownerPet = ownerRepository.findByUser(userEntity).get();
 		newPet.setOwner(ownerPet);
 
 		DetailModel petDetail = detailRepository.findBySpeciesAndBreed(
@@ -86,21 +86,21 @@ public class PetServiceImpl implements PetService{
 		newPet.setImage(image);
 		newPet.setState("CREATED");
 
-		PetEntity petEntity = petRepository.save(newPet);
+		//PetEntity petEntity = petRepository.save(newPet);
 
-		return this.convertPetEntityToDTO(petEntity);
+		return petRepository.save(newPet);
 	}
 
 
 	@Override
-	public PetDTO readPet(Long id) {
-		PetEntity petDB = petRepository.findById(id).orElse(null);
-		assert petDB != null;
-		return this.convertPetEntityToDTO(petDB);
+	public PetEntity readPet(Long id) {
+		//PetEntity petDB = petRepository.findById(id).orElse(null);
+		//assert petDB != null;
+		return petRepository.findById(id).orElse(null);
 	}
 
 	@Override
-	public PetDTO updatePet(PetDTO petDTO) {
+	public PetEntity updatePet(PetDTO petDTO) {
 		PetEntity petDB = petRepository.findById(petDTO.getId()).orElse(null);
 		assert petDB != null;
 		petDB.setName(petDTO.getName());
@@ -119,49 +119,48 @@ public class PetServiceImpl implements PetService{
 		petDB.setImage(fileUploadService.convertEncodedToBytes(encoded));
 
 		PetEntity petEntityUpdate = petRepository.save(petDB);
-		return this.convertPetEntityToDTO(petEntityUpdate);
+		return petEntityUpdate;
 	}
 
 	@Override
-	public PetDTO deletePet(Long id) {
+	public PetEntity deletePet(Long id) {
 		PetEntity petDB = petRepository.findById(id).orElse(null);
 		assert petDB != null;
 		petDB.setState("DELETED");
 		PetEntity petDeleted = petRepository.save(petDB);
 
-		return this.convertPetEntityToDTO(petDeleted);
+		return petDeleted;
 	}
 
 	@Override
-	public List<PetDTO> readByOwner(OwnerModel ownerModel) {
+	public List<PetEntity> readByOwner(OwnerModel ownerModel) {
 		List<PetEntity> petEntityList = petRepository.findAllByOwner(ownerModel);
-		List<PetDTO> returnList = petEntityList.stream().map(
-				this::convertPetEntityToDTO
-		).collect(Collectors.toList());
-		return returnList;
+//		List<PetDTO> returnList = petEntityList.stream().map(
+//				this::convertPetEntityToDTO
+//		).collect(Collectors.toList());
+		return petEntityList;
 	}
-
 
 	//From Entity to DTO
-	private PetDTO convertPetEntityToDTO(PetEntity petEntity){
-		log.info(petEntity.getRegisterDate()+"");
-		System.out.println(petEntity.getRegisterDate());
-		return new PetDTO(
-			petEntity.getId(),
-			petEntity.getName(),
-			petEntity.getGender(),
-			fechaUtil.getStrindDateFromTimestamp(petEntity.getBirthDate()),
-			fechaUtil.getStrindDateFromTimestamp(petEntity.getRegisterDate()),
-			petEntity.getColour(),
-			petEntity.getSpecificBreed(),
-			petEntity.getCharacteristic(),
-			petEntity.getSize(),
-			petEntity.getDetail().getSpecies(),
-			petEntity.getDetail().getBreed(),
-			petEntity.getOwner().getId(),
-			petEntity.getDetail().getId(),
-			fileUploadService.convertBytesToEncoded(petEntity.getImage()),
-			petEntity.getState()
-		);
-	}
+//	private PetDTO convertPetEntityToDTO(PetEntity petEntity){
+//		log.info(petEntity.getRegisterDate()+"");
+//		System.out.println(petEntity.getRegisterDate());
+//		return new PetDTO(
+//			petEntity.getId(),
+//			petEntity.getName(),
+//			petEntity.getGender(),
+//			fechaUtil.getStrindDateFromTimestamp(petEntity.getBirthDate()),
+//			fechaUtil.getStrindDateFromTimestamp(petEntity.getRegisterDate()),
+//			petEntity.getColour(),
+//			petEntity.getSpecificBreed(),
+//			petEntity.getCharacteristic(),
+//			petEntity.getSize(),
+//			petEntity.getDetail().getSpecies(),
+//			petEntity.getDetail().getBreed(),
+//			petEntity.getOwner().getId(),
+//			petEntity.getDetail().getId(),
+//			fileUploadService.convertBytesToEncoded(petEntity.getImage()),
+//			petEntity.getState()
+//		);
+//	}
 }

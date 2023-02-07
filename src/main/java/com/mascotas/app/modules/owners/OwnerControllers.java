@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mascotas.app.dto.MessageDTO;
-import com.mascotas.app.security.services.UserService;
+import com.mascotas.app.security.services.UserServiceImp;
 
 @RestController
 @RequestMapping("/owners")
@@ -22,13 +22,13 @@ public class OwnerControllers {
     OwnerService ownerService;
 	
 	@Autowired
-    UserService userService;
+    UserServiceImp userServiceImp;
 	
 	@PostMapping("/create")
 	public ResponseEntity<Object> createOwner(@RequestBody OwnerDTO ownerDTO){
 		
 		try {
-			if(!(userService.existsPorId((int) ownerDTO.getUser_id()))){
+			if(!(userServiceImp.existsById((int) ownerDTO.getUser_id()))){
 				int b = 11;
 				return new ResponseEntity<Object>(new MessageDTO("The user does not exists"), HttpStatus.BAD_REQUEST);
 			}

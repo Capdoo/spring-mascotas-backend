@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.mascotas.app.security.models.UserModel;
+import com.mascotas.app.security.models.UserEntity;
 import com.mascotas.app.security.repositories.UserRepository;
+import com.mascotas.app.security.services.UserServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mascotas.app.security.services.UserService;
 import com.mascotas.app.utils.FechaUtil;
 
 @Service
@@ -21,20 +21,20 @@ public class OwnerService {
 	@Autowired
 	OwnerRepository ownerRepository;
 	@Autowired
-    UserService userService;
+    UserServiceImp userServiceImp;
 	
 	public void saveOwner(OwnerDTO ownerDTO) {
 		
 		//Obteniendo al Usuario
 		int user_id = (int) ownerDTO.getUser_id();
-		UserModel userModel = usuarioRepository.findById(user_id).get();
+		UserEntity userEntity = usuarioRepository.findById(user_id).get();
 		
 		OwnerModel ownerModel = new OwnerModel();
 			ownerModel.setRegisterDate(new Timestamp(System.currentTimeMillis()));
 			ownerModel.setHistorial_id(ownerDTO.getHistorial_id());
 			ownerModel.setNumberOfPets(ownerDTO.getNumberOfPets());
 			ownerModel.setRate(ownerDTO.getRate());
-			ownerModel.setUser(userModel);
+			ownerModel.setUser(userEntity);
 			
 		ownerRepository.save(ownerModel);
 	}
@@ -67,8 +67,8 @@ public class OwnerService {
 	public boolean existsOwnerByUserId(long idUsuario) {
 		boolean res = false;
 		
-		if(userService.existsPorId(idUsuario)) {
-			UserModel usuario = usuarioRepository.findById(idUsuario).get();
+		if(userServiceImp.existsById(idUsuario)) {
+			UserEntity usuario = usuarioRepository.findById(idUsuario).get();
 			
 			Optional<OwnerModel> duenoSupuesto = ownerRepository.findByUser(usuario);
 			

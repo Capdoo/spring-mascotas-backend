@@ -6,12 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.mascotas.app.security.enums.RoleName;
-import com.mascotas.app.security.models.RoleModel;
+import com.mascotas.app.security.models.RoleEntity;
 
 
 @Repository
-public interface RoleRepository extends JpaRepository<RoleModel, Integer>{
+public interface RoleRepository extends JpaRepository<RoleEntity, Integer>{
 	
-	Optional<RoleModel> findByRoleName(RoleName roleName);
+	Optional<RoleEntity> findByRoleName(RoleName roleName);
 	boolean existsByRoleName(RoleName roleName);
 }

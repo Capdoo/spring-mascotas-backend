@@ -6,16 +6,16 @@ import java.util.List;
 
 public interface PetService {
 
-    public List<PetDTO> listAllPets();
+    public List<PetEntity> listAllPets();
 
     //crud
-    public PetDTO createPet(PetDTO petDTO, String username);
-    public PetDTO readPet(Long id);
-    public PetDTO updatePet(PetDTO petDTO);
-    public PetDTO deletePet(Long id);
+    public PetEntity createPet(PetDTO petDTO, String username);
+    public PetEntity readPet(Long id);
+    public PetEntity updatePet(PetDTO petDTO);
+    public PetEntity deletePet(Long id);
 
     //Find by Owner
-    public List<PetDTO> readByOwner(OwnerModel ownerModel);
+    public List<PetEntity> readByOwner(OwnerModel ownerModel);
 
 
 

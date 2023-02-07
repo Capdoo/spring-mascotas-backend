@@ -1,7 +1,7 @@
 package com.mascotas.app.modules.partners;
 
 import com.mascotas.app.modules.shelters.ShelterModel;
-import com.mascotas.app.security.models.UserModel;
+import com.mascotas.app.security.models.UserEntity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -17,7 +17,7 @@ public class PartnerModel {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "PARTNER_FK_USER"))
-    private UserModel user;
+    private UserEntity user;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "shelter_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "PARTNER_FK_SHELTER"))
@@ -27,7 +27,7 @@ public class PartnerModel {
         super();
     }
 
-    public PartnerModel(Timestamp registerDate, UserModel user, ShelterModel shelter) {
+    public PartnerModel(Timestamp registerDate, UserEntity user, ShelterModel shelter) {
         this.registerDate = registerDate;
         this.user = user;
         this.shelter = shelter;
@@ -49,11 +49,11 @@ public class PartnerModel {
         this.registerDate = registerDate;
     }
 
-    public UserModel getUser() {
+    public UserEntity getUser() {
         return user;
     }
 
-    public void setUser(UserModel user) {
+    public void setUser(UserEntity user) {
         this.user = user;
     }
 

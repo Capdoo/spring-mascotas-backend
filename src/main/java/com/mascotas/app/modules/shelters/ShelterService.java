@@ -5,9 +5,9 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mascotas.app.security.models.UserModel;
+import com.mascotas.app.security.models.UserEntity;
 import com.mascotas.app.security.repositories.UserRepository;
-import com.mascotas.app.security.services.UserService;
+import com.mascotas.app.security.services.UserServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,12 +29,12 @@ public class ShelterService {
     FileUploadService fileUploadService;
 
 	@Autowired
-	UserService userService;
+    UserServiceImp userServiceImp;
 
 	public void saveShelter(ShelterDTO shelterDTO) throws IOException {
 		
 		//UsuarioModel usuarioRepresentante = usuarioRepository.findById(refugioDTO.getIdRepresentante()).get();
-		UserModel usuarioRepresentante = userRepository.findByDni(shelterDTO.getDniMainPartner()).get();
+		UserEntity usuarioRepresentante = userRepository.findByDni(shelterDTO.getDniMainPartner()).get();
 
 		
 		ShelterModel refugioNuevo = new ShelterModel();
@@ -98,7 +98,7 @@ public class ShelterService {
 	//Obtener por dni user
 	public List<ShelterDTO> getByDniUser(String dniUser){
 		List<ShelterDTO> listSend = new ArrayList<>();
-		UserModel usuarioModel = userRepository.findByDni(dniUser).get();
+		UserEntity usuarioModel = userRepository.findByDni(dniUser).get();
 		
 		List<ShelterModel> listaDB = shelterRepository.findAllByUser(usuarioModel);
 		
@@ -162,8 +162,8 @@ public class ShelterService {
 	public boolean existsRefugioByUserId(long idUsuario){
 		boolean res = false;
 
-		if(userService.existsPorId(idUsuario)) {
-			UserModel usuario = userRepository.findById(idUsuario).get();
+		if(userServiceImp.existsPorId(idUsuario)) {
+			UserEntity usuario = userRepository.findById(idUsuario).get();
 
 			List<ShelterModel> shelterModel = shelterRepository.findAllByUser(usuario);
 

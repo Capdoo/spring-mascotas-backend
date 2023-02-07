@@ -2,13 +2,18 @@ package com.mascotas.app.security.controllers;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mascotas.app.modules.owners.OwnerDTO;
 import com.mascotas.app.modules.owners.OwnerModel;
 import com.mascotas.app.modules.owners.OwnerService;
-import com.mascotas.app.security.models.UserModel;
+import com.mascotas.app.security.dto.UserDTO;
+import com.mascotas.app.security.models.UserEntity;
+import com.mascotas.app.security.services.UserServiceImp;
+import com.mascotas.app.utils.ErrorMessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +23,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,10 +37,10 @@ import com.mascotas.app.security.dto.LoginUserDTO;
 import com.mascotas.app.security.dto.NewUserDTO;
 import com.mascotas.app.security.enums.RoleName;
 import com.mascotas.app.security.jwt.JwtProvider;
-import com.mascotas.app.security.models.RoleModel;
+import com.mascotas.app.security.models.RoleEntity;
 
 import com.mascotas.app.security.services.RoleService;
-import com.mascotas.app.security.services.UserService;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/auth")
@@ -45,7 +51,7 @@ public class AuthController {
 	@Autowired
 	AuthenticationManager authenticationManager;
 	@Autowired
-	UserService userService;
+	UserServiceImp userServiceImp;
 	@Autowired
 	RoleService roleService;
 	@Autowired
@@ -57,63 +63,22 @@ public class AuthController {
 	
 	@PostMapping("/register")
 	public ResponseEntity<Object> register(@RequestBody NewUserDTO newUserDTO, BindingResult bindingResult) throws IOException{
+
 		if (bindingResult.hasErrors()) {
-			return new ResponseEntity(new MessageDTO("Wrong fields"), HttpStatus.BAD_REQUEST);
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, this.formatMessage(bindingResult));
 		}
-		
-		if (userService.existsByUsername(newUserDTO.getUsername())) {
-			return new ResponseEntity(new MessageDTO("Username already in use"), HttpStatus.BAD_REQUEST);
-	
+		if (userServiceImp.existsByUsername(newUserDTO.getUsername())) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username Already Exists");
 		}
-		if (userService.existsByEmail(newUserDTO.getEmail())) {
-			return new ResponseEntity(new MessageDTO("Email already in use"), HttpStatus.BAD_REQUEST);
-	
+		if (userServiceImp.existsByEmail(newUserDTO.getEmail())) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email Already Exists");
 		}
 
-		UserModel userModel = new UserModel();
-			userModel.setUsername(newUserDTO.getUsername());
-			userModel.setDni(newUserDTO.getDni());
-			userModel.setFirstName(newUserDTO.getFirstName());
-			userModel.setLastName(newUserDTO.getLastName());
-			userModel.setSurName(newUserDTO.getSurName());
-			userModel.setPhone(newUserDTO.getPhone());
-			userModel.setAddress(newUserDTO.getAddress());
-			userModel.setEmail(newUserDTO.getEmail());
-			userModel.setPassword(passwordEncoder.encode(newUserDTO.getPassword()));
+		newUserDTO.setPassword(passwordEncoder.encode(newUserDTO.getPassword()));
 
-			Set<RoleModel> roles = new HashSet<>();
-			roles.add(roleService.getByRoleName(RoleName.ROLE_USER).get());
-			if (newUserDTO.getRoles().contains("admin")) {
-				roles.add(roleService.getByRoleName(RoleName.ROLE_ADMIN).get());
-			}
-			if (newUserDTO.getRoles().contains("rept")) {
-				roles.add(roleService.getByRoleName(RoleName.ROLE_REPT).get());
-			}
-
-			String encoded = "";
-			if(newUserDTO.getEncoded() == null){
-				encoded = fileUploadService.getEncodedDefault();
-			}else{
-				encoded = fileUploadService.obtenerEncoded(newUserDTO.getEncoded());
-			}
-			byte[] image = fileUploadService.convertEncodedToBytes(encoded);
-
-			userModel.setImage(image);
-			userModel.setRoles(roles);
-
-		UserModel userRegistered = userService.save(userModel);
-		OwnerModel ownerModel = new OwnerModel(
-				userRegistered
-		);
-
-		ownerService.saveOwner(
-				new OwnerDTO(
-						userRegistered.getId()
-				)
-		);
-
-		return new ResponseEntity(userRegistered, HttpStatus.CREATED);
-		
+		UserEntity userCreate = userServiceImp.createUser(newUserDTO);
+		ownerService.saveOwner(new OwnerDTO(userCreate.getId()));
+		return ResponseEntity.status(HttpStatus.CREATED).body(userCreate);
 	}
 	
 	@PostMapping("/login")
@@ -121,7 +86,7 @@ public class AuthController {
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity(new MessageDTO("Wrong fields1"), HttpStatus.BAD_REQUEST);
 		}
-		if(!(userService.existsByUsernameOrEmail(loginUserDTO.getUsername()))) {
+		if(!(userServiceImp.existsByUsernameOrEmail(loginUserDTO.getUsername()))) {
 			return new ResponseEntity(new MessageDTO("Wrong fields2"), HttpStatus.BAD_REQUEST);
 		}
         return Autenticacion(loginUserDTO.getUsername(), loginUserDTO.getPassword());
@@ -133,10 +98,10 @@ public class AuthController {
 	        SecurityContextHolder.getContext().setAuthentication(authentication);
 	        String jwt = jwtProvider.generateToken(authentication);
 	        JwtDTO jwtDto = new JwtDTO(jwt);
-	        return new ResponseEntity(jwtDto, HttpStatus.OK);
-			
+			return ResponseEntity.status(HttpStatus.OK).body(jwtDto);
+
 		} catch (Exception e) {
-			return new ResponseEntity(new MessageDTO("Wrong fields"), HttpStatus.BAD_REQUEST);
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong fields");
 		}
 	}
 
@@ -150,6 +115,28 @@ public class AuthController {
 		}catch (Exception e){
 			return new ResponseEntity<Object>(new MessageDTO(e.getMessage()), HttpStatus.OK);
 		}
+	}
+
+	private String formatMessage(BindingResult bindingResult) throws JsonProcessingException {
+		List<Map<String, String>> errors = bindingResult.getFieldErrors().stream()
+				.map(err -> {
+					Map<String, String> error = new HashMap<>();
+					error.put(err.getField(), err.getDefaultMessage());
+					return error;
+				}).collect(Collectors.toList());
+		ErrorMessageUtil errorMessage = ErrorMessageUtil.builder()
+				.code("01")
+				.messages(errors).build();
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		String jsonString = "";
+		try {
+			jsonString = objectMapper.writeValueAsString(errorMessage);
+
+		}catch (JsonProcessingException e){
+			e.printStackTrace();
+		}
+		return jsonString;
 	}
 }
 

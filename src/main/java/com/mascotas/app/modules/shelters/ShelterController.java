@@ -2,7 +2,7 @@ package com.mascotas.app.modules.shelters;
 
 import java.util.List;
 
-import com.mascotas.app.security.services.UserService;
+import com.mascotas.app.security.services.UserServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ public class ShelterController {
 	@Autowired
     ShelterService shelterService;
 	@Autowired
-	UserService userService;
+    UserServiceImp userServiceImp;
 
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@PostMapping("/create")
@@ -68,7 +68,7 @@ public class ShelterController {
 	/*
 	@GetMapping("/read/user")
 	public ResponseEntity<Object> readByDniUser(@RequestParam String dni){
-		if(!userService.existsByDni(dni)){
+		if(!userServiceImp.existsByDni(dni)){
 			return new ResponseEntity<Object>(new MessageDTO("User not found"), HttpStatus.BAD_REQUEST);
 		}
 		List<ShelterDTO> listaRefugios = shelterService.getByDniUser(dni);

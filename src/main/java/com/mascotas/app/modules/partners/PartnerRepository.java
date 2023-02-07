@@ -1,7 +1,5 @@
 package com.mascotas.app.modules.partners;
 
-import com.mascotas.app.modules.owners.OwnerModel;
-import com.mascotas.app.security.models.UserModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
