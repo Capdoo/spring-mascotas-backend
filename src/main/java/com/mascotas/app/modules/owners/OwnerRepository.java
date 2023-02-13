@@ -8,10 +8,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 
-public interface OwnerRepository extends JpaRepository<OwnerModel, Long>{
+public interface OwnerRepository extends JpaRepository<OwnerEntity, Long>{
 	
-	List<OwnerModel> findAll();
+	List<OwnerEntity> findAll();
 
-	Optional<OwnerModel> findByUser(UserEntity usuarioModel);
+	Optional<OwnerEntity> findByUser(UserEntity usuarioModel);
 
 }

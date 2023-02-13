@@ -1,6 +1,6 @@
 package com.mascotas.app.modules.pets;
 
-import com.mascotas.app.modules.owners.OwnerModel;
+import com.mascotas.app.modules.owners.OwnerEntity;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public interface PetService {
     public PetEntity deletePet(PetDTO petDTO);
 
     //Find by Owner
-    public List<PetEntity> readByOwner(OwnerModel ownerModel);
+    public List<PetEntity> readByOwner(OwnerEntity ownerEntity);
 
 
 

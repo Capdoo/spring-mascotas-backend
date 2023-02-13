@@ -6,9 +6,9 @@ import java.util.Set;
 import javax.persistence.*;
 
 import com.mascotas.app.modules.adoptions.AdoptionModel;
-import com.mascotas.app.modules.searchs.SearchModel;
+import com.mascotas.app.modules.searchs.SearchEntity;
 import com.mascotas.app.modules.details.DetailModel;
-import com.mascotas.app.modules.owners.OwnerModel;
+import com.mascotas.app.modules.owners.OwnerEntity;
 import com.mascotas.app.modules.shelters.ShelterModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -43,7 +43,7 @@ public class PetEntity {
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "owner_id",referencedColumnName = "id", foreignKey = @ForeignKey(name = "PET_FK_OWNER"))
-	private OwnerModel owner;
+	private OwnerEntity owner;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "detail_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "PET_FK_DETAIL"))
@@ -56,7 +56,7 @@ public class PetEntity {
 
 	//For searchs
 	@OneToMany(cascade =  CascadeType.ALL, mappedBy="pet")
-	private Set<SearchModel> searchs;
+	private Set<SearchEntity> searchs;
 
 	//For pets
 	@OneToMany(cascade =  CascadeType.ALL, mappedBy="pet")

@@ -8,7 +8,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-import com.mascotas.app.modules.owners.OwnerModel;
+import com.mascotas.app.modules.owners.OwnerEntity;
 import com.mascotas.app.modules.partners.PartnerModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -73,7 +73,7 @@ public class UserEntity {
 
 	//Referenced owner
 	@OneToOne(cascade =  CascadeType.ALL, mappedBy = "user")
-	private OwnerModel owner;
+	private OwnerEntity owner;
 
 	//Referenced partner
 	@OneToOne(cascade =  CascadeType.ALL, mappedBy = "user")

@@ -112,7 +112,8 @@ public class UserServiceImp implements UserService{
 	public Optional<UserEntity> getByTokenPassword(String tokenPassword){
 		return userRepository.findByTokenPassword(tokenPassword);
 	}
-	
+
+	@Override
 	public boolean existsByUsername(String nombreUsuario) {
 		return userRepository.existsByUsername(nombreUsuario);
 	}

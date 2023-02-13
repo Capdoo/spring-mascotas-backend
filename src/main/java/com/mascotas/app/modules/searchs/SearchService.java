@@ -1,193 +1,26 @@
 package com.mascotas.app.modules.searchs;
 
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
+import com.mascotas.app.modules.owners.OwnerEntity;
+import com.mascotas.app.modules.pets.PetEntity;
+
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+public interface SearchService {
 
-import com.mascotas.app.files.FileUploadService;
-import com.mascotas.app.modules.pets.PetEntity;
-import com.mascotas.app.modules.pets.PetRepository;
-import com.mascotas.app.utils.FechaUtil;
-import com.mascotas.app.utils.StringUtil;
+    public List<SearchEntity> listAllSearchs();
+    //crud
+    public SearchEntity createSearch(SearchDTO searchDTO);
+    public SearchEntity readSearch(Long id);
+    public SearchEntity updateSearch(SearchDTO searchDTO);
+    public SearchEntity deleteSearch(SearchDTO searchDTO);
 
-@Service
-public class SearchService {
-	
-	@Autowired
-	SearchRepository searchRepository;
-	
-	@Autowired
-	PetRepository petRepository;
-	
-	@Autowired
-    FileUploadService fileUploadService;
+    //business rules
+    public List<SearchEntity> readAllSearchsByPet(PetEntity petEntity);
+    public List<SearchEntity> radAllSearchsByOwner(OwnerEntity ownerEntity);
 
-	public void saveSearch(SearchDTO searchDTO) throws IOException {
-		
-		FechaUtil fechaUtil = new FechaUtil();
-		PetEntity selectedPet = petRepository.findById(searchDTO.getPetId()).get();
-		
-		SearchModel newSearch = new SearchModel();
-			newSearch.setAddress(searchDTO.getAddress());
-			newSearch.setDistrict(searchDTO.getDistrict());
-		
-				Timestamp fechaPerdida = fechaUtil.getTimestampFromStringDate(searchDTO.getLostDate());
-			newSearch.setLostDate(fechaPerdida);
+    //public Boolean existsById();
 
-			newSearch.setRegisterDate(new Timestamp(System.currentTimeMillis()));
-			newSearch.setPet(selectedPet);
+    //Not ready
+    //public List<SearchEntity> radAllSearchsByShelter(ShelterModel shelterModel);
 
-			newSearch.setPhoneA(searchDTO.getPhoneA());
-			newSearch.setPhoneB(searchDTO.getPhoneB());
-
-			newSearch.setMessage(searchDTO.getMessage());
-			
-				String encoded = fileUploadService.obtenerEncoded(searchDTO.getEncoded());
-				byte[] imagen = fileUploadService.convertEncodedToBytes(encoded);
-				String url = fileUploadService.fileUpload(imagen);
-
-		newSearch.setLinkImg(url);
-			
-			
-		searchRepository.save(newSearch);
-	}
-	
-	//Obtener todos
-	public List<SearchDTO> listAll(){
-		List<SearchDTO> listSend = new ArrayList<>();
-		List<SearchModel> listDB = searchRepository.findAll();
-
-		
-		for(SearchModel p : listDB) {
-			FechaUtil fechaUtil = new FechaUtil();
-			StringUtil stringUtil = new StringUtil();
-			SearchDTO busquedaSingle = new SearchDTO();
-
-				busquedaSingle.setId(p.getId());
-				busquedaSingle.setAddress(p.getAddress());
-				busquedaSingle.setDistrict(p.getDistrict());
-				
-					String fechaPerdida = fechaUtil.getStrindDateFromTimestamp(p.getLostDate());
-					busquedaSingle.setLostDate(fechaPerdida);
-					
-					String fechaRegistro = fechaUtil.getStrindDateFromTimestamp(p.getRegisterDate());
-					busquedaSingle.setRegisterDate(fechaRegistro);
-				
-				busquedaSingle.setPetId(p.getPet().getId());
-				busquedaSingle.setPhoneA(p.getPhoneA());
-				busquedaSingle.setPhoneB(p.getPhoneB());
-				busquedaSingle.setMessage(p.getMessage());
-				
-				//Nuevo: Nombre y raza (especie)
-				busquedaSingle.setNamePet(p.getPet().getName());
-				if(p.getPet().getDetail() != null) {
-					busquedaSingle.setSpeciesPet(p.getPet().getDetail().getSpecies());
-					busquedaSingle.setBreedPet(p.getPet().getDetail().getBreed());
-				}else {
-					busquedaSingle.setSpeciesPet(stringUtil.obtenerEspecieToken(p.getPet().getSpecificBreed()));
-					busquedaSingle.setBreedPet(stringUtil.obtenerRazaToken(p.getPet().getSpecificBreed()));
-				}
-				
-				busquedaSingle.setUrlLink(p.getLinkImg());
-
-			listSend.add(busquedaSingle);
-			
-		}
-		return listSend;
-	}
-	
-	//Obtener por mascota_id
-	public List<SearchDTO> getSearchByPetId(long petId){
-		List<SearchDTO> sendList = new ArrayList<>();
-		PetEntity selectedPet = petRepository.findById(petId).get();
-		
-		List<SearchModel> listDB = searchRepository.findAllByPet(selectedPet);
-		
-		for(SearchModel p : listDB) {
-			SearchDTO singleSearch = new SearchDTO();
-			FechaUtil fechaUtil = new FechaUtil();
-
-				singleSearch.setId(p.getId());
-				singleSearch.setAddress(p.getAddress());
-				singleSearch.setDistrict(p.getDistrict());
-						String fechaPerdida = fechaUtil.getStrindDateFromTimestamp(p.getLostDate());
-				singleSearch.setLostDate(fechaPerdida);
-					
-					String fechaRegistro = fechaUtil.getStrindDateFromTimestamp(p.getRegisterDate());
-				singleSearch.setRegisterDate(fechaRegistro);
-
-				singleSearch.setPetId(p.getPet().getId());
-				singleSearch.setPhoneA(p.getPhoneA());
-				singleSearch.setPhoneB(p.getPhoneB());
-				singleSearch.setMessage(p.getMessage());
-
-				singleSearch.setUrlLink(p.getLinkImg());
-
-			sendList.add(singleSearch);
-			
-		}
-		return sendList;
-	}
-	
-	//Obtener por id
-	public SearchDTO getSearchById(long id){
-		
-		SearchModel p = searchRepository.findById(id).get();
-		
-		SearchDTO busquedaSingle = new SearchDTO();
-			FechaUtil fechaUtil = new FechaUtil();
-
-			busquedaSingle.setId(p.getId());
-			
-			busquedaSingle.setAddress(p.getAddress());
-			busquedaSingle.setDistrict(p.getDistrict());
-				String fechaPerdida = fechaUtil.getStrindDateFromTimestamp(p.getLostDate());
-				busquedaSingle.setLostDate(fechaPerdida);
-				
-				String fechaRegistro = fechaUtil.getStrindDateFromTimestamp(p.getRegisterDate());
-				busquedaSingle.setRegisterDate(fechaRegistro);
-			busquedaSingle.setPetId(p.getPet().getId());
-			busquedaSingle.setPhoneA(p.getPhoneA());
-			busquedaSingle.setPhoneB(p.getPhoneB());
-			
-			busquedaSingle.setMessage(p.getMessage());
-			
-			busquedaSingle.setUrlLink(p.getLinkImg());
-
-		return busquedaSingle;
-	}
-	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,12 +1,14 @@
 package com.mascotas.app.modules.pets;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class PetDTO {
 	
 	private long id;
@@ -25,8 +27,8 @@ public class PetDTO {
 	private String species;
 	private String breed;
 	
-	private long idOwner;
-	private long idDetail;
+	private long owner_id;
+	private long detail_id;
 
 	//For image
 	private String encoded;

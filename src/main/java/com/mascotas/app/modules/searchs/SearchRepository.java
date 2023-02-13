@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.mascotas.app.modules.pets.PetEntity;
 
 
-public interface SearchRepository extends JpaRepository<SearchModel, Long>{
+public interface SearchRepository extends JpaRepository<SearchEntity, Long>{
 	
-	public List<SearchModel> findAll();
-	public List<SearchModel> findAllByPet(PetEntity petEntity);
+	public List<SearchEntity> findAll();
+	public List<SearchEntity> findAllByPet(PetEntity petEntity);
 	
 }

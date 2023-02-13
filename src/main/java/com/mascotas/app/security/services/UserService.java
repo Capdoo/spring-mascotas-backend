@@ -18,5 +18,6 @@ public interface UserService {
     public UserEntity deleteUser(UserDTO userDTO);
 
     public boolean existsById(Long id);
+    public boolean existsByUsername(String username);
 
 }

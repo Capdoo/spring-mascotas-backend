@@ -29,23 +29,23 @@ public class OwnerService {
 		int user_id = (int) ownerDTO.getUser_id();
 		UserEntity userEntity = usuarioRepository.findById(user_id).get();
 		
-		OwnerModel ownerModel = new OwnerModel();
-			ownerModel.setRegisterDate(new Timestamp(System.currentTimeMillis()));
-			ownerModel.setHistorial_id(ownerDTO.getHistorial_id());
-			ownerModel.setNumberOfPets(ownerDTO.getNumberOfPets());
-			ownerModel.setRate(ownerDTO.getRate());
-			ownerModel.setUser(userEntity);
+		OwnerEntity ownerEntity = new OwnerEntity();
+			ownerEntity.setRegisterDate(new Timestamp(System.currentTimeMillis()));
+			ownerEntity.setHistorial_id(ownerDTO.getHistorial_id());
+			ownerEntity.setNumberOfPets(ownerDTO.getNumberOfPets());
+			ownerEntity.setRate(ownerDTO.getRate());
+			ownerEntity.setUser(userEntity);
 			
-		ownerRepository.save(ownerModel);
+		ownerRepository.save(ownerEntity);
 	}
 	
 	public List<OwnerDTO> listAll(){
 		List<OwnerDTO> sendList = new ArrayList<>();
 		
 		//Traer los datos
-		List<OwnerModel> listaModelsBD = ownerRepository.findAll();
+		List<OwnerEntity> listaModelsBD = ownerRepository.findAll();
 
-		for(OwnerModel p : listaModelsBD) {
+		for(OwnerEntity p : listaModelsBD) {
 			FechaUtil fechaUtil = new FechaUtil();
 			OwnerDTO duenoSingle = new OwnerDTO();
 			String fechaRegistro = fechaUtil.getStrindDateFromTimestamp(p.getRegisterDate());
@@ -70,13 +70,17 @@ public class OwnerService {
 		if(userServiceImp.existsById(idUsuario)) {
 			UserEntity usuario = usuarioRepository.findById(idUsuario).get();
 			
-			Optional<OwnerModel> duenoSupuesto = ownerRepository.findByUser(usuario);
+			Optional<OwnerEntity> duenoSupuesto = ownerRepository.findByUser(usuario);
 			
 			if(duenoSupuesto.isPresent()) {
 				res = true;
 			}
 		}
 		return res;
+	}
+
+	public OwnerEntity readOwnerById(Long id){
+		return ownerRepository.findById(id).orElse(null);
 	}
 
 }

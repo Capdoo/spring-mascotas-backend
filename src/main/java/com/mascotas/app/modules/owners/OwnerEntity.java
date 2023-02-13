@@ -21,7 +21,7 @@ import javax.persistence.ForeignKey;
 
 @Entity
 @Table(name="owners")
-public class OwnerModel {
+public class OwnerEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,16 +40,16 @@ public class OwnerModel {
 	private Set<PetEntity> pets;
 	
 	
-	public OwnerModel() {
+	public OwnerEntity() {
 		super();
 	}
 
-	public OwnerModel(UserEntity user) {
+	public OwnerEntity(UserEntity user) {
 		super();
 		this.user = user;
 	}
 
-	public OwnerModel(long id, Timestamp registerDate, int numberOfPets, int rate, long historial_id, UserEntity user, Set<PetEntity> pets) {
+	public OwnerEntity(long id, Timestamp registerDate, int numberOfPets, int rate, long historial_id, UserEntity user, Set<PetEntity> pets) {
 		this.id = id;
 		this.registerDate = registerDate;
 		this.numberOfPets = numberOfPets;

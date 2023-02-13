@@ -3,7 +3,6 @@ package com.mascotas.app.modules.pets;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.mascotas.app.security.models.UserEntity;
 import com.mascotas.app.security.repositories.UserRepository;
@@ -14,10 +13,9 @@ import org.springframework.stereotype.Service;
 import com.mascotas.app.files.FileUploadService;
 import com.mascotas.app.modules.details.DetailModel;
 import com.mascotas.app.modules.details.DetailRepository;
-import com.mascotas.app.modules.owners.OwnerModel;
+import com.mascotas.app.modules.owners.OwnerEntity;
 import com.mascotas.app.modules.owners.OwnerRepository;
 import com.mascotas.app.utils.FechaUtil;
-import com.mascotas.app.utils.StringUtil;
 
 @Slf4j
 @Service
@@ -38,10 +36,10 @@ public class PetServiceImpl implements PetService{
 
 	public List<PetEntity> listAllPets(){
 		List<PetEntity> listPets = new ArrayList<>();
-		List<OwnerModel> listOwnerDb = ownerRepository.findAll();
+		List<OwnerEntity> listOwnerDb = ownerRepository.findAll();
 		List<Long> listIdPetsByOwner = new ArrayList<>();
 
-		for(OwnerModel p:listOwnerDb){
+		for(OwnerEntity p:listOwnerDb){
 			for(PetEntity q:p.getPets()){
 				listIdPetsByOwner.add(q.getId());
 			}
@@ -62,7 +60,7 @@ public class PetServiceImpl implements PetService{
 		newPet.setSize(petDTO.getSize());
 
 		UserEntity userEntity = userRepository.findByUsername(username).get();
-		OwnerModel ownerPet = ownerRepository.findByUser(userEntity).get();
+		OwnerEntity ownerPet = ownerRepository.findByUser(userEntity).get();
 		newPet.setOwner(ownerPet);
 
 		DetailModel petDetail = detailRepository.findBySpeciesAndBreed(
@@ -98,8 +96,8 @@ public class PetServiceImpl implements PetService{
 		petDB.setSize(petDTO.getSize());
 		DetailModel detailModel = detailRepository.findBySpeciesAndBreed(petDTO.getSpecies(), petDTO.getBreed()).orElse(null);
 		petDB.setDetail(detailModel);
-		OwnerModel ownerModel = ownerRepository.findById(petDTO.getIdOwner()).orElse(null);
-		petDB.setOwner(ownerModel);
+		OwnerEntity ownerEntity = ownerRepository.findById(petDTO.getOwner_id()).orElse(null);
+		petDB.setOwner(ownerEntity);
 		String encoded = fileUploadService.obtenerEncoded(petDTO.getEncoded());
 		petDB.setImage(fileUploadService.convertEncodedToBytes(encoded));
 
@@ -115,8 +113,8 @@ public class PetServiceImpl implements PetService{
 	}
 
 	@Override
-	public List<PetEntity> readByOwner(OwnerModel ownerModel) {
-		return petRepository.findAllByOwner(ownerModel);
+	public List<PetEntity> readByOwner(OwnerEntity ownerEntity) {
+		return petRepository.findAllByOwner(ownerEntity);
 	}
 
 }
