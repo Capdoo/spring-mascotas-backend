@@ -29,5 +29,7 @@ public class SearchDTO {
 	
 	//Mensaje
 	private String message;
+	//Estado
+	private String state;
 
 }

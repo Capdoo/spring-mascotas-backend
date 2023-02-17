@@ -54,9 +54,21 @@ public class PetEntity {
 	@JoinColumn(name = "shelter_id",referencedColumnName = "id", foreignKey = @ForeignKey(name = "PET_FK_SHELTER"))
 	private ShelterModel shelter;
 
-	//For searchs
+
+	//For search
+	//errr
+//	@OneToOne(cascade = CascadeType.ALL)
+//	@JoinColumn(name = "search_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "PET_FK_SEARCH"))
+//	private SearchEntity search;
+
+	@OneToOne(cascade =  CascadeType.ALL,mappedBy = "pet")
+	private SearchEntity search;
+
+
+	/*
 	@OneToMany(cascade =  CascadeType.ALL, mappedBy="pet")
 	private Set<SearchEntity> searchs;
+	*/
 
 	//For pets
 	@OneToMany(cascade =  CascadeType.ALL, mappedBy="pet")

@@ -1,68 +1,75 @@
 package com.mascotas.app.modules.owners;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.mascotas.app.modules.searchs.SearchDTO;
+import com.mascotas.app.modules.searchs.SearchEntity;
+import com.mascotas.app.security.models.UserEntity;
 import com.mascotas.app.security.services.UserService;
+import com.mascotas.app.utils.FechaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.mascotas.app.dto.MessageDTO;
-import com.mascotas.app.security.services.UserServiceImp;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/owners")
 public class OwnerControllers {
 
 	@Autowired
-    OwnerService ownerService;
-	
+	OwnerService ownerService;
 	@Autowired
 	UserService userService;
-	
-	@PostMapping("/create")
-	public ResponseEntity<Object> createOwner(@RequestBody OwnerDTO ownerDTO){
-		
-		try {
-			//if(!(userServiceImp.existsById((int) ownerDTO.getUser_id()))){
-			if(!userService.existsById(ownerDTO.getId())){
-					int b = 11;
-					return new ResponseEntity<Object>(new MessageDTO("The user does not exists"), HttpStatus.BAD_REQUEST);
+	@Autowired
+	FechaUtil fechaUtil;
 
-			}
-
- 			if(ownerService.existsOwnerByUserId((int) ownerDTO.getUser_id())){
-				int a = 10;
-				return new ResponseEntity<Object>(new MessageDTO("This user is already related to an owner"), HttpStatus.BAD_REQUEST);
-			}
-
-			int c = 12;
-			
-			ownerService.saveOwner(ownerDTO);
-			return new ResponseEntity<Object>(new MessageDTO("Registered successfully"), HttpStatus.OK);
-
-		} catch (Exception e) {
-			return new ResponseEntity<Object>(new MessageDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
-		}
-		
+	//read all
+	public ResponseEntity<Object> readOwners(){
+		List<OwnerEntity> listOwnersDB = ownerService.listAllOwners();
+		List<OwnerDTO> listOwners = listOwnersDB.stream().map(
+				this::convertOwnerEntityToDTO
+		).collect(Collectors.toList());
+		return ResponseEntity.status(HttpStatus.OK).body(listOwners);
 	}
-	
-	@GetMapping("/read")
-	public ResponseEntity<Object> obtener(){
-		
-		try {
-			List<OwnerDTO> listaDuenos = ownerService.listAll();
-			return new ResponseEntity<Object>(listaDuenos, HttpStatus.OK);
 
-		} catch (Exception e) {
-			return new ResponseEntity<Object>(new MessageDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
+	//create
+	/*
+	public ResponseEntity<Object> createOwner(){}
+	*/
+
+	@GetMapping("/{id}")
+	public ResponseEntity<Object> readById(@PathVariable(value = "id") Long id){
+		OwnerEntity ownerEntity = ownerService.readOwner(id);
+		if (ownerEntity == null){
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Owner Not Found");
 		}
-		
+		return ResponseEntity.status(HttpStatus.OK).body(this.convertOwnerEntityToDTO(ownerEntity));
 	}
+
+	@PutMapping("/{id}")
+	public ResponseEntity<Object> updateOwner(@PathVariable(value = "id") Long id, @RequestBody OwnerDTO ownerDTO){
+		UserEntity userEntity = userService.readUser(ownerDTO.getUser_id());
+		if (userEntity == null){
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found");
+		}
+		ownerDTO.setId(id);
+		OwnerEntity ownerUpdate = ownerService.updateOwner(ownerDTO);
+		return ResponseEntity.status(HttpStatus.OK).body(this.convertOwnerEntityToDTO(ownerUpdate));
+	}
+
+	private OwnerDTO convertOwnerEntityToDTO(OwnerEntity ownerEntity){
+		return OwnerDTO.builder()
+				.id(ownerEntity.getId())
+				.register_date(fechaUtil.getStrindDateFromTimestamp(ownerEntity.getRegisterDate()))
+				.historial_id(99L)
+				.number_pets(ownerEntity.getNumberPets())
+				.rate(ownerEntity.getRate())
+				.user_id(ownerEntity.getUser().getId()).build();
+	}
+
 	
 }

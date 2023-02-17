@@ -15,8 +15,10 @@ public interface SearchService {
     public SearchEntity deleteSearch(SearchDTO searchDTO);
 
     //business rules
-    public List<SearchEntity> readAllSearchsByPet(PetEntity petEntity);
+    public SearchEntity readSearchByPet(PetEntity petEntity);
     public List<SearchEntity> radAllSearchsByOwner(OwnerEntity ownerEntity);
+
+    public Boolean existsByPet(PetEntity petEntity);
 
     //public Boolean existsById();
 

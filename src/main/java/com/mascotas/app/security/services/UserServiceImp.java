@@ -99,7 +99,7 @@ public class UserServiceImp implements UserService{
 	}
 
 	@Override
-	public boolean existsById(Long id) {
+	public Boolean existsById(Long id) {
 		return userRepository.existsById(id);
 	}
 
@@ -114,7 +114,7 @@ public class UserServiceImp implements UserService{
 	}
 
 	@Override
-	public boolean existsByUsername(String nombreUsuario) {
+	public Boolean existsByUsername(String nombreUsuario) {
 		return userRepository.existsByUsername(nombreUsuario);
 	}
 

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mascotas.app.modules.owners.OwnerDTO;
 import com.mascotas.app.modules.owners.OwnerService;
+import com.mascotas.app.modules.owners.OwnerServiceImpl;
 import com.mascotas.app.security.models.UserEntity;
 import com.mascotas.app.security.services.UserServiceImp;
 import com.mascotas.app.utils.ErrorMessageUtil;
@@ -66,7 +67,7 @@ public class AuthController {
 		newUserDTO.setPassword(passwordEncoder.encode(newUserDTO.getPassword()));
 
 		UserEntity userCreate = userServiceImp.createUser(newUserDTO);
-		ownerService.saveOwner(new OwnerDTO(userCreate.getId()));
+		ownerService.createOwner(new OwnerDTO(userCreate.getId()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(userCreate);
 	}
 	

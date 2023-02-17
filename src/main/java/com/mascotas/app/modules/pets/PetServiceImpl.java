@@ -117,4 +117,9 @@ public class PetServiceImpl implements PetService{
 		return petRepository.findAllByOwner(ownerEntity);
 	}
 
+	@Override
+	public Boolean existsById(Long id) {
+		return petRepository.existsById(id);
+	}
+
 }

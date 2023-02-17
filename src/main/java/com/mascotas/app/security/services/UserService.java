@@ -17,7 +17,7 @@ public interface UserService {
     public UserEntity updateUser(UserDTO userDTO);
     public UserEntity deleteUser(UserDTO userDTO);
 
-    public boolean existsById(Long id);
-    public boolean existsByUsername(String username);
+    public Boolean existsById(Long id);
+    public Boolean existsByUsername(String username);
 
 }

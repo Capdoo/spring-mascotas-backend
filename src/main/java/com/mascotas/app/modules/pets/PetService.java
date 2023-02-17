@@ -17,6 +17,7 @@ public interface PetService {
     //Find by Owner
     public List<PetEntity> readByOwner(OwnerEntity ownerEntity);
 
-
+    //Exists By Id
+    public Boolean existsById(Long id);
 
 }

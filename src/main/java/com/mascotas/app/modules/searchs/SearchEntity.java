@@ -46,9 +46,15 @@ public class SearchEntity {
 	@NotEmpty(message = "Message can not be empty")
 	@Column(nullable = false, name = "message")
 	private String message;
-	
+	/*
 	@ManyToOne
 	@JoinColumn(name="pet_id",referencedColumnName = "id", nullable=false)
 	private PetEntity pet;
+	 */
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "pet_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "SEARCH_FK_PET"), unique = true)
+	private PetEntity pet;
+
+	private String state;
 
 }
