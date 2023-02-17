@@ -35,16 +35,17 @@ public class PetServiceImpl implements PetService{
 	FechaUtil fechaUtil;
 
 	public List<PetEntity> listAllPets(){
-		List<PetEntity> listPets = new ArrayList<>();
-		List<OwnerEntity> listOwnerDb = ownerRepository.findAll();
-		List<Long> listIdPetsByOwner = new ArrayList<>();
-
-		for(OwnerEntity p:listOwnerDb){
-			for(PetEntity q:p.getPets()){
-				listIdPetsByOwner.add(q.getId());
-			}
-		}
-		return petRepository.findAllById(listIdPetsByOwner);
+		return petRepository.findAll();
+//		List<PetEntity> listPets = new ArrayList<>();
+//		List<OwnerEntity> listOwnerDb = ownerRepository.findAll();
+//		List<Long> listIdPetsByOwner = new ArrayList<>();
+//
+//		for(OwnerEntity p:listOwnerDb){
+//			for(PetEntity q:p.getPets()){
+//				listIdPetsByOwner.add(q.getId());
+//			}
+//		}
+//		return petRepository.findAllById(listIdPetsByOwner);
 	}
 
 	@Override

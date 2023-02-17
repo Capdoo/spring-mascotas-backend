@@ -31,7 +31,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class PetController {
 
 	@Autowired
-	PetServiceImpl petServiceImpl;
+	PetService petService;
 	@Autowired
 	JwtProvider jwtProvider;
 	@Autowired
@@ -47,7 +47,7 @@ public class PetController {
 
 	@GetMapping
 	public ResponseEntity<Object> listPets(){
-		List<PetEntity> listPets = petServiceImpl.listAllPets();
+		List<PetEntity> listPets = petService.listAllPets();
 		List<PetDTO> sendList = listPets.stream().map(
 				this::convertPetEntityToDTO
 		).collect(Collectors.toList());
@@ -66,7 +66,7 @@ public class PetController {
 		if (!userService.existsByUsername(username)){
 			return ResponseEntity.notFound().build();
 		}
-		PetEntity petCreate = petServiceImpl.createPet(petDTO,username);
+		PetEntity petCreate = petService.createPet(petDTO,username);
 		return ResponseEntity.status(HttpStatus.CREATED).body(this.convertPetEntityToDTO(petCreate));
 	}
 	
@@ -75,7 +75,7 @@ public class PetController {
 		if (!petRepository.existsById(id)){
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pet Not Found");
 		}
-		PetEntity petRead = petServiceImpl.readPet(id);
+		PetEntity petRead = petService.readPet(id);
 		return ResponseEntity.status(HttpStatus.OK).body(this.convertPetEntityToDTO(petRead));
 	}
 
@@ -88,7 +88,7 @@ public class PetController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Owner Not Found");
 		}
 		petDTO.setId(id);
-		PetEntity petUpdate = petServiceImpl.updatePet(petDTO);
+		PetEntity petUpdate = petService.updatePet(petDTO);
 		return ResponseEntity.status(HttpStatus.OK).body(this.convertPetEntityToDTO(petUpdate));
 	}
 
@@ -99,7 +99,7 @@ public class PetController {
 		}
 		PetDTO petDTO = new PetDTO();
 		petDTO.setId(id);
-		PetEntity petDelete = petServiceImpl.deletePet(petDTO);
+		PetEntity petDelete = petService.deletePet(petDTO);
 		return ResponseEntity.status(HttpStatus.OK).body(this.convertPetEntityToDTO(petDelete));
 	}
 
@@ -109,7 +109,7 @@ public class PetController {
 		if(ownerModel.isEmpty()){
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Owner Not Found");
 		}
-		List<PetEntity> petReadByOwner = petServiceImpl.readByOwner(ownerModel.get());
+		List<PetEntity> petReadByOwner = petService.readByOwner(ownerModel.get());
 		List<PetDTO> sendList = petReadByOwner.stream().map(
 				this::convertPetEntityToDTO
 		).collect(Collectors.toList());

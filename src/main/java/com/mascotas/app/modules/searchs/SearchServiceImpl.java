@@ -62,11 +62,11 @@ public class SearchServiceImpl implements SearchService{
 	@Override
 	public SearchEntity updateSearch(SearchDTO searchDTO) {
 
-		PetEntity petEntityDB = petService.readPet(searchDTO.getPet_id());
+		PetEntity petEntityDB = readSearch(searchDTO.getId()).getPet();
 		if (petEntityDB == null){
 			return null;
 		}
-		SearchEntity searchEntity = readSearch(searchDTO.getPet_id());
+		SearchEntity searchEntity = readSearch(searchDTO.getId());
 		searchEntity.setAddress(searchDTO.getAddress());
 		searchEntity.setDistrict(searchDTO.getDistrict());
 		//searchEntity.setRegisterDate(fechaUtil.getTimestampFromStringDate(searchDTO.getRegister_date()));

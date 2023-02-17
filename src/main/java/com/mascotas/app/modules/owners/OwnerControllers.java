@@ -11,6 +11,7 @@ import com.mascotas.app.utils.FechaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import com.mascotas.app.dto.MessageDTO;
@@ -28,6 +29,7 @@ public class OwnerControllers {
 	FechaUtil fechaUtil;
 
 	//read all
+	@GetMapping
 	public ResponseEntity<Object> readOwners(){
 		List<OwnerEntity> listOwnersDB = ownerService.listAllOwners();
 		List<OwnerDTO> listOwners = listOwnersDB.stream().map(
@@ -41,6 +43,29 @@ public class OwnerControllers {
 	public ResponseEntity<Object> createOwner(){}
 	*/
 
+	@PutMapping("/{id}")
+	public ResponseEntity<Object> updateOwner(@PathVariable(value = "id") Long id, @RequestBody OwnerDTO ownerDTO){
+		UserEntity userEntity = ownerService.readOwner(id).getUser();
+		if (userEntity == null){
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found");
+		}
+		ownerDTO.setId(id);
+		OwnerEntity ownerUpdate = ownerService.updateOwner(ownerDTO);
+		return ResponseEntity.status(HttpStatus.OK).body(this.convertOwnerEntityToDTO(ownerUpdate));
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Object> deleteOwner(@PathVariable(value = "id") Long id){
+		UserEntity userEntity = ownerService.readOwner(id).getUser();
+		if (userEntity == null){
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found");
+		}
+		OwnerDTO ownerDTO = new OwnerDTO();
+		ownerDTO.setId(id);
+		OwnerEntity ownerDelete = ownerService.deleteOwner(ownerDTO);
+		return ResponseEntity.status(HttpStatus.OK).body(this.convertOwnerEntityToDTO(ownerDelete));
+	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> readById(@PathVariable(value = "id") Long id){
 		OwnerEntity ownerEntity = ownerService.readOwner(id);
@@ -50,17 +75,6 @@ public class OwnerControllers {
 		return ResponseEntity.status(HttpStatus.OK).body(this.convertOwnerEntityToDTO(ownerEntity));
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<Object> updateOwner(@PathVariable(value = "id") Long id, @RequestBody OwnerDTO ownerDTO){
-		UserEntity userEntity = userService.readUser(ownerDTO.getUser_id());
-		if (userEntity == null){
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found");
-		}
-		ownerDTO.setId(id);
-		OwnerEntity ownerUpdate = ownerService.updateOwner(ownerDTO);
-		return ResponseEntity.status(HttpStatus.OK).body(this.convertOwnerEntityToDTO(ownerUpdate));
-	}
-
 	private OwnerDTO convertOwnerEntityToDTO(OwnerEntity ownerEntity){
 		return OwnerDTO.builder()
 				.id(ownerEntity.getId())
@@ -68,7 +82,8 @@ public class OwnerControllers {
 				.historial_id(99L)
 				.number_pets(ownerEntity.getNumberPets())
 				.rate(ownerEntity.getRate())
-				.user_id(ownerEntity.getUser().getId()).build();
+				.user_id(ownerEntity.getUser().getId())
+				.state(ownerEntity.getState()).build();
 	}
 
 	

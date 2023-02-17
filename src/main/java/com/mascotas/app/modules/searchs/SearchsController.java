@@ -83,9 +83,9 @@ public class SearchsController {
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Object> updatePet(@PathVariable(value = "id") Long id, @RequestBody SearchDTO searchDTO){
 
-		PetEntity petEntity = petService.readPet(searchDTO.getPet_id());
+		PetEntity petEntity = searchService.readSearch(id).getPet();
 		if (petEntity == null){
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pet Not Found");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pet No Longer Exists");
 		}
 
 		searchDTO.setId(id);
@@ -114,7 +114,7 @@ public class SearchsController {
 		}
 		PetEntity petEntity = petService.readPet(pet_id);
 		if (!searchService.existsByPet(petEntity)){
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Search Not Found");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pet With No Search");
 		}
 		SearchEntity searchByPet = searchService.readSearchByPet(petEntity);
 		return ResponseEntity.status(HttpStatus.OK).body(this.convertSearchEntityToDTO(searchByPet));
