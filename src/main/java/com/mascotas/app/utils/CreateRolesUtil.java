@@ -68,26 +68,9 @@ public class CreateRolesUtil implements CommandLineRunner{
 				,"Irish terrier","Irish Water Spaniel","Irish Wolfhound","Jack Russell terrier","Jindo Coreano","Kai","Keeshond"
 				,"Kelpie australiano","Kerry blue terrier","King Charles Spaniel","Kishu","Komondor","Kooiker","Kromfohrländer","Kuvasz","Labrador Retriever"
 				,"Lagotto Romagnolo","Laika de Siberia Occidental","Laika de Siberia Oriental","Laika Ruso Europeo","Lakeland terrier","Landseer","Lapphund Sueco"
-				,"Lebrel Afgano","Lebrel Arabe","Leonberger"
-				,"Lhasa Apso"
-				,"Lowchen"
-				,"Lundehund Noruego"
-				,"Malamute de Alaska"
-				,"Maltés"
-				,"Manchester terrier"
-				,"Mastiff"
-				,"Mastín de los Pirineos"
-				,"Mastín Español"
-				,"Mastín Napolitano"
-				,"Mudi"
-				,"Norfolk terrier"
-				,"Norwich terrier"
-				,"Nova Scotia duck tolling retriever"
-				,"Ovejero alemán"
-				,"Otterhound"
-				,"Rafeiro do Alentejo"
-				,"Ratonero Bodeguero Andaluz"
-				,"Retriever de Nueva Escocia"
+				,"Lebrel Afgano","Lebrel Arabe","Leonberger","Lhasa Apso","Lowchen","Lundehund Noruego","Malamute de Alaska","Maltés","Manchester terrier","Mastiff"
+				,"Mastín de los Pirineos","Mastín Español","Mastín Napolitano","Mudi","Norfolk terrier","Norwich terrier","Nova Scotia duck tolling retriever"
+				,"Ovejero alemán","Otterhound","Rafeiro do Alentejo","Ratonero Bodeguero Andaluz","Retriever de Nueva Escocia"
 				,"Rhodesian Ridgeback"
 				,"Ridgeback de Tailandia"
 				,"Rottweiler"
@@ -182,12 +165,12 @@ public class CreateRolesUtil implements CommandLineRunner{
 
 		List<DetailModel> listDetails = new ArrayList<>();
 		for(String p:listBreedsCats){
-			if(!detailRepository.existsBySpeciesAndBreed("gato",p)){
+			if(!detailRepository.existsBySpeciesAndBreed("Gato",p)){
 				listDetails.add(new DetailModel("Gato", p));
 			}
 		}
 		for(String q:listBreedsDogs){
-			if(!detailRepository.existsBySpeciesAndBreed("perro",q)){
+			if(!detailRepository.existsBySpeciesAndBreed("Perro",q)){
 				listDetails.add(new DetailModel("Perro", q));
 			}
 		}
