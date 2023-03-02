@@ -166,12 +166,20 @@ public class CreateRolesUtil implements CommandLineRunner{
 		List<DetailModel> listDetails = new ArrayList<>();
 		for(String p:listBreedsCats){
 			if(!detailRepository.existsBySpeciesAndBreed("Gato",p)){
-				listDetails.add(new DetailModel("Gato", p));
+				DetailModel detailModel = DetailModel.builder()
+						.species("Gato")
+						.breed(p)
+						.build();
+				listDetails.add(detailModel);
 			}
 		}
 		for(String q:listBreedsDogs){
 			if(!detailRepository.existsBySpeciesAndBreed("Perro",q)){
-				listDetails.add(new DetailModel("Perro", q));
+				DetailModel detailModel = DetailModel.builder()
+						.species("Perro")
+						.breed(q)
+						.build();
+				listDetails.add(detailModel);
 			}
 		}
 		detailRepository.saveAll(listDetails);

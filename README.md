@@ -1,40 +1,40 @@
-# Spring Mascotas Perdidas Backend v1.0
+# Spring Lost Pets Backend
 
-Proyecto backend para el Sistema Mascotas Perdidas
+Backend for the Lost Pet project
 
-## Despliegue
+## Deployment
 
 * [Project Deploy Swagger](https://spring-mascotas-backend-production.up.railway.app/swagger-ui/index.html#/)
 
 
-## Descripción
+## Description
 
-Para la realización de este proyecto se usó Spring Boot v2.6.2.
+Spring Boot version > 2.6.X is used
 
-## Inicio
+## Start
 
-### Dependencias
+### Dependencies
 
-* Spring v2.6.2, Spring JPA, MySQL driver, Java 8 u 11.
-* Sistema Operativo Independiente
+* Spring v2.6.2, Spring JPA, MySQL driver, Java 8+.
+* Independent Operating System
 
-### Instalación
+### Installation
 
-* Clonar el repositorio
+* Clone this repository
 ```
 git clone https://github.com/Capdoo/spring-mascotas-backend.git
 ```
 
-* Crear la Base de Datos usando MySQL
+* Create database in your server
 ```
-CREATE DATABASE mascotasBD CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE petsdb CHARACTER SET utf8 COLLATE utf8_general_ci;
 ```
 
 
-### Editar las propiedades
+### Edit properties
 
-* Es necesario modificar el archivo application.properties
-* Se debe indicar el nombre de usuario y contraseña de la Base de Datos
+* It's neccessary to modify the application.properties file
+* Set the username and password for the mysql dabase
 
 ```
 spring.datasource.url=jdbc:mysql://<host>:<port>/mascotasBD
@@ -43,22 +43,20 @@ spring.datasource.password=<password>
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 ```
 
-## Ejecución
+## Execution
 
-Iniciar el proyecto a través de cualquier IDE.
+Start the application with any IDE or with maven by navigating to the root directory of the project
 ```
-Actualizar las dependencias (pom.xml)
-Cambiar la configuración en propiedades
-Hacer build
+mvn spring-boot:run
 ```
 
 
-## Base de Datos
+## ER Diagram
 ![plot](./src/main/resources/static/BaseDatos.png)
 
 ## Authors
 
-Contribuidores y enlaces
+Contributors and links
 
 . [@Capdoo](https://github.com/Capdoo)
 
