@@ -15,19 +15,15 @@ import com.mascotas.app.files.FileUploadService;
 
 import com.mascotas.app.utils.FechaUtil;
 
-
 @Service
 public class ShelterService {
 
 	@Autowired
 	ShelterRepository shelterRepository;
-	
 	@Autowired
 	UserRepository userRepository;
-
 	@Autowired
     FileUploadService fileUploadService;
-
 	@Autowired
     UserServiceImp userServiceImp;
 
@@ -36,7 +32,6 @@ public class ShelterService {
 		//UsuarioModel usuarioRepresentante = usuarioRepository.findById(refugioDTO.getIdRepresentante()).get();
 		UserEntity usuarioRepresentante = userRepository.findByDni(shelterDTO.getDniMainPartner()).get();
 
-		
 		ShelterModel refugioNuevo = new ShelterModel();
 			refugioNuevo.setAddress(shelterDTO.getAddress());
 			refugioNuevo.setDistrict(shelterDTO.getDistrict());
@@ -65,7 +60,6 @@ public class ShelterService {
 		List<ShelterDTO> listaEnviar = new ArrayList<>();
 		List<ShelterModel> listaBD = shelterRepository.findAll();
 
-		
 		for(ShelterModel p : listaBD) {
 			FechaUtil fechaUtil = new FechaUtil();
 			ShelterDTO refugioSingle = new ShelterDTO();

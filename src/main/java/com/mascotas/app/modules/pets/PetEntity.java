@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 import com.mascotas.app.modules.adoptions.AdoptionModel;
 import com.mascotas.app.modules.searchs.SearchEntity;
-import com.mascotas.app.modules.details.DetailModel;
+import com.mascotas.app.modules.details.DetailEntity;
 import com.mascotas.app.modules.owners.OwnerEntity;
 import com.mascotas.app.modules.shelters.ShelterModel;
 import lombok.AllArgsConstructor;
@@ -47,7 +47,7 @@ public class PetEntity {
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "detail_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "PET_FK_DETAIL"))
-	private DetailModel detail;
+	private DetailEntity detail;
 
 	//Shelters
 	@ManyToOne(cascade = CascadeType.ALL)

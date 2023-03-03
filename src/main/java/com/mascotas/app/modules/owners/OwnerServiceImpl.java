@@ -54,9 +54,7 @@ public class OwnerServiceImpl implements OwnerService{
 	@Override
 	public OwnerEntity updateOwner(OwnerDTO ownerDTO) {
 		OwnerEntity ownerEntity = readOwner(ownerDTO.getId());
-
 		ownerEntity.setRate(ownerDTO.getRate());
-
 		return ownerRepository.save(ownerEntity);
 	}
 

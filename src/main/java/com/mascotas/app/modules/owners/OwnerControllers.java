@@ -85,6 +85,4 @@ public class OwnerControllers {
 				.user_id(ownerEntity.getUser().getId())
 				.state(ownerEntity.getState()).build();
 	}
-
-	
 }

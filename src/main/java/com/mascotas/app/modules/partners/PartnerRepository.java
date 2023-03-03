@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PartnerRepository extends JpaRepository<PartnerModel, Long> {
-
     List<PartnerModel> findAll();
-
     Optional<PartnerModel> findByUser(PartnerModel partnerModel);
-
 }

@@ -11,6 +11,4 @@ public interface OwnerService {
     public OwnerEntity deleteOwner(OwnerDTO ownerDTO);
 
     //business rules
-
-
 }

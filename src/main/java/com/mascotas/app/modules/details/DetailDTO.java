@@ -12,5 +12,5 @@ public class DetailDTO {
 	private Long id;
 	private String species;
 	private String breed;
-
+	private String state;
 }

@@ -1,6 +1,6 @@
 package com.mascotas.app.utils;
 
-import com.mascotas.app.modules.details.DetailModel;
+import com.mascotas.app.modules.details.DetailEntity;
 import com.mascotas.app.modules.details.DetailRepository;
 import com.mascotas.app.security.repositories.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,23 +163,25 @@ public class CreateRolesUtil implements CommandLineRunner{
 				,"Yorkshire Terrier"
 		};
 
-		List<DetailModel> listDetails = new ArrayList<>();
+		List<DetailEntity> listDetails = new ArrayList<>();
 		for(String p:listBreedsCats){
-			if(!detailRepository.existsBySpeciesAndBreed("Gato",p)){
-				DetailModel detailModel = DetailModel.builder()
+			if(!detailRepository.existsBySpeciesAndBreed("Gato", p)){
+				DetailEntity detailEntity = DetailEntity.builder()
 						.species("Gato")
 						.breed(p)
+						.state("CREATED")
 						.build();
-				listDetails.add(detailModel);
+				listDetails.add(detailEntity);
 			}
 		}
 		for(String q:listBreedsDogs){
-			if(!detailRepository.existsBySpeciesAndBreed("Perro",q)){
-				DetailModel detailModel = DetailModel.builder()
+			if(!detailRepository.existsBySpeciesAndBreed("Perro", q)){
+				DetailEntity detailEntity = DetailEntity.builder()
 						.species("Perro")
 						.breed(q)
+						.state("CREATED")
 						.build();
-				listDetails.add(detailModel);
+				listDetails.add(detailEntity);
 			}
 		}
 		detailRepository.saveAll(listDetails);

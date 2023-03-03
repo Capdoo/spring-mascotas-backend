@@ -43,7 +43,6 @@ public class ShelterController {
 		}
 	}
 
-	
 	@GetMapping("/read")
 	public ResponseEntity<Object> readShelters(){
 		try {
@@ -54,7 +53,6 @@ public class ShelterController {
 		}
 	}
 
-
 	@GetMapping("/read/single")
 	public ResponseEntity<Object> readById(@RequestParam long id){
 		try {
@@ -64,14 +62,4 @@ public class ShelterController {
 			return new ResponseEntity<Object>(new MessageDTO("There has been a problem"), HttpStatus.BAD_REQUEST);
 		}
 	}
-
-	/*
-	@GetMapping("/read/user")
-	public ResponseEntity<Object> readByDniUser(@RequestParam String dni){
-		if(!userServiceImp.existsByDni(dni)){
-			return new ResponseEntity<Object>(new MessageDTO("User not found"), HttpStatus.BAD_REQUEST);
-		}
-		List<ShelterDTO> listaRefugios = shelterService.getByDniUser(dni);
-		return new ResponseEntity<Object>(listaRefugios, HttpStatus.OK);
-	}*/
 }

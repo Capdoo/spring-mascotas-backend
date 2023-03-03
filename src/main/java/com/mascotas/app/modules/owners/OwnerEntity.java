@@ -48,7 +48,5 @@ public class OwnerEntity {
 	//Pets: 1-N
 	@OneToMany(mappedBy="owner")
 	private Set<PetEntity> pets;
-
 	private String state;
-
 }

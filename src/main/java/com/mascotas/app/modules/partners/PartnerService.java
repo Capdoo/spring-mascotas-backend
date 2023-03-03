@@ -28,11 +28,4 @@ public class PartnerService {
         partnerModel.setRegisterDate(new Timestamp(System.currentTimeMillis()));
         return partnerRepository.save(partnerModel);
     }
-    /*
-    public List<PartnerDTO> listAll(){
-        List<PartnerDTO> sendList = new ArrayList<>();
-    }*/
-
-
-
 }

@@ -16,7 +16,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor @AllArgsConstructor
 @Builder
-public class DetailModel {
+public class DetailEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

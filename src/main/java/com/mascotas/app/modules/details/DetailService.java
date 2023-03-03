@@ -3,17 +3,11 @@ package com.mascotas.app.modules.details;
 import java.util.List;
 
 public interface DetailService {
-
-    public List<DetailModel> listAllDetails();
-    public DetailModel createDetail(DetailDTO detailDTO);
-    public DetailModel readDetail(Long id);
-    public DetailModel updateDetail(DetailDTO detailDTO);
-    public DetailModel deleteDetail(DetailDTO detailDTO);
-
-    public List<DetailModel> readBySpecies(DetailDTO detailDTO);
-
-    //Business
-    public Boolean existsById(Long id);
-
-
+    public List<DetailEntity> listAllDetails();
+    public DetailEntity createDetail(DetailDTO detailDTO);
+    public DetailEntity readDetail(Long id);
+    public DetailEntity updateDetail(DetailDTO detailDTO);
+    public DetailEntity deleteDetail(DetailDTO detailDTO);
+    //business
+    public List<DetailEntity> readAllBySpecies(DetailDTO detailDTO);
 }

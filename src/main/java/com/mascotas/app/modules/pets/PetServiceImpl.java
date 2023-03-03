@@ -1,7 +1,6 @@
 package com.mascotas.app.modules.pets;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.mascotas.app.security.models.UserEntity;
@@ -11,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mascotas.app.files.FileUploadService;
-import com.mascotas.app.modules.details.DetailModel;
+import com.mascotas.app.modules.details.DetailEntity;
 import com.mascotas.app.modules.details.DetailRepository;
 import com.mascotas.app.modules.owners.OwnerEntity;
 import com.mascotas.app.modules.owners.OwnerRepository;
@@ -54,7 +53,7 @@ public class PetServiceImpl implements PetService{
 		OwnerEntity ownerPet = ownerRepository.findByUser(userEntity).get();
 		newPet.setOwner(ownerPet);
 
-		DetailModel petDetail = detailRepository.findBySpeciesAndBreed(
+		DetailEntity petDetail = detailRepository.findBySpeciesAndBreed(
 				petDTO.getSpecies(),
 				petDTO.getBreed()).get();
 		newPet.setDetail(petDetail);
@@ -85,8 +84,8 @@ public class PetServiceImpl implements PetService{
 		petDB.setSpecificBreed(petDTO.getSpecificBreed());
 		petDB.setCharacteristic(petDTO.getCharacteristic());
 		petDB.setSize(petDTO.getSize());
-		DetailModel detailModel = detailRepository.findBySpeciesAndBreed(petDTO.getSpecies(), petDTO.getBreed()).orElse(null);
-		petDB.setDetail(detailModel);
+		DetailEntity detailEntity = detailRepository.findBySpeciesAndBreed(petDTO.getSpecies(), petDTO.getBreed()).orElse(null);
+		petDB.setDetail(detailEntity);
 		OwnerEntity ownerEntity = ownerRepository.findById(petDTO.getOwner_id()).orElse(null);
 		petDB.setOwner(ownerEntity);
 		String encoded = fileUploadService.obtenerEncoded(petDTO.getEncoded());
