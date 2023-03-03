@@ -33,7 +33,7 @@ CREATE DATABASE petsdb CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 ### Edit properties
 
-* It's neccessary to modify the application.properties file
+* It's necessary to modify the application.properties file
 * Set the username and password for the mysql dabase
 
 ```
