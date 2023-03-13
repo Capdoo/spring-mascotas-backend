@@ -118,6 +118,8 @@ public class UserServiceImp implements UserService{
 		return userRepository.existsByUsername(nombreUsuario);
 	}
 
+
+
 	public boolean existsByUsernameOrEmail(String usernameOrEmail) {
 		return userRepository.existsByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
 	}
@@ -132,19 +134,12 @@ public class UserServiceImp implements UserService{
 	public void deleteUser(long id){
 	}
 
-	private UserDTO convertUserEntityToDTO(UserEntity userEntity){
-		return UserDTO.builder()
-				.id(userEntity.getId())
-				.firstName(userEntity.getFirstName())
-				.lastName(userEntity.getLastName())
-				.surName(userEntity.getSurName())
-				.address(userEntity.getAddress())
-				.dni(userEntity.getDni())
-				.email(userEntity.getEmail())
-				.phone(userEntity.getPhone())
-				.username(userEntity.getUsername())
-				.encoded(fileUploadService.convertBytesToEncoded(userEntity.getImage())).build();
+	@Override
+	public UserEntity readByUsername(String username) {
+		return userRepository.findByUsername(username).orElse(null);
 	}
+
+
 
 }
 

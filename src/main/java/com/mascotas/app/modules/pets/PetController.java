@@ -13,6 +13,8 @@ import com.mascotas.app.files.FileUploadService;
 import com.mascotas.app.modules.owners.OwnerEntity;
 import com.mascotas.app.modules.owners.OwnerRepository;
 import com.mascotas.app.security.jwt.JwtProvider;
+import com.mascotas.app.security.models.UserEntity;
+import com.mascotas.app.security.repositories.UserRepository;
 import com.mascotas.app.security.services.UserService;
 import com.mascotas.app.utils.ErrorMessageUtil;
 import com.mascotas.app.utils.FechaUtil;
@@ -44,6 +46,8 @@ public class PetController {
 	FechaUtil fechaUtil;
 	@Autowired
 	FileUploadService fileUploadService;
+	@Autowired
+	UserRepository userRepository;
 
 	@GetMapping
 	public ResponseEntity<Object> listPets(){
@@ -103,8 +107,26 @@ public class PetController {
 		return ResponseEntity.status(HttpStatus.OK).body(this.convertPetEntityToDTO(petDelete));
 	}
 
+	@GetMapping(value = "/owner")
+	public ResponseEntity<Object> readByOwner(@RequestHeader(value = "Authorization") String token){
+		String username = jwtProvider.getNombreUsuarioFromToken(token.split(" ")[1]);
+		UserEntity userEntity = userService.readByUsername(username);
+		if (userEntity == null){
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found");
+		}
+		Optional<OwnerEntity> ownerModel = ownerRepository.findById(userEntity.getOwner().getId());
+		if(ownerModel.isEmpty()){
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Owner Not Found");
+		}
+		List<PetEntity> petReadByOwner = petService.readByOwner(ownerModel.get());
+		List<PetDTO> sendList = petReadByOwner.stream().map(
+				this::convertPetEntityToDTO
+		).collect(Collectors.toList());
+		return ResponseEntity.status(HttpStatus.OK).body(sendList);
+	}
+
 	@GetMapping(value = "/owner/{id}")
-	public ResponseEntity<Object> readByOwner(@PathVariable(value = "id") Long idOwner){
+	public ResponseEntity<Object> readByOwnerId(@PathVariable(value = "id") Long idOwner){
 		Optional<OwnerEntity> ownerModel = ownerRepository.findById(idOwner);
 		if(ownerModel.isEmpty()){
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Owner Not Found");
