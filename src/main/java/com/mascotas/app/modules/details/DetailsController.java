@@ -20,8 +20,6 @@ public class DetailsController {
 
 	@Autowired
 	DetailService detailService;
-	@Autowired
-	DetailServiceImpl detailServiceImpl;
 	
 	@GetMapping
 	public ResponseEntity<Object> readAll(){
