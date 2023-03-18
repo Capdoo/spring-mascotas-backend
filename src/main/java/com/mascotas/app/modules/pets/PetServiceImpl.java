@@ -86,8 +86,7 @@ public class PetServiceImpl implements PetService{
 		petDB.setSize(petDTO.getSize());
 		DetailEntity detailEntity = detailRepository.findBySpeciesAndBreed(petDTO.getSpecies(), petDTO.getBreed()).orElse(null);
 		petDB.setDetail(detailEntity);
-		OwnerEntity ownerEntity = ownerRepository.findById(petDTO.getOwner_id()).orElse(null);
-		petDB.setOwner(ownerEntity);
+
 		String encoded = fileUploadService.obtenerEncoded(petDTO.getEncoded());
 		petDB.setImage(fileUploadService.convertEncodedToBytes(encoded));
 

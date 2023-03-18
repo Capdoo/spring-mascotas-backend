@@ -84,11 +84,16 @@ public class PetController {
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Object> updatePet(@PathVariable(value = "id") Long id, @RequestBody PetDTO petDTO){
+	public ResponseEntity<Object> updatePet(@PathVariable(value = "id") Long id, @RequestBody PetDTO petDTO, @RequestHeader(value = "Authorization") String token){
 		if (!petRepository.existsById(id)){
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pet Not Found");
 		}
-		if (!ownerRepository.existsById(petDTO.getOwner_id())){
+
+		UserEntity user = userService.readByUsername(jwtProvider.getNombreUsuarioFromToken(
+				token.split(" ")[1]
+		));
+
+		if (!ownerRepository.existsById(user.getOwner().getId())){
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Owner Not Found");
 		}
 		petDTO.setId(id);
