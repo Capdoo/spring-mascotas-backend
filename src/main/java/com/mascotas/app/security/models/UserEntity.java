@@ -43,10 +43,6 @@ public class UserEntity {
 	@Column(name="last_name", nullable = false)
 	private String lastName;
 
-	@NotEmpty(message = "Sur Name can not be empty")
-	@Column(name="sur_name", nullable = false)
-	private String surName;
-
 	@NotEmpty(message = "Phone can not be empty")
 	@Column(name="phone")
 	private String phone;

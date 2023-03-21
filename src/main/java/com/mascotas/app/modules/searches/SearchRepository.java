@@ -1,9 +1,8 @@
-package com.mascotas.app.modules.searchs;
+package com.mascotas.app.modules.searches;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.mascotas.app.modules.owners.OwnerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.mascotas.app.modules.pets.PetEntity;

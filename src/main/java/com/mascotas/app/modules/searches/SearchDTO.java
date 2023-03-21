@@ -1,4 +1,4 @@
-package com.mascotas.app.modules.searchs;
+package com.mascotas.app.modules.searches;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,23 +13,27 @@ public class SearchDTO {
 	private Long id;
 	private String address;
 	private String district;
-	private String phone_a;
-	private String phone_b;
+	private String phoneA;
+	private String phoneB;
 
 	//Pet
-	private Long pet_id;
-	private String name_pet;
-	private String species_pet;
-	private String breed_pet;
-
+	private Long petId;
+	private String namePet;
+	private String speciesPet;
+	private String breedPet;
 
 	//Fecha de usuario
-	private String lost_date;
-	private String register_date;
+	private String lostDate;
+	private String registerDate;
 	
 	//Mensaje
 	private String message;
+
+	//MainPicture
+	private String encoded;
+
 	//Estado
 	private String state;
+
 
 }

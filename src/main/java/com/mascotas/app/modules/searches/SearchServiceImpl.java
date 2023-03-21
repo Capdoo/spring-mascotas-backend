@@ -1,4 +1,4 @@
-package com.mascotas.app.modules.searchs;
+package com.mascotas.app.modules.searches;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -36,7 +36,7 @@ public class SearchServiceImpl implements SearchService{
 	@Override
 	public SearchEntity createSearch(SearchDTO searchDTO) {
 
-		PetEntity petEntityDB = petService.readPet(searchDTO.getPet_id());
+		PetEntity petEntityDB = petService.readPet(searchDTO.getPetId());
 
 		if (petEntityDB == null){
 			return null;
@@ -45,9 +45,9 @@ public class SearchServiceImpl implements SearchService{
 				.address(searchDTO.getAddress())
 				.district(searchDTO.getDistrict())
 				.registerDate(new Timestamp(System.currentTimeMillis()))
-				.lostDate(fechaUtil.getTimestampFromStringDate(searchDTO.getLost_date()))
-				.phoneA(searchDTO.getPhone_a())
-				.phoneB(searchDTO.getPhone_b())
+				.phoneA(searchDTO.getPhoneA())
+				.phoneB(searchDTO.getPhoneB())
+				.lostDate(fechaUtil.getTimestampFromStringDate(searchDTO.getLostDate()))
 				.message(searchDTO.getMessage())
 				.pet(petEntityDB)
 				.state("CREATE").build();
@@ -70,9 +70,9 @@ public class SearchServiceImpl implements SearchService{
 		searchEntity.setAddress(searchDTO.getAddress());
 		searchEntity.setDistrict(searchDTO.getDistrict());
 		//searchEntity.setRegisterDate(fechaUtil.getTimestampFromStringDate(searchDTO.getRegister_date()));
-		searchEntity.setLostDate(fechaUtil.getTimestampFromStringDate(searchDTO.getLost_date()));
-		searchEntity.setPhoneA(searchDTO.getPhone_a());
-		searchEntity.setPhoneB(searchDTO.getPhone_b());
+		searchEntity.setLostDate(fechaUtil.getTimestampFromStringDate(searchDTO.getLostDate()));
+		searchEntity.setPhoneA(searchDTO.getPhoneA());
+		searchEntity.setPhoneB(searchDTO.getPhoneB());
 		searchEntity.setMessage(searchDTO.getMessage());
 		return searchRepository.save(searchEntity);
 	}

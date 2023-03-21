@@ -3,18 +3,14 @@ package com.mascotas.app.modules.owners;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.mascotas.app.modules.searchs.SearchDTO;
-import com.mascotas.app.modules.searchs.SearchEntity;
 import com.mascotas.app.security.models.UserEntity;
 import com.mascotas.app.security.services.UserService;
 import com.mascotas.app.utils.FechaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
-import com.mascotas.app.dto.MessageDTO;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController

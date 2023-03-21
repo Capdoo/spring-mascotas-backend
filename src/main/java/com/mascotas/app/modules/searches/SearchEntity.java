@@ -1,4 +1,4 @@
-package com.mascotas.app.modules.searchs;
+package com.mascotas.app.modules.searches;
 
 import java.sql.Timestamp;
 
@@ -12,7 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="searchs")
+@Table(name="searches")
 @Data
 @AllArgsConstructor @NoArgsConstructor
 @Builder

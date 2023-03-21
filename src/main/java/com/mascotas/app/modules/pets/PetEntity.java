@@ -6,7 +6,7 @@ import java.util.Set;
 import javax.persistence.*;
 
 import com.mascotas.app.modules.adoptions.AdoptionModel;
-import com.mascotas.app.modules.searchs.SearchEntity;
+import com.mascotas.app.modules.searches.SearchEntity;
 import com.mascotas.app.modules.details.DetailEntity;
 import com.mascotas.app.modules.owners.OwnerEntity;
 import com.mascotas.app.modules.shelters.ShelterModel;

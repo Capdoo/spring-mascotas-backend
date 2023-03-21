@@ -1,4 +1,4 @@
-package com.mascotas.app.modules.searchs;
+package com.mascotas.app.modules.searches;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +27,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/searchs")
-public class SearchsController {
+public class SearchesController {
 
 	@Autowired
 	SearchService searchService;
@@ -62,7 +62,7 @@ public class SearchsController {
 		if (bindingResult.hasErrors()) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, this.formatMessage(bindingResult));
 		}
-		if (!petService.existsById(searchDTO.getPet_id())){
+		if (!petService.existsById(searchDTO.getPetId())){
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pet Not Found");
 		}
 		//Later: save according owner or shelter pet related
@@ -152,15 +152,16 @@ public class SearchsController {
 				.id(searchEntity.getId())
 				.address(searchEntity.getAddress())
 				.district(searchEntity.getDistrict())
-				.phone_a(searchEntity.getPhoneA())
-				.phone_b(searchEntity.getPhoneB())
-				.pet_id(searchEntity.getPet().getId())
-				.name_pet(searchEntity.getPet().getName())
-				.species_pet(searchEntity.getPet().getDetail().getSpecies())
-				.breed_pet(searchEntity.getPet().getDetail().getBreed())
-				.lost_date(fechaUtil.getStrindDateFromTimestamp(searchEntity.getLostDate()))
-				.register_date(fechaUtil.getStrindDateFromTimestamp(searchEntity.getRegisterDate()))
+				.phoneA(searchEntity.getPhoneA())
+				.phoneB(searchEntity.getPhoneB())
+				.petId(searchEntity.getPet().getId())
+				.namePet(searchEntity.getPet().getName())
+				.speciesPet(searchEntity.getPet().getDetail().getSpecies())
+				.breedPet(searchEntity.getPet().getDetail().getBreed())
+				.lostDate(fechaUtil.getStrindDateFromTimestamp(searchEntity.getLostDate()))
+				.registerDate(fechaUtil.getStrindDateFromTimestamp(searchEntity.getRegisterDate()))
 				.message(searchEntity.getMessage())
+				.encoded(fileUploadService.convertBytesToEncoded(searchEntity.getPet().getImage()))
 				.state(searchEntity.getState())
 				.build();
 	}

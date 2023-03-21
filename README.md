@@ -52,7 +52,7 @@ mvn spring-boot:run
 
 
 ## ER Diagram
-![plot](./src/main/resources/static/BaseDatos.png)
+![plot](./src/main/resources/static/bd3.png)
 
 ## Authors
 

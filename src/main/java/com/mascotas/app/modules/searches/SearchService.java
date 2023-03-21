@@ -1,4 +1,4 @@
-package com.mascotas.app.modules.searchs;
+package com.mascotas.app.modules.searches;
 
 import com.mascotas.app.modules.owners.OwnerEntity;
 import com.mascotas.app.modules.pets.PetEntity;

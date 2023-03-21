@@ -3,7 +3,7 @@ DROP TABLE user_roles;
 DROP TABLE roles;
 
 DROP TABLE adoptions;
-DROP TABLE searchs;
+DROP TABLE searches;
 DROP TABLE pets;
 
 DROP TABLE owners;

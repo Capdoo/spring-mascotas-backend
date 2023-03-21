@@ -25,8 +25,6 @@ public class UserServiceImp implements UserService{
 	UserRepository userRepository;
 	@Autowired
     FileUploadService fileUploadService;
-//	@Autowired
-//	PasswordEncoder passwordEncoder;
 
 	@Override
 	public List<UserEntity> findAllUsers() {
@@ -58,7 +56,6 @@ public class UserServiceImp implements UserService{
 				.dni(newUserDTO.getDni())
 				.firstName(newUserDTO.getFirstName())
 				.lastName(newUserDTO.getLastName())
-				.surName(newUserDTO.getSurName())
 				.phone(newUserDTO.getPhone())
 				.address(newUserDTO.getAddress())
 				.email(newUserDTO.getEmail())
@@ -79,7 +76,6 @@ public class UserServiceImp implements UserService{
 
 		UserEntity userEntity = readUser(userDTO.getId());
 		userEntity.setLastName(userDTO.getLastName());
-		userEntity.setSurName(userDTO.getSurName());
 		userEntity.setFirstName(userDTO.getFirstName());
 		userEntity.setDni(userDTO.getDni());
 		userEntity.setEmail(userDTO.getEmail());

@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mascotas.app.modules.searchs.SearchRepository;
+import com.mascotas.app.modules.searches.SearchRepository;
 import com.mascotas.app.modules.pets.PetEntity;
 import com.mascotas.app.modules.pets.PetRepository;
 import com.mascotas.app.utils.FechaUtil;

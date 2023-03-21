@@ -80,7 +80,6 @@ public class UsersController {
                 .id(userEntity.getId())
                 .firstName(userEntity.getFirstName())
                 .lastName(userEntity.getLastName())
-                .surName(userEntity.getSurName())
                 .address(userEntity.getAddress())
                 .dni(userEntity.getDni())
                 .email(userEntity.getEmail())
