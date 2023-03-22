@@ -9,11 +9,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mascotas.app.files.FileUploadService;
 import com.mascotas.app.modules.owners.OwnerEntity;
-import com.mascotas.app.modules.owners.OwnerServiceImpl;
+import com.mascotas.app.modules.owners.OwnerService;
 import com.mascotas.app.modules.pets.PetEntity;
 import com.mascotas.app.modules.pets.PetRepository;
 import com.mascotas.app.modules.pets.PetService;
 import com.mascotas.app.security.jwt.JwtProvider;
+import com.mascotas.app.security.models.UserEntity;
 import com.mascotas.app.security.services.UserService;
 import com.mascotas.app.utils.ErrorMessageUtil;
 import com.mascotas.app.utils.FechaUtil;
@@ -42,7 +43,7 @@ public class SearchesController {
 	@Autowired
 	PetService petService;
 	@Autowired
-	OwnerServiceImpl ownerServiceImpl;
+	OwnerService ownerService;
 	@Autowired
 	PetRepository petRepository;
 
@@ -123,7 +124,7 @@ public class SearchesController {
 	//search by owner
 	@GetMapping("/owner/{id}")
 	public ResponseEntity<Object> readByOwnerId(@PathVariable(value = "id") Long owner_id){
-		OwnerEntity ownerEntity = ownerServiceImpl.readOwner(owner_id);
+		OwnerEntity ownerEntity = ownerService.readOwner(owner_id);
 		if (ownerEntity == null){
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Owner Not Found");
 		}
@@ -135,7 +136,24 @@ public class SearchesController {
 	}
 
 
-
+	//search by owner token
+	@GetMapping("/owner")
+	public ResponseEntity<Object> readByOwner(@RequestHeader(value = "Authorization") String token){
+		String username = jwtProvider.getNombreUsuarioFromToken(token.split(" ")[1]);
+		UserEntity userEntity = userService.readByUsername(username);
+		if (userEntity == null){
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found");
+		}
+		OwnerEntity ownerEntity = ownerService.readOwner(userEntity.getOwner().getId());
+		if(ownerEntity == null){
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Owner Not Found");
+		}
+		List<SearchEntity> listSearchEntity = searchService.radAllSearchsByOwner(ownerEntity);
+		List<SearchDTO> listSearchDTO = listSearchEntity.stream().map(
+				this::convertSearchEntityToDTO
+		).collect(Collectors.toList());
+		return ResponseEntity.status(HttpStatus.OK).body(listSearchDTO);
+	}
 
 
 
@@ -158,6 +176,7 @@ public class SearchesController {
 				.namePet(searchEntity.getPet().getName())
 				.speciesPet(searchEntity.getPet().getDetail().getSpecies())
 				.breedPet(searchEntity.getPet().getDetail().getBreed())
+				.colour(searchEntity.getPet().getColour())
 				.lostDate(fechaUtil.getStrindDateFromTimestamp(searchEntity.getLostDate()))
 				.registerDate(fechaUtil.getStrindDateFromTimestamp(searchEntity.getRegisterDate()))
 				.message(searchEntity.getMessage())

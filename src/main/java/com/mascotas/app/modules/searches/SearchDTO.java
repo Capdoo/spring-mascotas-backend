@@ -21,6 +21,7 @@ public class SearchDTO {
 	private String namePet;
 	private String speciesPet;
 	private String breedPet;
+	private String colour;
 
 	//Fecha de usuario
 	private String lostDate;
