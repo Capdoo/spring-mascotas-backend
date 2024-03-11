@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class UserDTO {
-
 	private Long id;
 	private String firstName;
 	private String lastName;
@@ -22,5 +21,4 @@ public class UserDTO {
 	//Para imagen
 	private String encoded;
 	private String state;
-
 }

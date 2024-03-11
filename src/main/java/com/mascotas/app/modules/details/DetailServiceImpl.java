@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DetailServiceImpl implements DetailService{
-
 	@Autowired
 	DetailRepository detailRepository;
 
@@ -56,15 +55,4 @@ public class DetailServiceImpl implements DetailService{
 		return detailRepository.findAllBySpecies(detailDTO.getSpecies());
 	}
 
-
 }
-
-
-
-
-
-
-
-
-
-

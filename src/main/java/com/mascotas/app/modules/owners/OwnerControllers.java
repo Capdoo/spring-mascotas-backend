@@ -16,7 +16,6 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 @RequestMapping("/owners")
 public class OwnerControllers {
-
 	@Autowired
 	OwnerService ownerService;
 	@Autowired
@@ -33,11 +32,6 @@ public class OwnerControllers {
 		).collect(Collectors.toList());
 		return ResponseEntity.status(HttpStatus.OK).body(listOwners);
 	}
-
-	//create
-	/*
-	public ResponseEntity<Object> createOwner(){}
-	*/
 
 	@PutMapping("/{id}")
 	public ResponseEntity<Object> updateOwner(@PathVariable(value = "id") Long id, @RequestBody OwnerDTO ownerDTO){

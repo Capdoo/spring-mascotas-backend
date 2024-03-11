@@ -7,7 +7,6 @@ import com.mascotas.app.security.models.UserEntity;
 import java.util.List;
 
 public interface UserService {
-
     public List<UserEntity> findAllUsers();
 
     //crud

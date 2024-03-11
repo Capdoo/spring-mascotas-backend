@@ -16,9 +16,7 @@ public class OwnerDTO {
 	private Integer rate;
 	private Long user_id;
 	private String state;
-
 	public OwnerDTO(Long user_id){
 		this.user_id = user_id;
 	}
-
 }

@@ -17,7 +17,6 @@ import com.mascotas.app.utils.FechaUtil;
 
 @Service
 public class ShelterService {
-
 	@Autowired
 	ShelterRepository shelterRepository;
 	@Autowired

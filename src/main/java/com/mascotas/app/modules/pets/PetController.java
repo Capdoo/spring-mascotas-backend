@@ -31,7 +31,6 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 @RequestMapping("/pets")
 public class PetController {
-
 	@Autowired
 	PetService petService;
 	@Autowired
@@ -46,8 +45,6 @@ public class PetController {
 	FechaUtil fechaUtil;
 	@Autowired
 	FileUploadService fileUploadService;
-	@Autowired
-	UserRepository userRepository;
 
 	@GetMapping
 	public ResponseEntity<Object> listPets(){

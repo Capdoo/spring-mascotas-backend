@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 //Comprueba si hay un token valido : !401 no autorizado
 @Component
 public class JwtEntryPoint implements AuthenticationEntryPoint{
-
 	private final static Logger logger = LoggerFactory.getLogger(JwtEntryPoint.class); 
 	
 	@Override
@@ -25,7 +24,4 @@ public class JwtEntryPoint implements AuthenticationEntryPoint{
 			logger.error("Fail en el método commence");
 			res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "No autorizado");
 	}
-
-	
-	
 }

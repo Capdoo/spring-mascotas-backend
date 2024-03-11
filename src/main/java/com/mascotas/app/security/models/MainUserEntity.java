@@ -10,7 +10,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class MainUserEntity implements UserDetails{
-		
 	private String firstName;
 	private String username;
 	private String email;
@@ -107,21 +106,3 @@ public class MainUserEntity implements UserDetails{
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

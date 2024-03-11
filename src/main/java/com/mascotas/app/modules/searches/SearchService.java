@@ -24,5 +24,4 @@ public interface SearchService {
 
     //Not ready
     //public List<SearchEntity> radAllSearchsByShelter(ShelterModel shelterModel);
-
 }

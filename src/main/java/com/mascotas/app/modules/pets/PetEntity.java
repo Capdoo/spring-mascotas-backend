@@ -54,7 +54,6 @@ public class PetEntity {
 	@JoinColumn(name = "shelter_id",referencedColumnName = "id", foreignKey = @ForeignKey(name = "PET_FK_SHELTER"))
 	private ShelterModel shelter;
 
-
 	//For search
 	//errr
 //	@OneToOne(cascade = CascadeType.ALL)

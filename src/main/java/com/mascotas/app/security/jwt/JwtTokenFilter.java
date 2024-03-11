@@ -21,7 +21,6 @@ import com.mascotas.app.security.services.UserDetailsServiceImpl;
 
 //Comprueba por cada petición : Validez f(provider)
 public class JwtTokenFilter extends OncePerRequestFilter{
-
 	private final static Logger logger = LoggerFactory.getLogger(JwtTokenFilter.class); 
 	
 	@Autowired
@@ -62,17 +61,4 @@ public class JwtTokenFilter extends OncePerRequestFilter{
 		}
 		return null;
 	}
-	
-	
-	
-	
-	
 }
-
-
-
-
-
-
-
-

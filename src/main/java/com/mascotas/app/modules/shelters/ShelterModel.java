@@ -18,7 +18,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor @NoArgsConstructor
 @Builder
 public class ShelterModel {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -37,4 +36,3 @@ public class ShelterModel {
 	@OneToMany(mappedBy="shelter")
 	private Set<PetEntity> pets;
 }
-

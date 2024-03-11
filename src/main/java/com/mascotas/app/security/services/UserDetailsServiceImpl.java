@@ -16,7 +16,6 @@ import com.mascotas.app.security.models.MainUserEntity;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService{
-
 	@Autowired
     UserServiceImp userServiceImp;
 

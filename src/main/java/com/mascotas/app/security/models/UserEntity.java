@@ -81,28 +81,3 @@ public class UserEntity {
 	private String state;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

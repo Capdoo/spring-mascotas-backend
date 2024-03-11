@@ -14,7 +14,6 @@ public class FechaUtil {
         super();
     }
 
-
     //Convertir TimeStamp en fecha String
     public Timestamp getTimestampFromStringDate(String fecha) {
 
@@ -34,6 +33,4 @@ public class FechaUtil {
     public String getStrindDateFromTimestamp(Timestamp mytimestamp) {
         return new SimpleDateFormat("dd/MM/yyyy").format(mytimestamp);
     }
-
-
 }

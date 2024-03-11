@@ -11,7 +11,5 @@ public class StringDTO {
 	public void setData(String data) {
 		this.data = data;
 	}
-	
-	
-	
+
 }

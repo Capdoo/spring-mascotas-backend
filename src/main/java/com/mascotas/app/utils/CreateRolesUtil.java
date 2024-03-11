@@ -93,6 +93,4 @@ public class CreateRolesUtil implements CommandLineRunner{
 		}
 		detailRepository.saveAll(listDetails);
 	}
-
-
 }

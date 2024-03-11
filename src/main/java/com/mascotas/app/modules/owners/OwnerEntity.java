@@ -22,14 +22,12 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.ForeignKey;
 
-
 @Entity
 @Table(name="owners")
 @Data
 @AllArgsConstructor @NoArgsConstructor
 @Builder
 public class OwnerEntity {
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

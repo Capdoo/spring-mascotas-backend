@@ -17,7 +17,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor @NoArgsConstructor
 @Builder
 public class SearchEntity {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -56,5 +55,4 @@ public class SearchEntity {
 	private PetEntity pet;
 
 	private String state;
-
 }

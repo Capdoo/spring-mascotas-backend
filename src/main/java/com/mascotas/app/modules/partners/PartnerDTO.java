@@ -9,9 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor @NoArgsConstructor
 @Builder
 public class PartnerDTO {
-
     private Long id;
     private String registerDate;
     private Long user_id;
-
 }

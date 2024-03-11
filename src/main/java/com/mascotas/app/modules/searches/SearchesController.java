@@ -29,7 +29,6 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 @RequestMapping("/searchs")
 public class SearchesController {
-
 	@Autowired
 	SearchService searchService;
 	@Autowired
@@ -44,8 +43,6 @@ public class SearchesController {
 	PetService petService;
 	@Autowired
 	OwnerService ownerService;
-	@Autowired
-	PetRepository petRepository;
 
 	//Should be only admin
 	@GetMapping
@@ -155,16 +152,6 @@ public class SearchesController {
 		return ResponseEntity.status(HttpStatus.OK).body(listSearchDTO);
 	}
 
-
-
-
-
-
-
-
-
-
-
 	private SearchDTO convertSearchEntityToDTO(SearchEntity searchEntity){
 		return SearchDTO.builder()
 				.id(searchEntity.getId())
@@ -206,5 +193,4 @@ public class SearchesController {
 		}
 		return jsonString;
 	}
-
 }

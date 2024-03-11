@@ -10,7 +10,6 @@ import java.sql.Timestamp;
 
 @Service
 public class PartnerService {
-
     @Autowired
     UserRepository userRepository;
     @Autowired

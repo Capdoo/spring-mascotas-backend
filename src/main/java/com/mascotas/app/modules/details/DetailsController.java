@@ -72,16 +72,6 @@ public class DetailsController {
 		return ResponseEntity.ok().body(this.convertDetailEntityToDto(detailDelete));
 	}
 
-	/*
-	@GetMapping("/breed")
-	public ResponseEntity<Object> readBreeds(){
-		List<DetailModel> listSpecies = detailServiceImpl.listAllDetails();
-		List<String> listAllSpecies = listSpecies.stream()
-				.map(DetailModel::getBreed)
-				.collect(Collectors.toList());
-		return ResponseEntity.ok().body(listAllSpecies);
-	}*/
-
 	@GetMapping("/species")
 	public ResponseEntity<Object> readSpecies(){
 		List<DetailEntity> listDetails = detailService.listAllDetails();
@@ -134,14 +124,3 @@ public class DetailsController {
 		return jsonString;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-

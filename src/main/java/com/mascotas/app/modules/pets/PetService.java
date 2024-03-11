@@ -5,7 +5,6 @@ import com.mascotas.app.modules.owners.OwnerEntity;
 import java.util.List;
 
 public interface PetService {
-
     public List<PetEntity> listAllPets();
 
     //crud
@@ -19,5 +18,4 @@ public interface PetService {
 
     //Exists By Id
     public Boolean existsById(Long id);
-
 }

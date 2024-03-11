@@ -9,7 +9,6 @@ import com.mascotas.app.modules.pets.PetEntity;
 @Entity
 @Table(name="adoptions")
 public class AdoptionModel {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
@@ -43,7 +42,6 @@ public class AdoptionModel {
 		this.registerDate = registerDate;
 		this.pet = pet;
 	}
-
 
 	public long getId() {
 		return id;
@@ -100,7 +98,6 @@ public class AdoptionModel {
 	public void setDistrict(String district) {
 		this.district = district;
 	}
-
 
 	public Timestamp getRegisterDate() {
 		return registerDate;

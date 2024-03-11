@@ -18,13 +18,10 @@ import com.mascotas.app.security.jwt.JwtEntryPoint;
 import com.mascotas.app.security.jwt.JwtTokenFilter;
 import com.mascotas.app.security.services.UserDetailsServiceImpl;
 
-
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class MainSecurity extends WebSecurityConfigurerAdapter{
-	
 	@Autowired
 	UserDetailsServiceImpl userDetailsServiceImpl; 
 	

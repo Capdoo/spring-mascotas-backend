@@ -10,31 +10,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class PetDTO {
-	
 	private long id;
 	private String name;
 	private String gender;
 	private String birthDate;
 	private String registerDate;
 	private String colour;
-
-
 	private String specificBreed;
 	private String characteristic;
 	private String size;
-	
 	//For detail
 	private String species;
 	private String breed;
-	
 	private long owner_id;
 	private long detail_id;
-
 	//For image
 	private String encoded;
 	//private String urlLink;
-
 	private String state;
-
-
 }

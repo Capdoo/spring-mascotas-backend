@@ -16,7 +16,6 @@ import com.mascotas.app.utils.FechaUtil;
 
 @Service
 public class OwnerServiceImpl implements OwnerService{
-
 	@Autowired
 	UserRepository userRepository;
 	@Autowired
@@ -65,8 +64,3 @@ public class OwnerServiceImpl implements OwnerService{
 		return ownerRepository.save(ownerEntity);
 	}
 }
-
-
-
-
-

@@ -6,9 +6,6 @@ import com.mascotas.app.security.models.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-
-
-
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long>{
 
@@ -22,5 +19,4 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>{
 	boolean existsByEmail(String email);
 	boolean existsByUsernameOrEmail(String username, String email);
 	boolean existsByDni(String dni);
-	
 }

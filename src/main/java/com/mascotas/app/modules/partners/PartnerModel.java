@@ -9,7 +9,6 @@ import java.sql.Timestamp;
 @Entity
 @Table(name="partners")
 public class PartnerModel {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

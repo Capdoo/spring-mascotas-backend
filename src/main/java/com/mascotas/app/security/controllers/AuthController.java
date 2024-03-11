@@ -9,8 +9,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mascotas.app.modules.owners.OwnerDTO;
 import com.mascotas.app.modules.owners.OwnerService;
-import com.mascotas.app.modules.owners.OwnerServiceImpl;
 import com.mascotas.app.security.models.UserEntity;
+import com.mascotas.app.security.resource.SecurityResource;
 import com.mascotas.app.security.services.UserServiceImp;
 import com.mascotas.app.utils.ErrorMessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,21 +41,18 @@ import org.springframework.web.server.ResponseStatusException;
 @CrossOrigin
 public class AuthController {
 	@Autowired
-	PasswordEncoder passwordEncoder;
-	@Autowired
 	AuthenticationManager authenticationManager;
 	@Autowired
 	UserServiceImp userServiceImp;
 	@Autowired
 	JwtProvider jwtProvider;
 	@Autowired
-	OwnerService ownerService;
+	SecurityResource securityResource;
 	
 	@PostMapping("/register")
 	public ResponseEntity<Object> register(@RequestBody NewUserDTO newUserDTO, BindingResult bindingResult) throws IOException{
-
 		if (bindingResult.hasErrors()) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, this.formatMessage(bindingResult));
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMessageUtil.formatMessage(bindingResult));
 		}
 		if (userServiceImp.existsByUsername(newUserDTO.getUsername())) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username Already Exists");
@@ -64,11 +61,7 @@ public class AuthController {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email Already Exists");
 		}
 
-		newUserDTO.setPassword(passwordEncoder.encode(newUserDTO.getPassword()));
-
-		UserEntity userCreate = userServiceImp.createUser(newUserDTO);
-		ownerService.createOwner(new OwnerDTO(userCreate.getId()));
-		return ResponseEntity.status(HttpStatus.CREATED).body(userCreate);
+		return securityResource.registerUser(newUserDTO);
 	}
 	
 	@PostMapping("/login")
@@ -76,67 +69,15 @@ public class AuthController {
 		if (bindingResult.hasErrors()) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong fields");
 		}
-		if(!(userServiceImp.existsByUsernameOrEmail(loginUserDTO.getUsername()))) {
+		if(!userServiceImp.existsByUsernameOrEmail(loginUserDTO.getUsername())) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
 		}
-        return Autenticacion(loginUserDTO.getUsername(), loginUserDTO.getPassword());
-	}
-	
-	public ResponseEntity<Object> Autenticacion(String username, String password) {
-		try {
-			Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-	        SecurityContextHolder.getContext().setAuthentication(authentication);
-	        String jwt = jwtProvider.generateToken(authentication);
-	        JwtDTO jwtDto = new JwtDTO(jwt);
-			return ResponseEntity.status(HttpStatus.OK).body(jwtDto);
 
-		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong fields");
-		}
+        return securityResource.authentication(loginUserDTO.getUsername(), loginUserDTO.getPassword());
 	}
 
 	@PostMapping("/refresh")
 	public ResponseEntity<Object> refreshToken(@RequestBody JwtDTO jwtDTO) throws ParseException {
-		try {
-			String token = jwtProvider.refreshToken(jwtDTO);
-			JwtDTO jwt = new JwtDTO(token);
-			return new ResponseEntity<Object>(jwt, HttpStatus.OK);
-
-		}catch (Exception e){
-			return new ResponseEntity<Object>(new MessageDTO(e.getMessage()), HttpStatus.OK);
-		}
-	}
-
-	private String formatMessage(BindingResult bindingResult) throws JsonProcessingException {
-		List<Map<String, String>> errors = bindingResult.getFieldErrors().stream()
-				.map(err -> {
-					Map<String, String> error = new HashMap<>();
-					error.put(err.getField(), err.getDefaultMessage());
-					return error;
-				}).collect(Collectors.toList());
-		ErrorMessageUtil errorMessage = ErrorMessageUtil.builder()
-				.code("01")
-				.messages(errors).build();
-
-		ObjectMapper objectMapper = new ObjectMapper();
-		String jsonString = "";
-		try {
-			jsonString = objectMapper.writeValueAsString(errorMessage);
-
-		}catch (JsonProcessingException e){
-			e.printStackTrace();
-		}
-		return jsonString;
+		return securityResource.refreshToken(jwtDTO);
 	}
 }
-
-
-
-
-
-
-
-
-
-
-

@@ -15,7 +15,6 @@ import lombok.Data;
 @Table(name="roles")
 @Data
 public class RoleEntity {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -31,5 +30,4 @@ public class RoleEntity {
 		super();
 		this.roleName = roleName;
 	}
-
 }

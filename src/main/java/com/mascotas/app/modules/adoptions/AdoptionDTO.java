@@ -1,9 +1,7 @@
 package com.mascotas.app.modules.adoptions;
 
 public class AdoptionDTO {
-	
 	private long id;
-	
 	private String message;
 	//En caso el animal este enfermo
 	private String observation;

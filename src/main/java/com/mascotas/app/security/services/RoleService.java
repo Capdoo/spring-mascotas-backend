@@ -14,7 +14,6 @@ import com.mascotas.app.security.repositories.RoleRepository;
 @Service
 @Transactional
 public class RoleService {
-
 	@Autowired
     RoleRepository roleRepository;
 	

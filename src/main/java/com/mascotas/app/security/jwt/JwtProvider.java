@@ -30,7 +30,6 @@ import io.jsonwebtoken.UnsupportedJwtException;
 //Generar token : validación en la creación
 @Component
 public class JwtProvider {
-
 	private final static Logger logger = LoggerFactory.getLogger(JwtProvider.class);
 	@Value("${jwt.secret}")
 	private String secret;
@@ -92,13 +91,3 @@ public class JwtProvider {
 				.compact();
 	}
 }
-
-
-
-
-
-
-
-
-
-
