@@ -1,14 +1,15 @@
 package com.mascotas.app.security.resource;
 
 import com.mascotas.app.dto.MessageDTO;
-import com.mascotas.app.modules.owners.OwnerDTO;
-import com.mascotas.app.modules.owners.OwnerService;
+import com.mascotas.app.files.FileUploadService;
 import com.mascotas.app.security.dto.JwtDTO;
 import com.mascotas.app.security.dto.NewUserDTO;
+import com.mascotas.app.security.dto.UserDTO;
 import com.mascotas.app.security.jwt.JwtProvider;
 import com.mascotas.app.security.mapper.SecurityMapper;
 import com.mascotas.app.security.models.UserEntity;
 import com.mascotas.app.security.services.UserServiceImp;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,28 +22,31 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 @Component
+@Slf4j
 public class SecurityResource {
 
     @Autowired
     PasswordEncoder passwordEncoder;
-    @Autowired
-    OwnerService ownerService;
     @Autowired
     UserServiceImp userServiceImp;
     @Autowired
     AuthenticationManager authenticationManager;
     @Autowired
     JwtProvider jwtProvider;
+    @Autowired
+    FileUploadService fileUploadService;
 
 
     public ResponseEntity<Object> registerUser(NewUserDTO newUserDTO) {
         UserEntity userEntity;
+        UserDTO userDTO;
 
         newUserDTO.setPassword(passwordEncoder.encode(newUserDTO.getPassword()));
         userEntity = userServiceImp.createUser(newUserDTO);
-        ownerService.createOwner(new OwnerDTO(userEntity.getId()));
 
-        return ResponseEntity.status(HttpStatus.OK).body(SecurityMapper.mapUserDto(userEntity));
+        userDTO = SecurityMapper.mapUserDto(userEntity);
+        userDTO.setEncoded(fileUploadService.convertBytesToEncoded(userEntity.getImage()));
+        return ResponseEntity.status(HttpStatus.OK).body(userDTO);
     }
 
     public ResponseEntity<Object> authentication(String username, String password) {

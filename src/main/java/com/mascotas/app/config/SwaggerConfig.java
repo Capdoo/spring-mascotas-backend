@@ -32,7 +32,6 @@ public class SwaggerConfig implements WebMvcConfigurer {
     }
 
     private ApiKey apiKey(){
-
         return new ApiKey("JWT","Authorization","header");
     }
 
@@ -58,7 +57,4 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .paths(PathSelectors.any())
                 .build();
     }
-
-
-
 }

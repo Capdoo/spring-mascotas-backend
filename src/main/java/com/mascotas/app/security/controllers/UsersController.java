@@ -19,28 +19,34 @@ public class UsersController {
     UserResource userResource;
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping
+    @GetMapping(value = "/read")
     public ResponseEntity<Object> read(){
         return this.userResource.read();
     }
 
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/read/{id}")
     public ResponseEntity<Object> read(@PathVariable(value = "id") Long id){
         return this.userResource.readUser(id);
     }
 
+//    @PreAuthorize("hasRole('ROLE_USER')")
+//    @GetMapping(value = "/read/owners")
+//    public ResponseEntity<Object> read(@PathVariable(value = "id") Long id){
+//        return this.userResource.readUser(id);
+//    }
+
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @PreAuthorize("hasRole('ROLE_USER')")
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/update/{id}")
     public ResponseEntity<Object> updateUser(@PathVariable(value = "id") Long id, @RequestBody UserDTO userDTO){
         return this.userResource.updateUser(id, userDTO);
     }
 
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @PreAuthorize("hasRole('ROLE_USER')")
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<Object> deleteUser(@PathVariable(value = "id") Long id){
         return this.userResource.deleteUser(id);
     }

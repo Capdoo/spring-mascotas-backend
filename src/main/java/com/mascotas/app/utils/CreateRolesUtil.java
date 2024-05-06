@@ -26,15 +26,27 @@ public class CreateRolesUtil implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		
-		RoleEntity rolAdmin = new RoleEntity(RoleName.ROLE_ADMIN);
-		RoleEntity rolUser = new RoleEntity(RoleName.ROLE_USER);
 
-		if(!roleRepository.existsByRoleName(RoleName.ROLE_USER)){
-			roleService.save(rolUser);
+		RoleEntity roleGuest = new RoleEntity(RoleName.ROLE_GUEST);
+		RoleEntity rolePublisher = new RoleEntity(RoleName.ROLE_PUBLISHER);
+		RoleEntity roleOwner = new RoleEntity(RoleName.ROLE_OWNER);
+		RoleEntity roleShelterOwner = new RoleEntity(RoleName.ROLE_SHELTER_OWNER);
+		RoleEntity roleAdmin = new RoleEntity(RoleName.ROLE_ADMIN);
+
+		if(!roleRepository.existsByRoleName(RoleName.ROLE_GUEST)){
+			roleService.save(roleGuest);
+		}
+		if(!roleRepository.existsByRoleName(RoleName.ROLE_PUBLISHER)){
+			roleService.save(rolePublisher);
+		}
+		if(!roleRepository.existsByRoleName(RoleName.ROLE_OWNER)){
+			roleService.save(roleOwner);
+		}
+		if(!roleRepository.existsByRoleName(RoleName.ROLE_SHELTER_OWNER)){
+			roleService.save(roleShelterOwner);
 		}
 		if(!roleRepository.existsByRoleName(RoleName.ROLE_ADMIN)){
-			roleService.save(rolAdmin);
+			roleService.save(roleAdmin);
 		}
 
 		String[] listBreedsCats = new String[]{

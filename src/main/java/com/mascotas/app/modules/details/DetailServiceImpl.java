@@ -1,8 +1,6 @@
 package com.mascotas.app.modules.details;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +16,7 @@ public class DetailServiceImpl implements DetailService{
 	}
 
 	@Override
-	public DetailEntity createDetail(DetailDTO detailDTO) {
+	public DetailEntity createDetail(DetailDto detailDTO) {
 		DetailEntity detailEntity = DetailEntity.builder()
 				.species(detailDTO.getSpecies())
 				.breed(detailDTO.getBreed())
@@ -32,7 +30,7 @@ public class DetailServiceImpl implements DetailService{
 	}
 
 	@Override
-	public DetailEntity updateDetail(DetailDTO detailDTO) {
+	public DetailEntity updateDetail(DetailDto detailDTO) {
 		DetailEntity detailEntity = readDetail(detailDTO.getId());
 		if (detailEntity == null) return null;
 
@@ -42,7 +40,7 @@ public class DetailServiceImpl implements DetailService{
 	}
 
 	@Override
-	public DetailEntity deleteDetail(DetailDTO detailDTO) {
+	public DetailEntity deleteDetail(DetailDto detailDTO) {
 		DetailEntity detailEntity = readDetail(detailDTO.getId());
 		if (detailEntity == null) return null;
 
@@ -51,8 +49,7 @@ public class DetailServiceImpl implements DetailService{
 	}
 
 	@Override
-	public List<DetailEntity> readAllBySpecies(DetailDTO detailDTO) {
+	public List<DetailEntity> readAllBySpecies(DetailDto detailDTO) {
 		return detailRepository.findAllBySpecies(detailDTO.getSpecies());
 	}
-
 }

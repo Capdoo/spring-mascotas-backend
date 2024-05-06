@@ -2,14 +2,7 @@ package com.mascotas.app.security.controllers;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.*;
-import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mascotas.app.modules.owners.OwnerDTO;
-import com.mascotas.app.modules.owners.OwnerService;
-import com.mascotas.app.security.models.UserEntity;
 import com.mascotas.app.security.resource.SecurityResource;
 import com.mascotas.app.security.services.UserServiceImp;
 import com.mascotas.app.utils.ErrorMessageUtil;
@@ -17,10 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mascotas.app.dto.MessageDTO;
 import com.mascotas.app.security.dto.JwtDTO;
 import com.mascotas.app.security.dto.LoginUserDTO;
 import com.mascotas.app.security.dto.NewUserDTO;

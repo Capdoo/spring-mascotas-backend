@@ -33,22 +33,17 @@ public class UserServiceImp implements UserService{
 
 	@Override
 	public UserEntity createUser(NewUserDTO newUserDTO) {
-
 		Set<RoleEntity> roles = new HashSet<>();
-		roles.add(roleService.getByRoleName(RoleName.ROLE_USER).get());
+		roles.add(roleService.getByRoleName(RoleName.ROLE_OWNER).get());
 		if (newUserDTO.getRoles().contains("admin")) {
 			roles.add(roleService.getByRoleName(RoleName.ROLE_ADMIN).get());
 		}
-		if (newUserDTO.getRoles().contains("rept")) {
-			roles.add(roleService.getByRoleName(RoleName.ROLE_REPT).get());
+		if (newUserDTO.getRoles().contains("publisher")) {
+			roles.add(roleService.getByRoleName(RoleName.ROLE_PUBLISHER).get());
 		}
 
 		String encoded = "";
-		if(newUserDTO.getEncoded() == null){
-			encoded = fileUploadService.getEncodedDefault();
-		}else{
-			encoded = fileUploadService.obtenerEncoded(newUserDTO.getEncoded());
-		}
+		encoded = newUserDTO.getEncoded() == null ? fileUploadService.getEncodedDefault() : fileUploadService.obtenerEncoded(newUserDTO.getEncoded());
 		byte[] image = fileUploadService.convertEncodedToBytes(encoded);
 
 		UserEntity createUserEntity = UserEntity.builder()
@@ -73,7 +68,6 @@ public class UserServiceImp implements UserService{
 
 	@Override
 	public UserEntity updateUser(UserDTO userDTO) {
-
 		UserEntity userEntity = readUser(userDTO.getId());
 		userEntity.setLastName(userDTO.getLastName());
 		userEntity.setFirstName(userDTO.getFirstName());
@@ -99,7 +93,6 @@ public class UserServiceImp implements UserService{
 		return userRepository.existsById(id);
 	}
 
-
 	//Security
 	public Optional<UserEntity> getByUsernameOrEmail(String usernameOrEmail){
 		return userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
@@ -114,20 +107,12 @@ public class UserServiceImp implements UserService{
 		return userRepository.existsByUsername(nombreUsuario);
 	}
 
-
-
 	public boolean existsByUsernameOrEmail(String usernameOrEmail) {
 		return userRepository.existsByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
 	}
 
-
 	public boolean existsByEmail(String email) {
 		return userRepository.existsByEmail(email);
-	}
-
-
-
-	public void deleteUser(long id){
 	}
 
 	@Override
@@ -135,16 +120,4 @@ public class UserServiceImp implements UserService{
 		return userRepository.findByUsername(username).orElse(null);
 	}
 
-
-
 }
-
-
-
-
-
-
-
-
-
-

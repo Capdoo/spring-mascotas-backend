@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
-//For admin administration
 @Entity
 @Table(name="details")
 @Data
@@ -20,9 +19,13 @@ public class DetailEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
 	private String species;
+
 	private String breed;
-	@OneToMany(cascade =  CascadeType.ALL, mappedBy = "detail")
-	private Set<PetEntity> pets;
+//
+//	@OneToMany(cascade =  CascadeType.ALL, mappedBy = "detail")
+//	private Set<PetEntity> pets;
+
 	private String state;
 }

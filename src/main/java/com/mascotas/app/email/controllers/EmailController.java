@@ -42,7 +42,7 @@ public class EmailController {
     public ResponseEntity<Object> sendEmailTemplate(@RequestBody EmailValuesDTO emailValuesDTO){
 
         Optional<UserEntity> usuarioModelOptional = userServiceImp.getByUsernameOrEmail(emailValuesDTO.getMailTo());
-        if(usuarioModelOptional.isEmpty()){
+        if(!usuarioModelOptional.isPresent()){
             return new ResponseEntity<Object>(new MessageDTO("No user found with these credentials"), HttpStatus.NOT_FOUND);
         }
         UserEntity usuarioModel = usuarioModelOptional.get();
@@ -75,7 +75,7 @@ public class EmailController {
             return new ResponseEntity<Object>(new MessageDTO("Passwords do not match"), HttpStatus.BAD_REQUEST);
         }
         Optional<UserEntity> usuarioModelOptional = userServiceImp.getByTokenPassword(changePasswordDTO.getTokenPassword());
-        if(usuarioModelOptional.isEmpty()){
+        if(!usuarioModelOptional.isPresent()){
             return new ResponseEntity<Object>(new MessageDTO("User not found"), HttpStatus.NOT_FOUND);
         }
         UserEntity usuarioModel = usuarioModelOptional.get();

@@ -1,6 +1,5 @@
 package com.mascotas.app.modules.searches;
 
-import com.mascotas.app.modules.owners.OwnerEntity;
 import com.mascotas.app.modules.pets.PetEntity;
 
 import java.util.List;
@@ -16,12 +15,12 @@ public interface SearchService {
 
     //business rules
     public SearchEntity readSearchByPet(PetEntity petEntity);
-    public List<SearchEntity> radAllSearchsByOwner(OwnerEntity ownerEntity);
+//    public List<SearchEntity> radAllSearchsByOwner(OwnerEntity ownerEntity);
 
     public Boolean existsByPet(PetEntity petEntity);
 
     //public Boolean existsById();
 
     //Not ready
-    //public List<SearchEntity> radAllSearchsByShelter(ShelterModel shelterModel);
+    //public List<SearchEntity> radAllSearchsByShelter(ShelterEntity shelterModel);
 }

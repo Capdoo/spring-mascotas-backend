@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.mascotas.app.modules.owners.OwnerEntity;
 import com.mascotas.app.modules.pets.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -93,15 +92,16 @@ public class SearchServiceImpl implements SearchService{
 		return searchRepository.findByPet(petEntityDB).orElse(null);
 	}
 
-	@Override
-	public List<SearchEntity> radAllSearchsByOwner(OwnerEntity ownerEntity) {
-
-		List<SearchEntity> listAllSearchs = searchRepository.findAll();
-		List<SearchEntity> listSearchsOwner = listAllSearchs.stream()
-				.filter( value -> value.getPet().getOwner().getId() == ownerEntity.getId())
-				.collect(Collectors.toList());
-		return listSearchsOwner;
-	}
+//	@Override
+//	public List<SearchEntity> radAllSearchsByOwner(OwnerEntity ownerEntity) {
+//
+//		List<SearchEntity> listAllSearchs = searchRepository.findAll();
+//		List<SearchEntity> listSearchsOwner = listAllSearchs.stream()
+//				.filter( value -> value.getPet().getOwner().getId() == ownerEntity.getId())
+//				.collect(Collectors.toList());
+//		return listSearchsOwner;
+//		return null;
+//	}
 
 	@Override
 	public Boolean existsByPet(PetEntity petEntity) {

@@ -8,10 +8,7 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mascotas.app.files.FileUploadService;
-import com.mascotas.app.modules.owners.OwnerEntity;
-import com.mascotas.app.modules.owners.OwnerService;
 import com.mascotas.app.modules.pets.PetEntity;
-import com.mascotas.app.modules.pets.PetRepository;
 import com.mascotas.app.modules.pets.PetService;
 import com.mascotas.app.security.jwt.JwtProvider;
 import com.mascotas.app.security.models.UserEntity;
@@ -41,8 +38,6 @@ public class SearchesController {
 	JwtProvider jwtProvider;
 	@Autowired
 	PetService petService;
-	@Autowired
-	OwnerService ownerService;
 
 	//Should be only admin
 	@GetMapping
@@ -119,38 +114,38 @@ public class SearchesController {
 	}
 
 	//search by owner
-	@GetMapping("/owner/{id}")
-	public ResponseEntity<Object> readByOwnerId(@PathVariable(value = "id") Long owner_id){
-		OwnerEntity ownerEntity = ownerService.readOwner(owner_id);
-		if (ownerEntity == null){
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Owner Not Found");
-		}
-		List<SearchEntity> listSearchEntity = searchService.radAllSearchsByOwner(ownerEntity);
-		List<SearchDTO> listSearchDTO = listSearchEntity.stream().map(
-				this::convertSearchEntityToDTO
-		).collect(Collectors.toList());
-		return ResponseEntity.status(HttpStatus.OK).body(listSearchDTO);
-	}
+//	@GetMapping("/owner/{id}")
+//	public ResponseEntity<Object> readByOwnerId(@PathVariable(value = "id") Long owner_id){
+//		OwnerEntity ownerEntity = ownerService.readOwner(owner_id);
+//		if (ownerEntity == null){
+//			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Owner Not Found");
+//		}
+//		List<SearchEntity> listSearchEntity = searchService.radAllSearchsByOwner(ownerEntity);
+//		List<SearchDTO> listSearchDTO = listSearchEntity.stream().map(
+//				this::convertSearchEntityToDTO
+//		).collect(Collectors.toList());
+//		return ResponseEntity.status(HttpStatus.OK).body(listSearchDTO);
+//	}
 
 
 	//search by owner token
-	@GetMapping("/owner")
-	public ResponseEntity<Object> readByOwner(@RequestHeader(value = "Authorization") String token){
-		String username = jwtProvider.getNombreUsuarioFromToken(token.split(" ")[1]);
-		UserEntity userEntity = userService.readByUsername(username);
-		if (userEntity == null){
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found");
-		}
-		OwnerEntity ownerEntity = ownerService.readOwner(userEntity.getOwner().getId());
-		if(ownerEntity == null){
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Owner Not Found");
-		}
-		List<SearchEntity> listSearchEntity = searchService.radAllSearchsByOwner(ownerEntity);
-		List<SearchDTO> listSearchDTO = listSearchEntity.stream().map(
-				this::convertSearchEntityToDTO
-		).collect(Collectors.toList());
-		return ResponseEntity.status(HttpStatus.OK).body(listSearchDTO);
-	}
+//	@GetMapping("/owner")
+//	public ResponseEntity<Object> readByOwner(@RequestHeader(value = "Authorization") String token){
+//		String username = jwtProvider.getNombreUsuarioFromToken(token.split(" ")[1]);
+//		UserEntity userEntity = userService.readByUsername(username);
+//		if (userEntity == null){
+//			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found");
+//		}
+//		OwnerEntity ownerEntity = ownerService.readOwner(userEntity.getOwner().getId());
+//		if(ownerEntity == null){
+//			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Owner Not Found");
+//		}
+//		List<SearchEntity> listSearchEntity = searchService.radAllSearchsByOwner(ownerEntity);
+//		List<SearchDTO> listSearchDTO = listSearchEntity.stream().map(
+//				this::convertSearchEntityToDTO
+//		).collect(Collectors.toList());
+//		return ResponseEntity.status(HttpStatus.OK).body(listSearchDTO);
+//	}
 
 	private SearchDTO convertSearchEntityToDTO(SearchEntity searchEntity){
 		return SearchDTO.builder()
@@ -161,8 +156,8 @@ public class SearchesController {
 				.phoneB(searchEntity.getPhoneB())
 				.petId(searchEntity.getPet().getId())
 				.namePet(searchEntity.getPet().getName())
-				.speciesPet(searchEntity.getPet().getDetail().getSpecies())
-				.breedPet(searchEntity.getPet().getDetail().getBreed())
+//				.speciesPet(searchEntity.getPet().getDetail().getSpecies())
+//				.breedPet(searchEntity.getPet().getDetail().getBreed())
 				.colour(searchEntity.getPet().getColour())
 				.lostDate(fechaUtil.getStrindDateFromTimestamp(searchEntity.getLostDate()))
 				.registerDate(fechaUtil.getStrindDateFromTimestamp(searchEntity.getRegisterDate()))

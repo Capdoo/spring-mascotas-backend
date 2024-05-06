@@ -4,10 +4,10 @@ import java.util.List;
 
 public interface DetailService {
     public List<DetailEntity> listAllDetails();
-    public DetailEntity createDetail(DetailDTO detailDTO);
+    public DetailEntity createDetail(DetailDto detailDTO);
     public DetailEntity readDetail(Long id);
-    public DetailEntity updateDetail(DetailDTO detailDTO);
-    public DetailEntity deleteDetail(DetailDTO detailDTO);
+    public DetailEntity updateDetail(DetailDto detailDTO);
+    public DetailEntity deleteDetail(DetailDto detailDTO);
     //business
-    public List<DetailEntity> readAllBySpecies(DetailDTO detailDTO);
+    public List<DetailEntity> readAllBySpecies(DetailDto detailDTO);
 }

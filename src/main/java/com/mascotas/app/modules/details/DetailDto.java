@@ -1,4 +1,4 @@
-package com.mascotas.app.modules.partners;
+package com.mascotas.app.modules.details;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,8 +8,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor @NoArgsConstructor
 @Builder
-public class PartnerDTO {
-    private Long id;
-    private String registerDate;
-    private Long user_id;
+public class DetailDto {
+	private Long id;
+	private String species;
+	private String breed;
+	private String state;
 }

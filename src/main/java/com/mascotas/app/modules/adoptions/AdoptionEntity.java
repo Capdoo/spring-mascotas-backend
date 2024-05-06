@@ -1,26 +1,37 @@
 package com.mascotas.app.modules.adoptions;
 
-public class AdoptionDTO {
+import java.sql.Timestamp;
+
+import javax.persistence.*;
+
+import com.mascotas.app.modules.pets.PetEntity;
+
+@Entity
+@Table(name="adoptions")
+public class AdoptionEntity {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String message;
-	//En caso el animal este enfermo
+	//In case the pet is sick
 	private String observation;
-	
 	private String phoneA;
 	private String phoneB;
-	
 	private String address;
 	private String district;
+	private Timestamp registerDate;
 	
-	private String registerDate;
-	private long pet_id;
+	@ManyToOne
+	@JoinColumn(name="pet_id", referencedColumnName = "id", nullable=false, foreignKey = @ForeignKey(name = "ADOPTION_FK_PET"))
+	private PetEntity pet;
 
-	public AdoptionDTO() {
+	public AdoptionEntity() {
 		super();
 	}
-
-
-	public AdoptionDTO(long id, String message, String observation, String phoneA, String phoneB, String address, String district, String registerDate, long pet_id) {
+		
+	public AdoptionEntity(long id, String message, String observation, String phoneA, String phoneB,
+						  String address, String district, Timestamp registerDate, PetEntity pet) {
+		super();
 		this.id = id;
 		this.message = message;
 		this.observation = observation;
@@ -29,7 +40,7 @@ public class AdoptionDTO {
 		this.address = address;
 		this.district = district;
 		this.registerDate = registerDate;
-		this.pet_id = pet_id;
+		this.pet = pet;
 	}
 
 	public long getId() {
@@ -88,19 +99,19 @@ public class AdoptionDTO {
 		this.district = district;
 	}
 
-	public String getRegisterDate() {
+	public Timestamp getRegisterDate() {
 		return registerDate;
 	}
 
-	public void setRegisterDate(String registerDate) {
+	public void setRegisterDate(Timestamp registerDate) {
 		this.registerDate = registerDate;
 	}
 
-	public long getPet_id() {
-		return pet_id;
+	public PetEntity getPet() {
+		return pet;
 	}
 
-	public void setPet_id(long pet_id) {
-		this.pet_id = pet_id;
+	public void setPet(PetEntity pet) {
+		this.pet = pet;
 	}
 }

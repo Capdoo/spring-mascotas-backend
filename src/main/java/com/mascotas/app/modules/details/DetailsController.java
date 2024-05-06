@@ -20,70 +20,47 @@ public class DetailsController {
 
 	@Autowired
 	DetailService detailService;
-	
-	@GetMapping
-	public ResponseEntity<Object> readAll(){
-		List<DetailEntity> listDetails = detailService.listAllDetails();
-		List<DetailDTO> listDetailsDto = listDetails.stream()
-				.map(this::convertDetailEntityToDto)
-				.collect(Collectors.toList());
-		return ResponseEntity.ok().body(listDetailsDto);
-	}
 
-	@PostMapping
-	public ResponseEntity<Object> createDetail(@RequestBody DetailDTO detailDTO, BindingResult bindingResult) throws JsonProcessingException {
+	@Autowired
+	DetailResource detailResource;
+	
+
+	@PostMapping(value = "/create")
+	public ResponseEntity<Object> createDetail(@RequestBody DetailDto detailDTO, BindingResult bindingResult) throws JsonProcessingException {
 		if (bindingResult.hasErrors()) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, this.formatMessage(bindingResult));
 		}
-		DetailEntity detailEntity = detailService.createDetail(detailDTO);
-		return ResponseEntity.status(HttpStatus.CREATED).body(this.convertDetailEntityToDto(detailEntity));
+		return this.detailResource.createDetail(detailDTO);
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping(value = "/read")
+	public ResponseEntity<Object> readAll(){
+		return this.detailResource.read();
+	}
+
+	@GetMapping("/read/{id}")
 	public ResponseEntity<Object> readDetail(@PathVariable(value = "id") Long id){
-		DetailEntity detailEntity = detailService.readDetail(id);
-		if (detailEntity == null){
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Detail Not Found");
-		}
-		return ResponseEntity.ok().body(this.convertDetailEntityToDto(detailEntity));
+		return this.detailResource.readById(id);
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<Object> updateDetail(@PathVariable(value = "id") Long id, @RequestBody DetailDTO detailDTO){
-		DetailEntity detailEntity = detailService.readDetail(id);
-		if (detailEntity == null){
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Detail Not Found");
-		}
-		detailDTO.setId(id);
-		DetailEntity detailUpdate = detailService.updateDetail(detailDTO);
-		return ResponseEntity.ok().body(this.convertDetailEntityToDto(detailUpdate));
+	@PutMapping("/update/{id}")
+	public ResponseEntity<Object> updateDetail(@PathVariable(value = "id") Long id, @RequestBody DetailDto detailDto){
+		return this.detailResource.updateDetail(id, detailDto);
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<Object> deleteDetail(@PathVariable(value = "id") Long id){
-		DetailEntity detailEntity = detailService.readDetail(id);
-		if (detailEntity == null){
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Detail Not Found");
-		}
-		DetailDTO detailDTO = DetailDTO.builder()
-				.id(id)
-				.build();
-		DetailEntity detailDelete = detailService.deleteDetail(detailDTO);
-		return ResponseEntity.ok().body(this.convertDetailEntityToDto(detailDelete));
+		return this.detailResource.deleteDetail(id);
 	}
 
-	@GetMapping("/species")
+	@GetMapping("/read/species")
 	public ResponseEntity<Object> readSpecies(){
-		List<DetailEntity> listDetails = detailService.listAllDetails();
-		Set<String> listUniqueSpecies = listDetails.stream()
-				.map(DetailEntity::getSpecies)
-				.collect(Collectors.toSet());
-		return ResponseEntity.ok().body(listUniqueSpecies);
+		return this.detailResource.readSpecies();
 	}
 
-	@GetMapping("/breeds/{species}")
+	@GetMapping("/read/breeds/{species}")
 	public ResponseEntity<Object> readBreedsBySpecies(@PathVariable(value = "species") String species){
-		DetailDTO detailDTO = DetailDTO.builder()
+		DetailDto detailDTO = DetailDto.builder()
 				.species(species)
 				.build();
 		List<DetailEntity> listDetailsBySpecies = detailService.readAllBySpecies(detailDTO);
@@ -93,8 +70,8 @@ public class DetailsController {
 		return ResponseEntity.ok().body(listAllBreedsBySpecies);
 	}
 
-	public DetailDTO convertDetailEntityToDto(DetailEntity detailEntity){
-		return DetailDTO.builder()
+	public DetailDto convertDetailEntityToDto(DetailEntity detailEntity){
+		return DetailDto.builder()
 				.id(detailEntity.getId())
 				.species(detailEntity.getSpecies())
 				.breed(detailEntity.getBreed())

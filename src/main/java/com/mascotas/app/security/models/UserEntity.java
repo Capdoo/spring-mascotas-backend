@@ -8,8 +8,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-import com.mascotas.app.modules.owners.OwnerEntity;
-import com.mascotas.app.modules.partners.PartnerModel;
+//import com.mascotas.app.modules.owners.OwnerEntity;
+//import com.mascotas.app.modules.partners.PartnerModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -68,16 +68,16 @@ public class UserEntity {
 	private String tokenPassword;
 
 	//Referenced owner
-	@OneToOne(cascade =  CascadeType.ALL, mappedBy = "user")
-	private OwnerEntity owner;
+//	@OneToOne(cascade =  CascadeType.ALL, mappedBy = "user")
+////	private OwnerEntity owner;
 
 	//Referenced partner
-	@OneToOne(cascade =  CascadeType.ALL, mappedBy = "user")
-	private PartnerModel partnerModel;
+//	@OneToOne(cascade =  CascadeType.ALL, mappedBy = "user")
+//	private PartnerModel partnerModel;
+
 	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(name="user_roles", joinColumns = @JoinColumn(name = "id_user"), inverseJoinColumns = @JoinColumn(name = "id_role"))
 	private Set<RoleEntity> roles = new HashSet<>();
 
 	private String state;
-
 }

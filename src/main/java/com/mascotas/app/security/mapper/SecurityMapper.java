@@ -7,9 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class SecurityMapper {
 
-    @Autowired
-    static FileUploadService fileUploadService;
-
     public static UserDTO mapUserDto(UserEntity userEntity) {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(userEntity.getId());
@@ -20,9 +17,7 @@ public class SecurityMapper {
         userDTO.setEmail(userEntity.getEmail());
         userDTO.setPhone(userEntity.getPhone());
         userDTO.setUsername(userEntity.getUsername());
-        userDTO.setEncoded(fileUploadService.convertBytesToEncoded(userEntity.getImage()));
         userDTO.setState(userEntity.getState());
         return userDTO;
     }
-
 }
